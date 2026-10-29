@@ -198,9 +198,33 @@ function isSajda(surah, ayah) {
 }
 
 /**
- * Fetches the Tanzil Uthmani Quran lines, falling back to Alquran Cloud if unavailable.
+ * Fetches the Tanzil Uthmani Quran lines alongside the exact 604 Madinah Mushaf page numbers.
  */
 async function fetchQuranAyahs() {
+  console.log('Fetching exact 604 Madinah Mushaf page mapping and Uthmani text...');
+  let pageMap = new Map();
+  let cloudAyahs = [];
+  try {
+    const cloudRes = await fetch(ALQURAN_CLOUD_URL);
+    if (cloudRes.ok) {
+      const cloudJson = await cloudRes.json();
+      for (const surah of cloudJson.data.surahs) {
+        for (const ayah of surah.ayahs) {
+          const key = `${surah.number}:${ayah.numberInSurah}`;
+          pageMap.set(key, ayah.page);
+          cloudAyahs.push({
+            surahNumber: surah.number,
+            ayahNumber: ayah.numberInSurah,
+            page: ayah.page,
+            textUthmani: ayah.text.replace(/^\uFEFF/, '').trim(),
+          });
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Could not pre-fetch page map from alquran.cloud:', err.message);
+  }
+
   console.log('Attempting to fetch Uthmani Quran from Tanzil.net...');
   try {
     const res = await fetch(TANZIL_URL);
@@ -210,39 +234,29 @@ async function fetchQuranAyahs() {
     const text = await res.text();
     const lines = text.split('\n').filter((l) => /^\d+\|\d+\|/.test(l));
     if (lines.length === 6236) {
-      console.log(`Successfully fetched 6,236 ayahs from Tanzil.net`);
+      console.log(`Successfully fetched 6,236 ayahs from Tanzil.net with 604-page Mushaf mapping`);
       return lines.map((line) => {
         const parts = line.split('|');
+        const surahNumber = parseInt(parts[0], 10);
+        const ayahNumber = parseInt(parts[1], 10);
         return {
-          surahNumber: parseInt(parts[0], 10),
-          ayahNumber: parseInt(parts[1], 10),
+          surahNumber,
+          ayahNumber,
+          page: pageMap.get(`${surahNumber}:${ayahNumber}`) || 1,
           textUthmani: parts[2].trim(),
         };
       });
     }
-    console.warn(`Tanzil returned unexpected line count (${lines.length}). Falling back to alquran.cloud...`);
+    console.warn(`Tanzil returned unexpected line count (${lines.length}). Using alquran.cloud...`);
   } catch (err) {
     console.warn('Failed to fetch from Tanzil.net:', err.message);
   }
 
-  console.log('Falling back to alquran.cloud Uthmani edition...');
-  const cloudRes = await fetch(ALQURAN_CLOUD_URL);
-  if (!cloudRes.ok) {
-    throw new Error(`Alquran Cloud response error: ${cloudRes.status} ${cloudRes.statusText}`);
+  if (cloudAyahs.length === 6236) {
+    console.log(`Successfully fetched ${cloudAyahs.length} ayahs with 604-page mapping`);
+    return cloudAyahs;
   }
-  const cloudJson = await cloudRes.json();
-  const ayahs = [];
-  for (const surah of cloudJson.data.surahs) {
-    for (const ayah of surah.ayahs) {
-      ayahs.push({
-        surahNumber: surah.number,
-        ayahNumber: ayah.numberInSurah,
-        textUthmani: ayah.text.replace(/^\uFEFF/, '').trim(),
-      });
-    }
-  }
-  console.log(`Successfully fetched ${ayahs.length} ayahs from alquran.cloud`);
-  return ayahs;
+  throw new Error('Failed to fetch Quran ayahs');
 }
 
 /**
@@ -273,6 +287,7 @@ async function main() {
     juzAyahs[juzNum - 1].push({
       surahNumber: a.surahNumber,
       ayahNumber: a.ayahNumber,
+      page: a.page,
       textUthmani: text,
       hizbQuarter: quarter,
       sajda: sajda,

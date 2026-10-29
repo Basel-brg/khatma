@@ -2,6 +2,7 @@ export interface JuzAyah {
   surahNumber: number;
   ayahNumber: number;
   textUthmani: string;
+  page?: number;
   hizbQuarter?: number;
   sajda?: boolean;
 }
