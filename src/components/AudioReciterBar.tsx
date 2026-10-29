@@ -221,18 +221,18 @@ export default function AudioReciterBar({
             : 'border border-[#C5A059]/60 bg-white/98 text-[#091B15] shadow-xl'
         }`}
       >
-        {/* Unified Playback Cluster: Right Arrow (Next) on the right, Play/Pause in center, Left Arrow (Prev) on the left */}
+        {/* Unified Playback Cluster: Right Arrow (Prev) on the right, Play/Pause in center, Left Arrow (Next) on the left */}
         <div className="flex items-center gap-1 shrink-0" dir="rtl">
           <button
             type="button"
-            onClick={onNextAyah}
+            onClick={onPrevAyah}
             className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
               isDarkMode
                 ? 'text-white/80 hover:text-white hover:bg-white/10'
                 : 'text-[#091B15]/80 hover:text-[#091B15] hover:bg-black/5'
             }`}
-            aria-label="الآية التالية"
-            title="الآية التالية"
+            aria-label="الآية السابقة"
+            title="الآية السابقة"
           >
             <SkipForward className="h-4 w-4" />
           </button>
@@ -258,14 +258,14 @@ export default function AudioReciterBar({
 
           <button
             type="button"
-            onClick={onPrevAyah}
+            onClick={onNextAyah}
             className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
               isDarkMode
                 ? 'text-white/80 hover:text-white hover:bg-white/10'
                 : 'text-[#091B15]/80 hover:text-[#091B15] hover:bg-black/5'
             }`}
-            aria-label="الآية السابقة"
-            title="الآية السابقة"
+            aria-label="الآية التالية"
+            title="الآية التالية"
           >
             <SkipBack className="h-4 w-4" />
           </button>

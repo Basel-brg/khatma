@@ -106,19 +106,63 @@ html, body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Golden Date Picker & Full Rectangle Interaction */
+input[type="date"] {
+  cursor: pointer;
+  position: relative;
+  font-family: inherit;
+  color-scheme: light dark;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Ensure cursor pointer on all inner parts across Chrome/Safari/Firefox */
+input[type="date"],
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field,
+input[type="date"]::-webkit-date-and-time-value {
+  cursor: pointer;
+}
+
+/* Ensure datetime-edit fills the rectangle completely and aligns cleanly */
+input[type="date"]::-webkit-datetime-edit {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  width: 100%;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-date-and-time-value {
+  min-height: 1.4em;
+  text-align: right;
+  width: 100%;
+  cursor: pointer;
+}
+
 /* Islamic Golden Date Picker Indicator for native date inputs */
 input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
   border-radius: 4px;
-  padding: 2px;
-  filter: invert(65%) sepia(50%) saturate(600%) hue-rotate(5deg);
-  opacity: 0.85;
-  transition: transform 140ms ease, opacity 140ms ease;
+  padding: 3px;
+  margin-inline-start: 4px;
+  filter: invert(68%) sepia(48%) saturate(650%) hue-rotate(5deg) brightness(95%);
+  opacity: 0.9;
+  transition: transform 140ms ease, opacity 140ms ease, filter 140ms ease;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
   transform: scale(1.15);
   opacity: 1;
+  filter: invert(75%) sepia(55%) saturate(750%) hue-rotate(8deg) brightness(105%);
 }
 
 /* Tactile Mobile Touch Feedback (emil-design-eng) */

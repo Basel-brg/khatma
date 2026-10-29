@@ -389,9 +389,11 @@ export default function QuranReaderModal({
       const now = Date.now();
       if (now - lastSwipeTimestamp.current > 300) {
         lastSwipeTimestamp.current = now;
-        if (diffX > 35) {
+        if (diffX < -35) {
+          // Swipe right -> advance to next page
           goToPage(currentPageIdx + 1);
-        } else if (diffX < -35) {
+        } else if (diffX > 35) {
+          // Swipe left -> return to previous page
           goToPage(currentPageIdx - 1);
         }
       }
@@ -430,9 +432,11 @@ export default function QuranReaderModal({
       const now = Date.now();
       if (now - lastSwipeTimestamp.current > 300) {
         lastSwipeTimestamp.current = now;
-        if (diffX > 35) {
+        if (diffX < -35) {
+          // Swipe right -> advance to next page
           goToPage(currentPageIdx + 1);
-        } else if (diffX < -35) {
+        } else if (diffX > 35) {
+          // Swipe left -> return to previous page
           goToPage(currentPageIdx - 1);
         }
       }

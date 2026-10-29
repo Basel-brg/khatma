@@ -31,22 +31,22 @@ describe('AudioReciterBar Playback Controls Layout & Direction', () => {
     expect(playbackCluster).toBeTruthy();
     expect(playbackCluster?.getAttribute('dir')).toBe('rtl');
 
-    // In RTL flexbox, 1st child is on the visual RIGHT, 2nd child is in the MIDDLE, 3rd child is on the visual LEFT
+    // In RTL flexbox, 1st child is on the visual RIGHT (Previous ayah), 2nd child is in the MIDDLE, 3rd child is on the visual LEFT (Next ayah)
     const buttons = playbackCluster?.querySelectorAll('button');
     expect(buttons).toHaveLength(3);
-    expect(buttons?.[0]).toBe(nextAyahBtn); // Visual right
+    expect(buttons?.[0]).toBe(prevAyahBtn); // Visual right -> Previous Ayah
     expect(buttons?.[1]).toBe(playBtn);     // Visual center
-    expect(buttons?.[2]).toBe(prevAyahBtn); // Visual left
+    expect(buttons?.[2]).toBe(nextAyahBtn); // Visual left -> Next Ayah
 
     // Test click events
-    act(() => {
-      fireEvent.click(nextAyahBtn);
-    });
-    expect(onNextAyah).toHaveBeenCalledTimes(1);
-
     act(() => {
       fireEvent.click(prevAyahBtn);
     });
     expect(onPrevAyah).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      fireEvent.click(nextAyahBtn);
+    });
+    expect(onNextAyah).toHaveBeenCalledTimes(1);
   });
 });
