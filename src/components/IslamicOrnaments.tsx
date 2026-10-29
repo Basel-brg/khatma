@@ -166,26 +166,26 @@ export function SurahCartoucheBanner({
 
   return (
     <div
-      className={`relative w-full my-4 select-none overflow-hidden rounded-sm transition-colors ${
+      className={`relative w-full my-4 select-none overflow-hidden rounded-md transition-colors ${
         isDarkMode
-          ? 'bg-[#1E1E20] text-[#EDEBE8] border border-[#3A3A3C]'
-          : 'bg-[#F2ECE1] text-[#1A1A1A] border border-[#D5C9B3]'
+          ? 'bg-[#091B15] text-[#C8A45D] border border-[#C5A059]/60 shadow-[inset_0_0_15px_rgba(197,160,89,0.12)]'
+          : 'bg-[#F8F5EC] text-[#5A4214] border border-[#C5A059]/80 shadow-[inset_0_0_15px_rgba(197,160,89,0.08)]'
       }`}
       aria-label={cleanName}
     >
       <div className="relative py-2.5 px-3 sm:px-6 flex items-center justify-between">
-        {/* Right Floral Rosette Arabesque */}
-        <div className="shrink-0 opacity-70">
+        {/* Right Floral Rosette Arabesque in Gold */}
+        <div className="shrink-0 text-[#C5A059] opacity-85">
           <svg
             viewBox="0 0 48 48"
             className="w-8 h-8 sm:w-10 sm:h-10 text-current"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.2"
+            strokeWidth="1.3"
           >
             <circle cx="24" cy="24" r="20" strokeDasharray="2 2" />
             <circle cx="24" cy="24" r="14" />
-            <path d="M24 6 C28 16 32 20 42 24 C32 28 28 32 24 42 C20 32 16 28 6 24 C16 20 20 16 24 6 Z" fill="currentColor" fillOpacity="0.12" />
+            <path d="M24 6 C28 16 32 20 42 24 C32 28 28 32 24 42 C20 32 16 28 6 24 C16 20 20 16 24 6 Z" fill="currentColor" fillOpacity="0.18" />
             <circle cx="24" cy="24" r="3" fill="currentColor" />
           </svg>
         </div>
@@ -193,25 +193,24 @@ export function SurahCartoucheBanner({
         {/* Center Scalloped Cartouche with Surah Title */}
         <div className="flex-1 text-center px-2">
           <div className="inline-block relative px-5 py-1">
-            {/* Subtle decorative brackets */}
             <span className="text-xl sm:text-2xl font-quran font-bold tracking-wider text-current drop-shadow-xs">
               {cleanName}
             </span>
           </div>
         </div>
 
-        {/* Left Floral Rosette Arabesque */}
-        <div className="shrink-0 opacity-70">
+        {/* Left Floral Rosette Arabesque in Gold */}
+        <div className="shrink-0 text-[#C5A059] opacity-85">
           <svg
             viewBox="0 0 48 48"
             className="w-8 h-8 sm:w-10 sm:h-10 text-current"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.2"
+            strokeWidth="1.3"
           >
             <circle cx="24" cy="24" r="20" strokeDasharray="2 2" />
             <circle cx="24" cy="24" r="14" />
-            <path d="M24 6 C28 16 32 20 42 24 C32 28 28 32 24 42 C20 32 16 28 6 24 C16 20 20 16 24 6 Z" fill="currentColor" fillOpacity="0.12" />
+            <path d="M24 6 C28 16 32 20 42 24 C32 28 28 32 24 42 C20 32 16 28 6 24 C16 20 20 16 24 6 Z" fill="currentColor" fillOpacity="0.18" />
             <circle cx="24" cy="24" r="3" fill="currentColor" />
           </svg>
         </div>
@@ -248,26 +247,27 @@ export function AyahStarMedallion({
           cx="18"
           cy="18"
           r="14"
-          fill={isCurrent ? '#10B981' : isDarkMode ? '#242426' : '#EAE5D9'}
-          stroke={isCurrent ? '#059669' : isDarkMode ? '#48484A' : '#C7BFB0'}
-          strokeWidth="1.4"
+          fill={isCurrent ? '#C5A059' : isDarkMode ? '#0F261E' : '#F5EEDC'}
+          stroke={isCurrent ? '#FDF6E7' : '#C5A059'}
+          strokeWidth="1.3"
         />
         <circle
           cx="18"
           cy="18"
           r="11"
-          stroke={isCurrent ? '#047857' : isDarkMode ? '#5E5E62' : '#B8AE9D'}
+          stroke={isCurrent ? '#091B15' : '#C5A059'}
           strokeWidth="0.8"
           strokeDasharray="2.5 1.5"
+          strokeOpacity="0.8"
         />
       </svg>
       <span
         className={`relative z-10 text-[0.62em] font-sans font-bold leading-none pt-[1px] ${
           isCurrent
-            ? 'text-white'
+            ? 'text-[#091B15]'
             : isDarkMode
-            ? 'text-[#E5E5EA]'
-            : 'text-[#2C2C2E]'
+            ? 'text-[#E8D39E]'
+            : 'text-[#5A4214]'
         }`}
       >
         {toArabicDigits(number)}
