@@ -1,0 +1,2856 @@
+{
+  "juzNumber": 27,
+  "nameAr": "الجزء السابع والعشرون",
+  "sections": [
+    {
+      "surahNumber": 51,
+      "surahNameAr": "سورة الذاريات",
+      "revelationType": "Meccan",
+      "showBasmala": false,
+      "ayahs": [
+        {
+          "surahNumber": 51,
+          "ayahNumber": 31,
+          "textUthmani": "قَالَ فَمَا خَطْبُكُمْ أَيُّهَا ٱلْمُرْسَلُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 32,
+          "textUthmani": "قَالُوٓا۟ إِنَّآ أُرْسِلْنَآ إِلَىٰ قَوْمٍ مُّجْرِمِينَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 33,
+          "textUthmani": "لِنُرْسِلَ عَلَيْهِمْ حِجَارَةً مِّن طِينٍ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 34,
+          "textUthmani": "مُّسَوَّمَةً عِندَ رَبِّكَ لِلْمُسْرِفِينَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 35,
+          "textUthmani": "فَأَخْرَجْنَا مَن كَانَ فِيهَا مِنَ ٱلْمُؤْمِنِينَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 36,
+          "textUthmani": "فَمَا وَجَدْنَا فِيهَا غَيْرَ بَيْتٍ مِّنَ ٱلْمُسْلِمِينَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 37,
+          "textUthmani": "وَتَرَكْنَا فِيهَآ ءَايَةً لِّلَّذِينَ يَخَافُونَ ٱلْعَذَابَ ٱلْأَلِيمَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 38,
+          "textUthmani": "وَفِى مُوسَىٰٓ إِذْ أَرْسَلْنَٰهُ إِلَىٰ فِرْعَوْنَ بِسُلْطَٰنٍ مُّبِينٍ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 39,
+          "textUthmani": "فَتَوَلَّىٰ بِرُكْنِهِۦ وَقَالَ سَٰحِرٌ أَوْ مَجْنُونٌ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 40,
+          "textUthmani": "فَأَخَذْنَٰهُ وَجُنُودَهُۥ فَنَبَذْنَٰهُمْ فِى ٱلْيَمِّ وَهُوَ مُلِيمٌ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 41,
+          "textUthmani": "وَفِى عَادٍ إِذْ أَرْسَلْنَا عَلَيْهِمُ ٱلرِّيحَ ٱلْعَقِيمَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 42,
+          "textUthmani": "مَا تَذَرُ مِن شَىْءٍ أَتَتْ عَلَيْهِ إِلَّا جَعَلَتْهُ كَٱلرَّمِيمِ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 43,
+          "textUthmani": "وَفِى ثَمُودَ إِذْ قِيلَ لَهُمْ تَمَتَّعُوا۟ حَتَّىٰ حِينٍ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 44,
+          "textUthmani": "فَعَتَوْا۟ عَنْ أَمْرِ رَبِّهِمْ فَأَخَذَتْهُمُ ٱلصَّٰعِقَةُ وَهُمْ يَنظُرُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 45,
+          "textUthmani": "فَمَا ٱسْتَطَٰعُوا۟ مِن قِيَامٍ وَمَا كَانُوا۟ مُنتَصِرِينَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 46,
+          "textUthmani": "وَقَوْمَ نُوحٍ مِّن قَبْلُ إِنَّهُمْ كَانُوا۟ قَوْمًا فَٰسِقِينَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 47,
+          "textUthmani": "وَٱلسَّمَآءَ بَنَيْنَٰهَا بِأَيْي۟دٍ وَإِنَّا لَمُوسِعُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 48,
+          "textUthmani": "وَٱلْأَرْضَ فَرَشْنَٰهَا فَنِعْمَ ٱلْمَٰهِدُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 49,
+          "textUthmani": "وَمِن كُلِّ شَىْءٍ خَلَقْنَا زَوْجَيْنِ لَعَلَّكُمْ تَذَكَّرُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 50,
+          "textUthmani": "فَفِرُّوٓا۟ إِلَى ٱللَّهِ إِنِّى لَكُم مِّنْهُ نَذِيرٌ مُّبِينٌ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 51,
+          "textUthmani": "وَلَا تَجْعَلُوا۟ مَعَ ٱللَّهِ إِلَٰهًا ءَاخَرَ إِنِّى لَكُم مِّنْهُ نَذِيرٌ مُّبِينٌ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 52,
+          "textUthmani": "كَذَٰلِكَ مَآ أَتَى ٱلَّذِينَ مِن قَبْلِهِم مِّن رَّسُولٍ إِلَّا قَالُوا۟ سَاحِرٌ أَوْ مَجْنُونٌ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 53,
+          "textUthmani": "أَتَوَاصَوْا۟ بِهِۦ بَلْ هُمْ قَوْمٌ طَاغُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 54,
+          "textUthmani": "فَتَوَلَّ عَنْهُمْ فَمَآ أَنتَ بِمَلُومٍ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 55,
+          "textUthmani": "وَذَكِّرْ فَإِنَّ ٱلذِّكْرَىٰ تَنفَعُ ٱلْمُؤْمِنِينَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 56,
+          "textUthmani": "وَمَا خَلَقْتُ ٱلْجِنَّ وَٱلْإِنسَ إِلَّا لِيَعْبُدُونِ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 57,
+          "textUthmani": "مَآ أُرِيدُ مِنْهُم مِّن رِّزْقٍ وَمَآ أُرِيدُ أَن يُطْعِمُونِ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 58,
+          "textUthmani": "إِنَّ ٱللَّهَ هُوَ ٱلرَّزَّاقُ ذُو ٱلْقُوَّةِ ٱلْمَتِينُ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 59,
+          "textUthmani": "فَإِنَّ لِلَّذِينَ ظَلَمُوا۟ ذَنُوبًا مِّثْلَ ذَنُوبِ أَصْحَٰبِهِمْ فَلَا يَسْتَعْجِلُونِ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 51,
+          "ayahNumber": 60,
+          "textUthmani": "فَوَيْلٌ لِّلَّذِينَ كَفَرُوا۟ مِن يَوْمِهِمُ ٱلَّذِى يُوعَدُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        }
+      ]
+    },
+    {
+      "surahNumber": 52,
+      "surahNameAr": "سورة الطور",
+      "revelationType": "Meccan",
+      "showBasmala": true,
+      "ayahs": [
+        {
+          "surahNumber": 52,
+          "ayahNumber": 1,
+          "textUthmani": "وَٱلطُّورِ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 2,
+          "textUthmani": "وَكِتَٰبٍ مَّسْطُورٍ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 3,
+          "textUthmani": "فِى رَقٍّ مَّنشُورٍ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 4,
+          "textUthmani": "وَٱلْبَيْتِ ٱلْمَعْمُورِ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 5,
+          "textUthmani": "وَٱلسَّقْفِ ٱلْمَرْفُوعِ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 6,
+          "textUthmani": "وَٱلْبَحْرِ ٱلْمَسْجُورِ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 7,
+          "textUthmani": "إِنَّ عَذَابَ رَبِّكَ لَوَٰقِعٌ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 8,
+          "textUthmani": "مَّا لَهُۥ مِن دَافِعٍ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 9,
+          "textUthmani": "يَوْمَ تَمُورُ ٱلسَّمَآءُ مَوْرًا",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 10,
+          "textUthmani": "وَتَسِيرُ ٱلْجِبَالُ سَيْرًا",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 11,
+          "textUthmani": "فَوَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 12,
+          "textUthmani": "ٱلَّذِينَ هُمْ فِى خَوْضٍ يَلْعَبُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 13,
+          "textUthmani": "يَوْمَ يُدَعُّونَ إِلَىٰ نَارِ جَهَنَّمَ دَعًّا",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 14,
+          "textUthmani": "هَٰذِهِ ٱلنَّارُ ٱلَّتِى كُنتُم بِهَا تُكَذِّبُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 15,
+          "textUthmani": "أَفَسِحْرٌ هَٰذَآ أَمْ أَنتُمْ لَا تُبْصِرُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 16,
+          "textUthmani": "ٱصْلَوْهَا فَٱصْبِرُوٓا۟ أَوْ لَا تَصْبِرُوا۟ سَوَآءٌ عَلَيْكُمْ إِنَّمَا تُجْزَوْنَ مَا كُنتُمْ تَعْمَلُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 17,
+          "textUthmani": "إِنَّ ٱلْمُتَّقِينَ فِى جَنَّٰتٍ وَنَعِيمٍ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 18,
+          "textUthmani": "فَٰكِهِينَ بِمَآ ءَاتَىٰهُمْ رَبُّهُمْ وَوَقَىٰهُمْ رَبُّهُمْ عَذَابَ ٱلْجَحِيمِ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 19,
+          "textUthmani": "كُلُوا۟ وَٱشْرَبُوا۟ هَنِيٓـًٔۢا بِمَا كُنتُمْ تَعْمَلُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 20,
+          "textUthmani": "مُتَّكِـِٔينَ عَلَىٰ سُرُرٍ مَّصْفُوفَةٍ وَزَوَّجْنَٰهُم بِحُورٍ عِينٍ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 21,
+          "textUthmani": "وَٱلَّذِينَ ءَامَنُوا۟ وَٱتَّبَعَتْهُمْ ذُرِّيَّتُهُم بِإِيمَٰنٍ أَلْحَقْنَا بِهِمْ ذُرِّيَّتَهُمْ وَمَآ أَلَتْنَٰهُم مِّنْ عَمَلِهِم مِّن شَىْءٍ كُلُّ ٱمْرِئٍۭ بِمَا كَسَبَ رَهِينٌ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 22,
+          "textUthmani": "وَأَمْدَدْنَٰهُم بِفَٰكِهَةٍ وَلَحْمٍ مِّمَّا يَشْتَهُونَ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 23,
+          "textUthmani": "يَتَنَٰزَعُونَ فِيهَا كَأْسًا لَّا لَغْوٌ فِيهَا وَلَا تَأْثِيمٌ",
+          "hizbQuarter": 209,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 24,
+          "textUthmani": "وَيَطُوفُ عَلَيْهِمْ غِلْمَانٌ لَّهُمْ كَأَنَّهُمْ لُؤْلُؤٌ مَّكْنُونٌ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 25,
+          "textUthmani": "وَأَقْبَلَ بَعْضُهُمْ عَلَىٰ بَعْضٍ يَتَسَآءَلُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 26,
+          "textUthmani": "قَالُوٓا۟ إِنَّا كُنَّا قَبْلُ فِىٓ أَهْلِنَا مُشْفِقِينَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 27,
+          "textUthmani": "فَمَنَّ ٱللَّهُ عَلَيْنَا وَوَقَىٰنَا عَذَابَ ٱلسَّمُومِ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 28,
+          "textUthmani": "إِنَّا كُنَّا مِن قَبْلُ نَدْعُوهُ إِنَّهُۥ هُوَ ٱلْبَرُّ ٱلرَّحِيمُ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 29,
+          "textUthmani": "فَذَكِّرْ فَمَآ أَنتَ بِنِعْمَتِ رَبِّكَ بِكَاهِنٍ وَلَا مَجْنُونٍ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 30,
+          "textUthmani": "أَمْ يَقُولُونَ شَاعِرٌ نَّتَرَبَّصُ بِهِۦ رَيْبَ ٱلْمَنُونِ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 31,
+          "textUthmani": "قُلْ تَرَبَّصُوا۟ فَإِنِّى مَعَكُم مِّنَ ٱلْمُتَرَبِّصِينَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 32,
+          "textUthmani": "أَمْ تَأْمُرُهُمْ أَحْلَٰمُهُم بِهَٰذَآ أَمْ هُمْ قَوْمٌ طَاغُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 33,
+          "textUthmani": "أَمْ يَقُولُونَ تَقَوَّلَهُۥ بَل لَّا يُؤْمِنُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 34,
+          "textUthmani": "فَلْيَأْتُوا۟ بِحَدِيثٍ مِّثْلِهِۦٓ إِن كَانُوا۟ صَٰدِقِينَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 35,
+          "textUthmani": "أَمْ خُلِقُوا۟ مِنْ غَيْرِ شَىْءٍ أَمْ هُمُ ٱلْخَٰلِقُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 36,
+          "textUthmani": "أَمْ خَلَقُوا۟ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضَ بَل لَّا يُوقِنُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 37,
+          "textUthmani": "أَمْ عِندَهُمْ خَزَآئِنُ رَبِّكَ أَمْ هُمُ ٱلْمُصَۣيْطِرُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 38,
+          "textUthmani": "أَمْ لَهُمْ سُلَّمٌ يَسْتَمِعُونَ فِيهِ فَلْيَأْتِ مُسْتَمِعُهُم بِسُلْطَٰنٍ مُّبِينٍ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 39,
+          "textUthmani": "أَمْ لَهُ ٱلْبَنَٰتُ وَلَكُمُ ٱلْبَنُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 40,
+          "textUthmani": "أَمْ تَسْـَٔلُهُمْ أَجْرًا فَهُم مِّن مَّغْرَمٍ مُّثْقَلُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 41,
+          "textUthmani": "أَمْ عِندَهُمُ ٱلْغَيْبُ فَهُمْ يَكْتُبُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 42,
+          "textUthmani": "أَمْ يُرِيدُونَ كَيْدًا فَٱلَّذِينَ كَفَرُوا۟ هُمُ ٱلْمَكِيدُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 43,
+          "textUthmani": "أَمْ لَهُمْ إِلَٰهٌ غَيْرُ ٱللَّهِ سُبْحَٰنَ ٱللَّهِ عَمَّا يُشْرِكُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 44,
+          "textUthmani": "وَإِن يَرَوْا۟ كِسْفًا مِّنَ ٱلسَّمَآءِ سَاقِطًا يَقُولُوا۟ سَحَابٌ مَّرْكُومٌ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 45,
+          "textUthmani": "فَذَرْهُمْ حَتَّىٰ يُلَٰقُوا۟ يَوْمَهُمُ ٱلَّذِى فِيهِ يُصْعَقُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 46,
+          "textUthmani": "يَوْمَ لَا يُغْنِى عَنْهُمْ كَيْدُهُمْ شَيْـًٔا وَلَا هُمْ يُنصَرُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 47,
+          "textUthmani": "وَإِنَّ لِلَّذِينَ ظَلَمُوا۟ عَذَابًا دُونَ ذَٰلِكَ وَلَٰكِنَّ أَكْثَرَهُمْ لَا يَعْلَمُونَ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 48,
+          "textUthmani": "وَٱصْبِرْ لِحُكْمِ رَبِّكَ فَإِنَّكَ بِأَعْيُنِنَا وَسَبِّحْ بِحَمْدِ رَبِّكَ حِينَ تَقُومُ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 52,
+          "ayahNumber": 49,
+          "textUthmani": "وَمِنَ ٱلَّيْلِ فَسَبِّحْهُ وَإِدْبَٰرَ ٱلنُّجُومِ",
+          "hizbQuarter": 210,
+          "sajda": false
+        }
+      ]
+    },
+    {
+      "surahNumber": 53,
+      "surahNameAr": "سورة النجم",
+      "revelationType": "Meccan",
+      "showBasmala": true,
+      "ayahs": [
+        {
+          "surahNumber": 53,
+          "ayahNumber": 1,
+          "textUthmani": "وَٱلنَّجْمِ إِذَا هَوَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 2,
+          "textUthmani": "مَا ضَلَّ صَاحِبُكُمْ وَمَا غَوَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 3,
+          "textUthmani": "وَمَا يَنطِقُ عَنِ ٱلْهَوَىٰٓ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 4,
+          "textUthmani": "إِنْ هُوَ إِلَّا وَحْىٌ يُوحَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 5,
+          "textUthmani": "عَلَّمَهُۥ شَدِيدُ ٱلْقُوَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 6,
+          "textUthmani": "ذُو مِرَّةٍ فَٱسْتَوَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 7,
+          "textUthmani": "وَهُوَ بِٱلْأُفُقِ ٱلْأَعْلَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 8,
+          "textUthmani": "ثُمَّ دَنَا فَتَدَلَّىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 9,
+          "textUthmani": "فَكَانَ قَابَ قَوْسَيْنِ أَوْ أَدْنَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 10,
+          "textUthmani": "فَأَوْحَىٰٓ إِلَىٰ عَبْدِهِۦ مَآ أَوْحَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 11,
+          "textUthmani": "مَا كَذَبَ ٱلْفُؤَادُ مَا رَأَىٰٓ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 12,
+          "textUthmani": "أَفَتُمَٰرُونَهُۥ عَلَىٰ مَا يَرَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 13,
+          "textUthmani": "وَلَقَدْ رَءَاهُ نَزْلَةً أُخْرَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 14,
+          "textUthmani": "عِندَ سِدْرَةِ ٱلْمُنتَهَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 15,
+          "textUthmani": "عِندَهَا جَنَّةُ ٱلْمَأْوَىٰٓ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 16,
+          "textUthmani": "إِذْ يَغْشَى ٱلسِّدْرَةَ مَا يَغْشَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 17,
+          "textUthmani": "مَا زَاغَ ٱلْبَصَرُ وَمَا طَغَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 18,
+          "textUthmani": "لَقَدْ رَأَىٰ مِنْ ءَايَٰتِ رَبِّهِ ٱلْكُبْرَىٰٓ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 19,
+          "textUthmani": "أَفَرَءَيْتُمُ ٱللَّٰتَ وَٱلْعُزَّىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 20,
+          "textUthmani": "وَمَنَوٰةَ ٱلثَّالِثَةَ ٱلْأُخْرَىٰٓ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 21,
+          "textUthmani": "أَلَكُمُ ٱلذَّكَرُ وَلَهُ ٱلْأُنثَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 22,
+          "textUthmani": "تِلْكَ إِذًا قِسْمَةٌ ضِيزَىٰٓ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 23,
+          "textUthmani": "إِنْ هِىَ إِلَّآ أَسْمَآءٌ سَمَّيْتُمُوهَآ أَنتُمْ وَءَابَآؤُكُم مَّآ أَنزَلَ ٱللَّهُ بِهَا مِن سُلْطَٰنٍ إِن يَتَّبِعُونَ إِلَّا ٱلظَّنَّ وَمَا تَهْوَى ٱلْأَنفُسُ وَلَقَدْ جَآءَهُم مِّن رَّبِّهِمُ ٱلْهُدَىٰٓ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 24,
+          "textUthmani": "أَمْ لِلْإِنسَٰنِ مَا تَمَنَّىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 25,
+          "textUthmani": "فَلِلَّهِ ٱلْـَٔاخِرَةُ وَٱلْأُولَىٰ",
+          "hizbQuarter": 210,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 26,
+          "textUthmani": "وَكَم مِّن مَّلَكٍ فِى ٱلسَّمَٰوَٰتِ لَا تُغْنِى شَفَٰعَتُهُمْ شَيْـًٔا إِلَّا مِنۢ بَعْدِ أَن يَأْذَنَ ٱللَّهُ لِمَن يَشَآءُ وَيَرْضَىٰٓ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 27,
+          "textUthmani": "إِنَّ ٱلَّذِينَ لَا يُؤْمِنُونَ بِٱلْـَٔاخِرَةِ لَيُسَمُّونَ ٱلْمَلَٰٓئِكَةَ تَسْمِيَةَ ٱلْأُنثَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 28,
+          "textUthmani": "وَمَا لَهُم بِهِۦ مِنْ عِلْمٍ إِن يَتَّبِعُونَ إِلَّا ٱلظَّنَّ وَإِنَّ ٱلظَّنَّ لَا يُغْنِى مِنَ ٱلْحَقِّ شَيْـًٔا",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 29,
+          "textUthmani": "فَأَعْرِضْ عَن مَّن تَوَلَّىٰ عَن ذِكْرِنَا وَلَمْ يُرِدْ إِلَّا ٱلْحَيَوٰةَ ٱلدُّنْيَا",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 30,
+          "textUthmani": "ذَٰلِكَ مَبْلَغُهُم مِّنَ ٱلْعِلْمِ إِنَّ رَبَّكَ هُوَ أَعْلَمُ بِمَن ضَلَّ عَن سَبِيلِهِۦ وَهُوَ أَعْلَمُ بِمَنِ ٱهْتَدَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 31,
+          "textUthmani": "وَلِلَّهِ مَا فِى ٱلسَّمَٰوَٰتِ وَمَا فِى ٱلْأَرْضِ لِيَجْزِىَ ٱلَّذِينَ أَسَٰٓـُٔوا۟ بِمَا عَمِلُوا۟ وَيَجْزِىَ ٱلَّذِينَ أَحْسَنُوا۟ بِٱلْحُسْنَى",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 32,
+          "textUthmani": "ٱلَّذِينَ يَجْتَنِبُونَ كَبَٰٓئِرَ ٱلْإِثْمِ وَٱلْفَوَٰحِشَ إِلَّا ٱللَّمَمَ إِنَّ رَبَّكَ وَٰسِعُ ٱلْمَغْفِرَةِ هُوَ أَعْلَمُ بِكُمْ إِذْ أَنشَأَكُم مِّنَ ٱلْأَرْضِ وَإِذْ أَنتُمْ أَجِنَّةٌ فِى بُطُونِ أُمَّهَٰتِكُمْ فَلَا تُزَكُّوٓا۟ أَنفُسَكُمْ هُوَ أَعْلَمُ بِمَنِ ٱتَّقَىٰٓ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 33,
+          "textUthmani": "أَفَرَءَيْتَ ٱلَّذِى تَوَلَّىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 34,
+          "textUthmani": "وَأَعْطَىٰ قَلِيلًا وَأَكْدَىٰٓ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 35,
+          "textUthmani": "أَعِندَهُۥ عِلْمُ ٱلْغَيْبِ فَهُوَ يَرَىٰٓ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 36,
+          "textUthmani": "أَمْ لَمْ يُنَبَّأْ بِمَا فِى صُحُفِ مُوسَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 37,
+          "textUthmani": "وَإِبْرَٰهِيمَ ٱلَّذِى وَفَّىٰٓ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 38,
+          "textUthmani": "أَلَّا تَزِرُ وَازِرَةٌ وِزْرَ أُخْرَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 39,
+          "textUthmani": "وَأَن لَّيْسَ لِلْإِنسَٰنِ إِلَّا مَا سَعَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 40,
+          "textUthmani": "وَأَنَّ سَعْيَهُۥ سَوْفَ يُرَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 41,
+          "textUthmani": "ثُمَّ يُجْزَىٰهُ ٱلْجَزَآءَ ٱلْأَوْفَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 42,
+          "textUthmani": "وَأَنَّ إِلَىٰ رَبِّكَ ٱلْمُنتَهَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 43,
+          "textUthmani": "وَأَنَّهُۥ هُوَ أَضْحَكَ وَأَبْكَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 44,
+          "textUthmani": "وَأَنَّهُۥ هُوَ أَمَاتَ وَأَحْيَا",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 45,
+          "textUthmani": "وَأَنَّهُۥ خَلَقَ ٱلزَّوْجَيْنِ ٱلذَّكَرَ وَٱلْأُنثَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 46,
+          "textUthmani": "مِن نُّطْفَةٍ إِذَا تُمْنَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 47,
+          "textUthmani": "وَأَنَّ عَلَيْهِ ٱلنَّشْأَةَ ٱلْأُخْرَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 48,
+          "textUthmani": "وَأَنَّهُۥ هُوَ أَغْنَىٰ وَأَقْنَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 49,
+          "textUthmani": "وَأَنَّهُۥ هُوَ رَبُّ ٱلشِّعْرَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 50,
+          "textUthmani": "وَأَنَّهُۥٓ أَهْلَكَ عَادًا ٱلْأُولَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 51,
+          "textUthmani": "وَثَمُودَا۟ فَمَآ أَبْقَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 52,
+          "textUthmani": "وَقَوْمَ نُوحٍ مِّن قَبْلُ إِنَّهُمْ كَانُوا۟ هُمْ أَظْلَمَ وَأَطْغَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 53,
+          "textUthmani": "وَٱلْمُؤْتَفِكَةَ أَهْوَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 54,
+          "textUthmani": "فَغَشَّىٰهَا مَا غَشَّىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 55,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكَ تَتَمَارَىٰ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 56,
+          "textUthmani": "هَٰذَا نَذِيرٌ مِّنَ ٱلنُّذُرِ ٱلْأُولَىٰٓ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 57,
+          "textUthmani": "أَزِفَتِ ٱلْـَٔازِفَةُ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 58,
+          "textUthmani": "لَيْسَ لَهَا مِن دُونِ ٱللَّهِ كَاشِفَةٌ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 59,
+          "textUthmani": "أَفَمِنْ هَٰذَا ٱلْحَدِيثِ تَعْجَبُونَ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 60,
+          "textUthmani": "وَتَضْحَكُونَ وَلَا تَبْكُونَ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 61,
+          "textUthmani": "وَأَنتُمْ سَٰمِدُونَ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 53,
+          "ayahNumber": 62,
+          "textUthmani": "فَٱسْجُدُوا۟ لِلَّهِ وَٱعْبُدُوا۟",
+          "hizbQuarter": 211,
+          "sajda": true
+        }
+      ]
+    },
+    {
+      "surahNumber": 54,
+      "surahNameAr": "سورة القمر",
+      "revelationType": "Meccan",
+      "showBasmala": true,
+      "ayahs": [
+        {
+          "surahNumber": 54,
+          "ayahNumber": 1,
+          "textUthmani": "ٱقْتَرَبَتِ ٱلسَّاعَةُ وَٱنشَقَّ ٱلْقَمَرُ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 2,
+          "textUthmani": "وَإِن يَرَوْا۟ ءَايَةً يُعْرِضُوا۟ وَيَقُولُوا۟ سِحْرٌ مُّسْتَمِرٌّ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 3,
+          "textUthmani": "وَكَذَّبُوا۟ وَٱتَّبَعُوٓا۟ أَهْوَآءَهُمْ وَكُلُّ أَمْرٍ مُّسْتَقِرٌّ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 4,
+          "textUthmani": "وَلَقَدْ جَآءَهُم مِّنَ ٱلْأَنۢبَآءِ مَا فِيهِ مُزْدَجَرٌ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 5,
+          "textUthmani": "حِكْمَةٌۢ بَٰلِغَةٌ فَمَا تُغْنِ ٱلنُّذُرُ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 6,
+          "textUthmani": "فَتَوَلَّ عَنْهُمْ يَوْمَ يَدْعُ ٱلدَّاعِ إِلَىٰ شَىْءٍ نُّكُرٍ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 7,
+          "textUthmani": "خُشَّعًا أَبْصَٰرُهُمْ يَخْرُجُونَ مِنَ ٱلْأَجْدَاثِ كَأَنَّهُمْ جَرَادٌ مُّنتَشِرٌ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 8,
+          "textUthmani": "مُّهْطِعِينَ إِلَى ٱلدَّاعِ يَقُولُ ٱلْكَٰفِرُونَ هَٰذَا يَوْمٌ عَسِرٌ",
+          "hizbQuarter": 211,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 9,
+          "textUthmani": "كَذَّبَتْ قَبْلَهُمْ قَوْمُ نُوحٍ فَكَذَّبُوا۟ عَبْدَنَا وَقَالُوا۟ مَجْنُونٌ وَٱزْدُجِرَ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 10,
+          "textUthmani": "فَدَعَا رَبَّهُۥٓ أَنِّى مَغْلُوبٌ فَٱنتَصِرْ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 11,
+          "textUthmani": "فَفَتَحْنَآ أَبْوَٰبَ ٱلسَّمَآءِ بِمَآءٍ مُّنْهَمِرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 12,
+          "textUthmani": "وَفَجَّرْنَا ٱلْأَرْضَ عُيُونًا فَٱلْتَقَى ٱلْمَآءُ عَلَىٰٓ أَمْرٍ قَدْ قُدِرَ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 13,
+          "textUthmani": "وَحَمَلْنَٰهُ عَلَىٰ ذَاتِ أَلْوَٰحٍ وَدُسُرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 14,
+          "textUthmani": "تَجْرِى بِأَعْيُنِنَا جَزَآءً لِّمَن كَانَ كُفِرَ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 15,
+          "textUthmani": "وَلَقَد تَّرَكْنَٰهَآ ءَايَةً فَهَلْ مِن مُّدَّكِرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 16,
+          "textUthmani": "فَكَيْفَ كَانَ عَذَابِى وَنُذُرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 17,
+          "textUthmani": "وَلَقَدْ يَسَّرْنَا ٱلْقُرْءَانَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 18,
+          "textUthmani": "كَذَّبَتْ عَادٌ فَكَيْفَ كَانَ عَذَابِى وَنُذُرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 19,
+          "textUthmani": "إِنَّآ أَرْسَلْنَا عَلَيْهِمْ رِيحًا صَرْصَرًا فِى يَوْمِ نَحْسٍ مُّسْتَمِرٍّ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 20,
+          "textUthmani": "تَنزِعُ ٱلنَّاسَ كَأَنَّهُمْ أَعْجَازُ نَخْلٍ مُّنقَعِرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 21,
+          "textUthmani": "فَكَيْفَ كَانَ عَذَابِى وَنُذُرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 22,
+          "textUthmani": "وَلَقَدْ يَسَّرْنَا ٱلْقُرْءَانَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 23,
+          "textUthmani": "كَذَّبَتْ ثَمُودُ بِٱلنُّذُرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 24,
+          "textUthmani": "فَقَالُوٓا۟ أَبَشَرًا مِّنَّا وَٰحِدًا نَّتَّبِعُهُۥٓ إِنَّآ إِذًا لَّفِى ضَلَٰلٍ وَسُعُرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 25,
+          "textUthmani": "أَءُلْقِىَ ٱلذِّكْرُ عَلَيْهِ مِنۢ بَيْنِنَا بَلْ هُوَ كَذَّابٌ أَشِرٌ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 26,
+          "textUthmani": "سَيَعْلَمُونَ غَدًا مَّنِ ٱلْكَذَّابُ ٱلْأَشِرُ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 27,
+          "textUthmani": "إِنَّا مُرْسِلُوا۟ ٱلنَّاقَةِ فِتْنَةً لَّهُمْ فَٱرْتَقِبْهُمْ وَٱصْطَبِرْ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 28,
+          "textUthmani": "وَنَبِّئْهُمْ أَنَّ ٱلْمَآءَ قِسْمَةٌۢ بَيْنَهُمْ كُلُّ شِرْبٍ مُّحْتَضَرٌ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 29,
+          "textUthmani": "فَنَادَوْا۟ صَاحِبَهُمْ فَتَعَاطَىٰ فَعَقَرَ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 30,
+          "textUthmani": "فَكَيْفَ كَانَ عَذَابِى وَنُذُرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 31,
+          "textUthmani": "إِنَّآ أَرْسَلْنَا عَلَيْهِمْ صَيْحَةً وَٰحِدَةً فَكَانُوا۟ كَهَشِيمِ ٱلْمُحْتَظِرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 32,
+          "textUthmani": "وَلَقَدْ يَسَّرْنَا ٱلْقُرْءَانَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 33,
+          "textUthmani": "كَذَّبَتْ قَوْمُ لُوطٍۭ بِٱلنُّذُرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 34,
+          "textUthmani": "إِنَّآ أَرْسَلْنَا عَلَيْهِمْ حَاصِبًا إِلَّآ ءَالَ لُوطٍ نَّجَّيْنَٰهُم بِسَحَرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 35,
+          "textUthmani": "نِّعْمَةً مِّنْ عِندِنَا كَذَٰلِكَ نَجْزِى مَن شَكَرَ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 36,
+          "textUthmani": "وَلَقَدْ أَنذَرَهُم بَطْشَتَنَا فَتَمَارَوْا۟ بِٱلنُّذُرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 37,
+          "textUthmani": "وَلَقَدْ رَٰوَدُوهُ عَن ضَيْفِهِۦ فَطَمَسْنَآ أَعْيُنَهُمْ فَذُوقُوا۟ عَذَابِى وَنُذُرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 38,
+          "textUthmani": "وَلَقَدْ صَبَّحَهُم بُكْرَةً عَذَابٌ مُّسْتَقِرٌّ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 39,
+          "textUthmani": "فَذُوقُوا۟ عَذَابِى وَنُذُرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 40,
+          "textUthmani": "وَلَقَدْ يَسَّرْنَا ٱلْقُرْءَانَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 41,
+          "textUthmani": "وَلَقَدْ جَآءَ ءَالَ فِرْعَوْنَ ٱلنُّذُرُ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 42,
+          "textUthmani": "كَذَّبُوا۟ بِـَٔايَٰتِنَا كُلِّهَا فَأَخَذْنَٰهُمْ أَخْذَ عَزِيزٍ مُّقْتَدِرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 43,
+          "textUthmani": "أَكُفَّارُكُمْ خَيْرٌ مِّنْ أُو۟لَٰٓئِكُمْ أَمْ لَكُم بَرَآءَةٌ فِى ٱلزُّبُرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 44,
+          "textUthmani": "أَمْ يَقُولُونَ نَحْنُ جَمِيعٌ مُّنتَصِرٌ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 45,
+          "textUthmani": "سَيُهْزَمُ ٱلْجَمْعُ وَيُوَلُّونَ ٱلدُّبُرَ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 46,
+          "textUthmani": "بَلِ ٱلسَّاعَةُ مَوْعِدُهُمْ وَٱلسَّاعَةُ أَدْهَىٰ وَأَمَرُّ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 47,
+          "textUthmani": "إِنَّ ٱلْمُجْرِمِينَ فِى ضَلَٰلٍ وَسُعُرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 48,
+          "textUthmani": "يَوْمَ يُسْحَبُونَ فِى ٱلنَّارِ عَلَىٰ وُجُوهِهِمْ ذُوقُوا۟ مَسَّ سَقَرَ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 49,
+          "textUthmani": "إِنَّا كُلَّ شَىْءٍ خَلَقْنَٰهُ بِقَدَرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 50,
+          "textUthmani": "وَمَآ أَمْرُنَآ إِلَّا وَٰحِدَةٌ كَلَمْحٍۭ بِٱلْبَصَرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 51,
+          "textUthmani": "وَلَقَدْ أَهْلَكْنَآ أَشْيَاعَكُمْ فَهَلْ مِن مُّدَّكِرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 52,
+          "textUthmani": "وَكُلُّ شَىْءٍ فَعَلُوهُ فِى ٱلزُّبُرِ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 53,
+          "textUthmani": "وَكُلُّ صَغِيرٍ وَكَبِيرٍ مُّسْتَطَرٌ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 54,
+          "textUthmani": "إِنَّ ٱلْمُتَّقِينَ فِى جَنَّٰتٍ وَنَهَرٍ",
+          "hizbQuarter": 212,
+          "sajda": false
+        },
+        {
+          "surahNumber": 54,
+          "ayahNumber": 55,
+          "textUthmani": "فِى مَقْعَدِ صِدْقٍ عِندَ مَلِيكٍ مُّقْتَدِرٍۭ",
+          "hizbQuarter": 212,
+          "sajda": false
+        }
+      ]
+    },
+    {
+      "surahNumber": 55,
+      "surahNameAr": "سورة الرحمن",
+      "revelationType": "Medinan",
+      "showBasmala": true,
+      "ayahs": [
+        {
+          "surahNumber": 55,
+          "ayahNumber": 1,
+          "textUthmani": "ٱلرَّحْمَٰنُ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 2,
+          "textUthmani": "عَلَّمَ ٱلْقُرْءَانَ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 3,
+          "textUthmani": "خَلَقَ ٱلْإِنسَٰنَ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 4,
+          "textUthmani": "عَلَّمَهُ ٱلْبَيَانَ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 5,
+          "textUthmani": "ٱلشَّمْسُ وَٱلْقَمَرُ بِحُسْبَانٍ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 6,
+          "textUthmani": "وَٱلنَّجْمُ وَٱلشَّجَرُ يَسْجُدَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 7,
+          "textUthmani": "وَٱلسَّمَآءَ رَفَعَهَا وَوَضَعَ ٱلْمِيزَانَ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 8,
+          "textUthmani": "أَلَّا تَطْغَوْا۟ فِى ٱلْمِيزَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 9,
+          "textUthmani": "وَأَقِيمُوا۟ ٱلْوَزْنَ بِٱلْقِسْطِ وَلَا تُخْسِرُوا۟ ٱلْمِيزَانَ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 10,
+          "textUthmani": "وَٱلْأَرْضَ وَضَعَهَا لِلْأَنَامِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 11,
+          "textUthmani": "فِيهَا فَٰكِهَةٌ وَٱلنَّخْلُ ذَاتُ ٱلْأَكْمَامِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 12,
+          "textUthmani": "وَٱلْحَبُّ ذُو ٱلْعَصْفِ وَٱلرَّيْحَانُ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 13,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 14,
+          "textUthmani": "خَلَقَ ٱلْإِنسَٰنَ مِن صَلْصَٰلٍ كَٱلْفَخَّارِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 15,
+          "textUthmani": "وَخَلَقَ ٱلْجَآنَّ مِن مَّارِجٍ مِّن نَّارٍ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 16,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 17,
+          "textUthmani": "رَبُّ ٱلْمَشْرِقَيْنِ وَرَبُّ ٱلْمَغْرِبَيْنِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 18,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 19,
+          "textUthmani": "مَرَجَ ٱلْبَحْرَيْنِ يَلْتَقِيَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 20,
+          "textUthmani": "بَيْنَهُمَا بَرْزَخٌ لَّا يَبْغِيَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 21,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 22,
+          "textUthmani": "يَخْرُجُ مِنْهُمَا ٱللُّؤْلُؤُ وَٱلْمَرْجَانُ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 23,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 24,
+          "textUthmani": "وَلَهُ ٱلْجَوَارِ ٱلْمُنشَـَٔاتُ فِى ٱلْبَحْرِ كَٱلْأَعْلَٰمِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 25,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 26,
+          "textUthmani": "كُلُّ مَنْ عَلَيْهَا فَانٍ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 27,
+          "textUthmani": "وَيَبْقَىٰ وَجْهُ رَبِّكَ ذُو ٱلْجَلَٰلِ وَٱلْإِكْرَامِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 28,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 29,
+          "textUthmani": "يَسْـَٔلُهُۥ مَن فِى ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ كُلَّ يَوْمٍ هُوَ فِى شَأْنٍ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 30,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 31,
+          "textUthmani": "سَنَفْرُغُ لَكُمْ أَيُّهَ ٱلثَّقَلَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 32,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 33,
+          "textUthmani": "يَٰمَعْشَرَ ٱلْجِنِّ وَٱلْإِنسِ إِنِ ٱسْتَطَعْتُمْ أَن تَنفُذُوا۟ مِنْ أَقْطَارِ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ فَٱنفُذُوا۟ لَا تَنفُذُونَ إِلَّا بِسُلْطَٰنٍ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 34,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 35,
+          "textUthmani": "يُرْسَلُ عَلَيْكُمَا شُوَاظٌ مِّن نَّارٍ وَنُحَاسٌ فَلَا تَنتَصِرَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 36,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 37,
+          "textUthmani": "فَإِذَا ٱنشَقَّتِ ٱلسَّمَآءُ فَكَانَتْ وَرْدَةً كَٱلدِّهَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 38,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 39,
+          "textUthmani": "فَيَوْمَئِذٍ لَّا يُسْـَٔلُ عَن ذَنۢبِهِۦٓ إِنسٌ وَلَا جَآنٌّ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 40,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 41,
+          "textUthmani": "يُعْرَفُ ٱلْمُجْرِمُونَ بِسِيمَٰهُمْ فَيُؤْخَذُ بِٱلنَّوَٰصِى وَٱلْأَقْدَامِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 42,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 43,
+          "textUthmani": "هَٰذِهِۦ جَهَنَّمُ ٱلَّتِى يُكَذِّبُ بِهَا ٱلْمُجْرِمُونَ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 44,
+          "textUthmani": "يَطُوفُونَ بَيْنَهَا وَبَيْنَ حَمِيمٍ ءَانٍ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 45,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 46,
+          "textUthmani": "وَلِمَنْ خَافَ مَقَامَ رَبِّهِۦ جَنَّتَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 47,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 48,
+          "textUthmani": "ذَوَاتَآ أَفْنَانٍ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 49,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 50,
+          "textUthmani": "فِيهِمَا عَيْنَانِ تَجْرِيَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 51,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 52,
+          "textUthmani": "فِيهِمَا مِن كُلِّ فَٰكِهَةٍ زَوْجَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 53,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 54,
+          "textUthmani": "مُتَّكِـِٔينَ عَلَىٰ فُرُشٍۭ بَطَآئِنُهَا مِنْ إِسْتَبْرَقٍ وَجَنَى ٱلْجَنَّتَيْنِ دَانٍ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 55,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 56,
+          "textUthmani": "فِيهِنَّ قَٰصِرَٰتُ ٱلطَّرْفِ لَمْ يَطْمِثْهُنَّ إِنسٌ قَبْلَهُمْ وَلَا جَآنٌّ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 57,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 58,
+          "textUthmani": "كَأَنَّهُنَّ ٱلْيَاقُوتُ وَٱلْمَرْجَانُ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 59,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 60,
+          "textUthmani": "هَلْ جَزَآءُ ٱلْإِحْسَٰنِ إِلَّا ٱلْإِحْسَٰنُ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 61,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 62,
+          "textUthmani": "وَمِن دُونِهِمَا جَنَّتَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 63,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 64,
+          "textUthmani": "مُدْهَآمَّتَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 65,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 66,
+          "textUthmani": "فِيهِمَا عَيْنَانِ نَضَّاخَتَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 67,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 68,
+          "textUthmani": "فِيهِمَا فَٰكِهَةٌ وَنَخْلٌ وَرُمَّانٌ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 69,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 70,
+          "textUthmani": "فِيهِنَّ خَيْرَٰتٌ حِسَانٌ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 71,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 72,
+          "textUthmani": "حُورٌ مَّقْصُورَٰتٌ فِى ٱلْخِيَامِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 73,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 74,
+          "textUthmani": "لَمْ يَطْمِثْهُنَّ إِنسٌ قَبْلَهُمْ وَلَا جَآنٌّ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 75,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 76,
+          "textUthmani": "مُتَّكِـِٔينَ عَلَىٰ رَفْرَفٍ خُضْرٍ وَعَبْقَرِىٍّ حِسَانٍ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 77,
+          "textUthmani": "فَبِأَىِّ ءَالَآءِ رَبِّكُمَا تُكَذِّبَانِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        },
+        {
+          "surahNumber": 55,
+          "ayahNumber": 78,
+          "textUthmani": "تَبَٰرَكَ ٱسْمُ رَبِّكَ ذِى ٱلْجَلَٰلِ وَٱلْإِكْرَامِ",
+          "hizbQuarter": 213,
+          "sajda": false
+        }
+      ]
+    },
+    {
+      "surahNumber": 56,
+      "surahNameAr": "سورة الواقعة",
+      "revelationType": "Meccan",
+      "showBasmala": true,
+      "ayahs": [
+        {
+          "surahNumber": 56,
+          "ayahNumber": 1,
+          "textUthmani": "إِذَا وَقَعَتِ ٱلْوَاقِعَةُ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 2,
+          "textUthmani": "لَيْسَ لِوَقْعَتِهَا كَاذِبَةٌ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 3,
+          "textUthmani": "خَافِضَةٌ رَّافِعَةٌ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 4,
+          "textUthmani": "إِذَا رُجَّتِ ٱلْأَرْضُ رَجًّا",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 5,
+          "textUthmani": "وَبُسَّتِ ٱلْجِبَالُ بَسًّا",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 6,
+          "textUthmani": "فَكَانَتْ هَبَآءً مُّنۢبَثًّا",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 7,
+          "textUthmani": "وَكُنتُمْ أَزْوَٰجًا ثَلَٰثَةً",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 8,
+          "textUthmani": "فَأَصْحَٰبُ ٱلْمَيْمَنَةِ مَآ أَصْحَٰبُ ٱلْمَيْمَنَةِ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 9,
+          "textUthmani": "وَأَصْحَٰبُ ٱلْمَشْـَٔمَةِ مَآ أَصْحَٰبُ ٱلْمَشْـَٔمَةِ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 10,
+          "textUthmani": "وَٱلسَّٰبِقُونَ ٱلسَّٰبِقُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 11,
+          "textUthmani": "أُو۟لَٰٓئِكَ ٱلْمُقَرَّبُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 12,
+          "textUthmani": "فِى جَنَّٰتِ ٱلنَّعِيمِ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 13,
+          "textUthmani": "ثُلَّةٌ مِّنَ ٱلْأَوَّلِينَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 14,
+          "textUthmani": "وَقَلِيلٌ مِّنَ ٱلْـَٔاخِرِينَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 15,
+          "textUthmani": "عَلَىٰ سُرُرٍ مَّوْضُونَةٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 16,
+          "textUthmani": "مُّتَّكِـِٔينَ عَلَيْهَا مُتَقَٰبِلِينَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 17,
+          "textUthmani": "يَطُوفُ عَلَيْهِمْ وِلْدَٰنٌ مُّخَلَّدُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 18,
+          "textUthmani": "بِأَكْوَابٍ وَأَبَارِيقَ وَكَأْسٍ مِّن مَّعِينٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 19,
+          "textUthmani": "لَّا يُصَدَّعُونَ عَنْهَا وَلَا يُنزِفُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 20,
+          "textUthmani": "وَفَٰكِهَةٍ مِّمَّا يَتَخَيَّرُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 21,
+          "textUthmani": "وَلَحْمِ طَيْرٍ مِّمَّا يَشْتَهُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 22,
+          "textUthmani": "وَحُورٌ عِينٌ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 23,
+          "textUthmani": "كَأَمْثَٰلِ ٱللُّؤْلُؤِ ٱلْمَكْنُونِ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 24,
+          "textUthmani": "جَزَآءًۢ بِمَا كَانُوا۟ يَعْمَلُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 25,
+          "textUthmani": "لَا يَسْمَعُونَ فِيهَا لَغْوًا وَلَا تَأْثِيمًا",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 26,
+          "textUthmani": "إِلَّا قِيلًا سَلَٰمًا سَلَٰمًا",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 27,
+          "textUthmani": "وَأَصْحَٰبُ ٱلْيَمِينِ مَآ أَصْحَٰبُ ٱلْيَمِينِ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 28,
+          "textUthmani": "فِى سِدْرٍ مَّخْضُودٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 29,
+          "textUthmani": "وَطَلْحٍ مَّنضُودٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 30,
+          "textUthmani": "وَظِلٍّ مَّمْدُودٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 31,
+          "textUthmani": "وَمَآءٍ مَّسْكُوبٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 32,
+          "textUthmani": "وَفَٰكِهَةٍ كَثِيرَةٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 33,
+          "textUthmani": "لَّا مَقْطُوعَةٍ وَلَا مَمْنُوعَةٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 34,
+          "textUthmani": "وَفُرُشٍ مَّرْفُوعَةٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 35,
+          "textUthmani": "إِنَّآ أَنشَأْنَٰهُنَّ إِنشَآءً",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 36,
+          "textUthmani": "فَجَعَلْنَٰهُنَّ أَبْكَارًا",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 37,
+          "textUthmani": "عُرُبًا أَتْرَابًا",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 38,
+          "textUthmani": "لِّأَصْحَٰبِ ٱلْيَمِينِ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 39,
+          "textUthmani": "ثُلَّةٌ مِّنَ ٱلْأَوَّلِينَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 40,
+          "textUthmani": "وَثُلَّةٌ مِّنَ ٱلْـَٔاخِرِينَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 41,
+          "textUthmani": "وَأَصْحَٰبُ ٱلشِّمَالِ مَآ أَصْحَٰبُ ٱلشِّمَالِ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 42,
+          "textUthmani": "فِى سَمُومٍ وَحَمِيمٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 43,
+          "textUthmani": "وَظِلٍّ مِّن يَحْمُومٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 44,
+          "textUthmani": "لَّا بَارِدٍ وَلَا كَرِيمٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 45,
+          "textUthmani": "إِنَّهُمْ كَانُوا۟ قَبْلَ ذَٰلِكَ مُتْرَفِينَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 46,
+          "textUthmani": "وَكَانُوا۟ يُصِرُّونَ عَلَى ٱلْحِنثِ ٱلْعَظِيمِ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 47,
+          "textUthmani": "وَكَانُوا۟ يَقُولُونَ أَئِذَا مِتْنَا وَكُنَّا تُرَابًا وَعِظَٰمًا أَءِنَّا لَمَبْعُوثُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 48,
+          "textUthmani": "أَوَءَابَآؤُنَا ٱلْأَوَّلُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 49,
+          "textUthmani": "قُلْ إِنَّ ٱلْأَوَّلِينَ وَٱلْـَٔاخِرِينَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 50,
+          "textUthmani": "لَمَجْمُوعُونَ إِلَىٰ مِيقَٰتِ يَوْمٍ مَّعْلُومٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 51,
+          "textUthmani": "ثُمَّ إِنَّكُمْ أَيُّهَا ٱلضَّآلُّونَ ٱلْمُكَذِّبُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 52,
+          "textUthmani": "لَـَٔاكِلُونَ مِن شَجَرٍ مِّن زَقُّومٍ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 53,
+          "textUthmani": "فَمَالِـُٔونَ مِنْهَا ٱلْبُطُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 54,
+          "textUthmani": "فَشَٰرِبُونَ عَلَيْهِ مِنَ ٱلْحَمِيمِ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 55,
+          "textUthmani": "فَشَٰرِبُونَ شُرْبَ ٱلْهِيمِ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 56,
+          "textUthmani": "هَٰذَا نُزُلُهُمْ يَوْمَ ٱلدِّينِ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 57,
+          "textUthmani": "نَحْنُ خَلَقْنَٰكُمْ فَلَوْلَا تُصَدِّقُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 58,
+          "textUthmani": "أَفَرَءَيْتُم مَّا تُمْنُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 59,
+          "textUthmani": "ءَأَنتُمْ تَخْلُقُونَهُۥٓ أَمْ نَحْنُ ٱلْخَٰلِقُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 60,
+          "textUthmani": "نَحْنُ قَدَّرْنَا بَيْنَكُمُ ٱلْمَوْتَ وَمَا نَحْنُ بِمَسْبُوقِينَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 61,
+          "textUthmani": "عَلَىٰٓ أَن نُّبَدِّلَ أَمْثَٰلَكُمْ وَنُنشِئَكُمْ فِى مَا لَا تَعْلَمُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 62,
+          "textUthmani": "وَلَقَدْ عَلِمْتُمُ ٱلنَّشْأَةَ ٱلْأُولَىٰ فَلَوْلَا تَذَكَّرُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 63,
+          "textUthmani": "أَفَرَءَيْتُم مَّا تَحْرُثُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 64,
+          "textUthmani": "ءَأَنتُمْ تَزْرَعُونَهُۥٓ أَمْ نَحْنُ ٱلزَّٰرِعُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 65,
+          "textUthmani": "لَوْ نَشَآءُ لَجَعَلْنَٰهُ حُطَٰمًا فَظَلْتُمْ تَفَكَّهُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 66,
+          "textUthmani": "إِنَّا لَمُغْرَمُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 67,
+          "textUthmani": "بَلْ نَحْنُ مَحْرُومُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 68,
+          "textUthmani": "أَفَرَءَيْتُمُ ٱلْمَآءَ ٱلَّذِى تَشْرَبُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 69,
+          "textUthmani": "ءَأَنتُمْ أَنزَلْتُمُوهُ مِنَ ٱلْمُزْنِ أَمْ نَحْنُ ٱلْمُنزِلُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 70,
+          "textUthmani": "لَوْ نَشَآءُ جَعَلْنَٰهُ أُجَاجًا فَلَوْلَا تَشْكُرُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 71,
+          "textUthmani": "أَفَرَءَيْتُمُ ٱلنَّارَ ٱلَّتِى تُورُونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 72,
+          "textUthmani": "ءَأَنتُمْ أَنشَأْتُمْ شَجَرَتَهَآ أَمْ نَحْنُ ٱلْمُنشِـُٔونَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 73,
+          "textUthmani": "نَحْنُ جَعَلْنَٰهَا تَذْكِرَةً وَمَتَٰعًا لِّلْمُقْوِينَ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 74,
+          "textUthmani": "فَسَبِّحْ بِٱسْمِ رَبِّكَ ٱلْعَظِيمِ",
+          "hizbQuarter": 214,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 75,
+          "textUthmani": "فَلَآ أُقْسِمُ بِمَوَٰقِعِ ٱلنُّجُومِ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 76,
+          "textUthmani": "وَإِنَّهُۥ لَقَسَمٌ لَّوْ تَعْلَمُونَ عَظِيمٌ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 77,
+          "textUthmani": "إِنَّهُۥ لَقُرْءَانٌ كَرِيمٌ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 78,
+          "textUthmani": "فِى كِتَٰبٍ مَّكْنُونٍ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 79,
+          "textUthmani": "لَّا يَمَسُّهُۥٓ إِلَّا ٱلْمُطَهَّرُونَ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 80,
+          "textUthmani": "تَنزِيلٌ مِّن رَّبِّ ٱلْعَٰلَمِينَ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 81,
+          "textUthmani": "أَفَبِهَٰذَا ٱلْحَدِيثِ أَنتُم مُّدْهِنُونَ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 82,
+          "textUthmani": "وَتَجْعَلُونَ رِزْقَكُمْ أَنَّكُمْ تُكَذِّبُونَ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 83,
+          "textUthmani": "فَلَوْلَآ إِذَا بَلَغَتِ ٱلْحُلْقُومَ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 84,
+          "textUthmani": "وَأَنتُمْ حِينَئِذٍ تَنظُرُونَ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 85,
+          "textUthmani": "وَنَحْنُ أَقْرَبُ إِلَيْهِ مِنكُمْ وَلَٰكِن لَّا تُبْصِرُونَ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 86,
+          "textUthmani": "فَلَوْلَآ إِن كُنتُمْ غَيْرَ مَدِينِينَ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 87,
+          "textUthmani": "تَرْجِعُونَهَآ إِن كُنتُمْ صَٰدِقِينَ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 88,
+          "textUthmani": "فَأَمَّآ إِن كَانَ مِنَ ٱلْمُقَرَّبِينَ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 89,
+          "textUthmani": "فَرَوْحٌ وَرَيْحَانٌ وَجَنَّتُ نَعِيمٍ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 90,
+          "textUthmani": "وَأَمَّآ إِن كَانَ مِنْ أَصْحَٰبِ ٱلْيَمِينِ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 91,
+          "textUthmani": "فَسَلَٰمٌ لَّكَ مِنْ أَصْحَٰبِ ٱلْيَمِينِ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 92,
+          "textUthmani": "وَأَمَّآ إِن كَانَ مِنَ ٱلْمُكَذِّبِينَ ٱلضَّآلِّينَ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 93,
+          "textUthmani": "فَنُزُلٌ مِّنْ حَمِيمٍ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 94,
+          "textUthmani": "وَتَصْلِيَةُ جَحِيمٍ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 95,
+          "textUthmani": "إِنَّ هَٰذَا لَهُوَ حَقُّ ٱلْيَقِينِ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 56,
+          "ayahNumber": 96,
+          "textUthmani": "فَسَبِّحْ بِٱسْمِ رَبِّكَ ٱلْعَظِيمِ",
+          "hizbQuarter": 215,
+          "sajda": false
+        }
+      ]
+    },
+    {
+      "surahNumber": 57,
+      "surahNameAr": "سورة الحديد",
+      "revelationType": "Medinan",
+      "showBasmala": true,
+      "ayahs": [
+        {
+          "surahNumber": 57,
+          "ayahNumber": 1,
+          "textUthmani": "سَبَّحَ لِلَّهِ مَا فِى ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَهُوَ ٱلْعَزِيزُ ٱلْحَكِيمُ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 2,
+          "textUthmani": "لَهُۥ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ يُحْىِۦ وَيُمِيتُ وَهُوَ عَلَىٰ كُلِّ شَىْءٍ قَدِيرٌ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 3,
+          "textUthmani": "هُوَ ٱلْأَوَّلُ وَٱلْـَٔاخِرُ وَٱلظَّٰهِرُ وَٱلْبَاطِنُ وَهُوَ بِكُلِّ شَىْءٍ عَلِيمٌ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 4,
+          "textUthmani": "هُوَ ٱلَّذِى خَلَقَ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضَ فِى سِتَّةِ أَيَّامٍ ثُمَّ ٱسْتَوَىٰ عَلَى ٱلْعَرْشِ يَعْلَمُ مَا يَلِجُ فِى ٱلْأَرْضِ وَمَا يَخْرُجُ مِنْهَا وَمَا يَنزِلُ مِنَ ٱلسَّمَآءِ وَمَا يَعْرُجُ فِيهَا وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ وَٱللَّهُ بِمَا تَعْمَلُونَ بَصِيرٌ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 5,
+          "textUthmani": "لَّهُۥ مُلْكُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ وَإِلَى ٱللَّهِ تُرْجَعُ ٱلْأُمُورُ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 6,
+          "textUthmani": "يُولِجُ ٱلَّيْلَ فِى ٱلنَّهَارِ وَيُولِجُ ٱلنَّهَارَ فِى ٱلَّيْلِ وَهُوَ عَلِيمٌۢ بِذَاتِ ٱلصُّدُورِ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 7,
+          "textUthmani": "ءَامِنُوا۟ بِٱللَّهِ وَرَسُولِهِۦ وَأَنفِقُوا۟ مِمَّا جَعَلَكُم مُّسْتَخْلَفِينَ فِيهِ فَٱلَّذِينَ ءَامَنُوا۟ مِنكُمْ وَأَنفَقُوا۟ لَهُمْ أَجْرٌ كَبِيرٌ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 8,
+          "textUthmani": "وَمَا لَكُمْ لَا تُؤْمِنُونَ بِٱللَّهِ وَٱلرَّسُولُ يَدْعُوكُمْ لِتُؤْمِنُوا۟ بِرَبِّكُمْ وَقَدْ أَخَذَ مِيثَٰقَكُمْ إِن كُنتُم مُّؤْمِنِينَ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 9,
+          "textUthmani": "هُوَ ٱلَّذِى يُنَزِّلُ عَلَىٰ عَبْدِهِۦٓ ءَايَٰتٍۭ بَيِّنَٰتٍ لِّيُخْرِجَكُم مِّنَ ٱلظُّلُمَٰتِ إِلَى ٱلنُّورِ وَإِنَّ ٱللَّهَ بِكُمْ لَرَءُوفٌ رَّحِيمٌ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 10,
+          "textUthmani": "وَمَا لَكُمْ أَلَّا تُنفِقُوا۟ فِى سَبِيلِ ٱللَّهِ وَلِلَّهِ مِيرَٰثُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضِ لَا يَسْتَوِى مِنكُم مَّنْ أَنفَقَ مِن قَبْلِ ٱلْفَتْحِ وَقَٰتَلَ أُو۟لَٰٓئِكَ أَعْظَمُ دَرَجَةً مِّنَ ٱلَّذِينَ أَنفَقُوا۟ مِنۢ بَعْدُ وَقَٰتَلُوا۟ وَكُلًّا وَعَدَ ٱللَّهُ ٱلْحُسْنَىٰ وَٱللَّهُ بِمَا تَعْمَلُونَ خَبِيرٌ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 11,
+          "textUthmani": "مَّن ذَا ٱلَّذِى يُقْرِضُ ٱللَّهَ قَرْضًا حَسَنًا فَيُضَٰعِفَهُۥ لَهُۥ وَلَهُۥٓ أَجْرٌ كَرِيمٌ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 12,
+          "textUthmani": "يَوْمَ تَرَى ٱلْمُؤْمِنِينَ وَٱلْمُؤْمِنَٰتِ يَسْعَىٰ نُورُهُم بَيْنَ أَيْدِيهِمْ وَبِأَيْمَٰنِهِم بُشْرَىٰكُمُ ٱلْيَوْمَ جَنَّٰتٌ تَجْرِى مِن تَحْتِهَا ٱلْأَنْهَٰرُ خَٰلِدِينَ فِيهَا ذَٰلِكَ هُوَ ٱلْفَوْزُ ٱلْعَظِيمُ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 13,
+          "textUthmani": "يَوْمَ يَقُولُ ٱلْمُنَٰفِقُونَ وَٱلْمُنَٰفِقَٰتُ لِلَّذِينَ ءَامَنُوا۟ ٱنظُرُونَا نَقْتَبِسْ مِن نُّورِكُمْ قِيلَ ٱرْجِعُوا۟ وَرَآءَكُمْ فَٱلْتَمِسُوا۟ نُورًا فَضُرِبَ بَيْنَهُم بِسُورٍ لَّهُۥ بَابٌۢ بَاطِنُهُۥ فِيهِ ٱلرَّحْمَةُ وَظَٰهِرُهُۥ مِن قِبَلِهِ ٱلْعَذَابُ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 14,
+          "textUthmani": "يُنَادُونَهُمْ أَلَمْ نَكُن مَّعَكُمْ قَالُوا۟ بَلَىٰ وَلَٰكِنَّكُمْ فَتَنتُمْ أَنفُسَكُمْ وَتَرَبَّصْتُمْ وَٱرْتَبْتُمْ وَغَرَّتْكُمُ ٱلْأَمَانِىُّ حَتَّىٰ جَآءَ أَمْرُ ٱللَّهِ وَغَرَّكُم بِٱللَّهِ ٱلْغَرُورُ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 15,
+          "textUthmani": "فَٱلْيَوْمَ لَا يُؤْخَذُ مِنكُمْ فِدْيَةٌ وَلَا مِنَ ٱلَّذِينَ كَفَرُوا۟ مَأْوَىٰكُمُ ٱلنَّارُ هِىَ مَوْلَىٰكُمْ وَبِئْسَ ٱلْمَصِيرُ",
+          "hizbQuarter": 215,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 16,
+          "textUthmani": "أَلَمْ يَأْنِ لِلَّذِينَ ءَامَنُوٓا۟ أَن تَخْشَعَ قُلُوبُهُمْ لِذِكْرِ ٱللَّهِ وَمَا نَزَلَ مِنَ ٱلْحَقِّ وَلَا يَكُونُوا۟ كَٱلَّذِينَ أُوتُوا۟ ٱلْكِتَٰبَ مِن قَبْلُ فَطَالَ عَلَيْهِمُ ٱلْأَمَدُ فَقَسَتْ قُلُوبُهُمْ وَكَثِيرٌ مِّنْهُمْ فَٰسِقُونَ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 17,
+          "textUthmani": "ٱعْلَمُوٓا۟ أَنَّ ٱللَّهَ يُحْىِ ٱلْأَرْضَ بَعْدَ مَوْتِهَا قَدْ بَيَّنَّا لَكُمُ ٱلْـَٔايَٰتِ لَعَلَّكُمْ تَعْقِلُونَ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 18,
+          "textUthmani": "إِنَّ ٱلْمُصَّدِّقِينَ وَٱلْمُصَّدِّقَٰتِ وَأَقْرَضُوا۟ ٱللَّهَ قَرْضًا حَسَنًا يُضَٰعَفُ لَهُمْ وَلَهُمْ أَجْرٌ كَرِيمٌ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 19,
+          "textUthmani": "وَٱلَّذِينَ ءَامَنُوا۟ بِٱللَّهِ وَرُسُلِهِۦٓ أُو۟لَٰٓئِكَ هُمُ ٱلصِّدِّيقُونَ وَٱلشُّهَدَآءُ عِندَ رَبِّهِمْ لَهُمْ أَجْرُهُمْ وَنُورُهُمْ وَٱلَّذِينَ كَفَرُوا۟ وَكَذَّبُوا۟ بِـَٔايَٰتِنَآ أُو۟لَٰٓئِكَ أَصْحَٰبُ ٱلْجَحِيمِ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 20,
+          "textUthmani": "ٱعْلَمُوٓا۟ أَنَّمَا ٱلْحَيَوٰةُ ٱلدُّنْيَا لَعِبٌ وَلَهْوٌ وَزِينَةٌ وَتَفَاخُرٌۢ بَيْنَكُمْ وَتَكَاثُرٌ فِى ٱلْأَمْوَٰلِ وَٱلْأَوْلَٰدِ كَمَثَلِ غَيْثٍ أَعْجَبَ ٱلْكُفَّارَ نَبَاتُهُۥ ثُمَّ يَهِيجُ فَتَرَىٰهُ مُصْفَرًّا ثُمَّ يَكُونُ حُطَٰمًا وَفِى ٱلْـَٔاخِرَةِ عَذَابٌ شَدِيدٌ وَمَغْفِرَةٌ مِّنَ ٱللَّهِ وَرِضْوَٰنٌ وَمَا ٱلْحَيَوٰةُ ٱلدُّنْيَآ إِلَّا مَتَٰعُ ٱلْغُرُورِ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 21,
+          "textUthmani": "سَابِقُوٓا۟ إِلَىٰ مَغْفِرَةٍ مِّن رَّبِّكُمْ وَجَنَّةٍ عَرْضُهَا كَعَرْضِ ٱلسَّمَآءِ وَٱلْأَرْضِ أُعِدَّتْ لِلَّذِينَ ءَامَنُوا۟ بِٱللَّهِ وَرُسُلِهِۦ ذَٰلِكَ فَضْلُ ٱللَّهِ يُؤْتِيهِ مَن يَشَآءُ وَٱللَّهُ ذُو ٱلْفَضْلِ ٱلْعَظِيمِ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 22,
+          "textUthmani": "مَآ أَصَابَ مِن مُّصِيبَةٍ فِى ٱلْأَرْضِ وَلَا فِىٓ أَنفُسِكُمْ إِلَّا فِى كِتَٰبٍ مِّن قَبْلِ أَن نَّبْرَأَهَآ إِنَّ ذَٰلِكَ عَلَى ٱللَّهِ يَسِيرٌ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 23,
+          "textUthmani": "لِّكَيْلَا تَأْسَوْا۟ عَلَىٰ مَا فَاتَكُمْ وَلَا تَفْرَحُوا۟ بِمَآ ءَاتَىٰكُمْ وَٱللَّهُ لَا يُحِبُّ كُلَّ مُخْتَالٍ فَخُورٍ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 24,
+          "textUthmani": "ٱلَّذِينَ يَبْخَلُونَ وَيَأْمُرُونَ ٱلنَّاسَ بِٱلْبُخْلِ وَمَن يَتَوَلَّ فَإِنَّ ٱللَّهَ هُوَ ٱلْغَنِىُّ ٱلْحَمِيدُ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 25,
+          "textUthmani": "لَقَدْ أَرْسَلْنَا رُسُلَنَا بِٱلْبَيِّنَٰتِ وَأَنزَلْنَا مَعَهُمُ ٱلْكِتَٰبَ وَٱلْمِيزَانَ لِيَقُومَ ٱلنَّاسُ بِٱلْقِسْطِ وَأَنزَلْنَا ٱلْحَدِيدَ فِيهِ بَأْسٌ شَدِيدٌ وَمَنَٰفِعُ لِلنَّاسِ وَلِيَعْلَمَ ٱللَّهُ مَن يَنصُرُهُۥ وَرُسُلَهُۥ بِٱلْغَيْبِ إِنَّ ٱللَّهَ قَوِىٌّ عَزِيزٌ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 26,
+          "textUthmani": "وَلَقَدْ أَرْسَلْنَا نُوحًا وَإِبْرَٰهِيمَ وَجَعَلْنَا فِى ذُرِّيَّتِهِمَا ٱلنُّبُوَّةَ وَٱلْكِتَٰبَ فَمِنْهُم مُّهْتَدٍ وَكَثِيرٌ مِّنْهُمْ فَٰسِقُونَ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 27,
+          "textUthmani": "ثُمَّ قَفَّيْنَا عَلَىٰٓ ءَاثَٰرِهِم بِرُسُلِنَا وَقَفَّيْنَا بِعِيسَى ٱبْنِ مَرْيَمَ وَءَاتَيْنَٰهُ ٱلْإِنجِيلَ وَجَعَلْنَا فِى قُلُوبِ ٱلَّذِينَ ٱتَّبَعُوهُ رَأْفَةً وَرَحْمَةً وَرَهْبَانِيَّةً ٱبْتَدَعُوهَا مَا كَتَبْنَٰهَا عَلَيْهِمْ إِلَّا ٱبْتِغَآءَ رِضْوَٰنِ ٱللَّهِ فَمَا رَعَوْهَا حَقَّ رِعَايَتِهَا فَـَٔاتَيْنَا ٱلَّذِينَ ءَامَنُوا۟ مِنْهُمْ أَجْرَهُمْ وَكَثِيرٌ مِّنْهُمْ فَٰسِقُونَ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 28,
+          "textUthmani": "يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ ٱتَّقُوا۟ ٱللَّهَ وَءَامِنُوا۟ بِرَسُولِهِۦ يُؤْتِكُمْ كِفْلَيْنِ مِن رَّحْمَتِهِۦ وَيَجْعَل لَّكُمْ نُورًا تَمْشُونَ بِهِۦ وَيَغْفِرْ لَكُمْ وَٱللَّهُ غَفُورٌ رَّحِيمٌ",
+          "hizbQuarter": 216,
+          "sajda": false
+        },
+        {
+          "surahNumber": 57,
+          "ayahNumber": 29,
+          "textUthmani": "لِّئَلَّا يَعْلَمَ أَهْلُ ٱلْكِتَٰبِ أَلَّا يَقْدِرُونَ عَلَىٰ شَىْءٍ مِّن فَضْلِ ٱللَّهِ وَأَنَّ ٱلْفَضْلَ بِيَدِ ٱللَّهِ يُؤْتِيهِ مَن يَشَآءُ وَٱللَّهُ ذُو ٱلْفَضْلِ ٱلْعَظِيمِ",
+          "hizbQuarter": 216,
+          "sajda": false
+        }
+      ]
+    }
+  ],
+  "totalAyahs": 399
+}

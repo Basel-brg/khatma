@@ -1,0 +1,168 @@
+rules_version = '2';
+
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// This security rules file assumes the following data structures:
+//
+// Collection: khatmas
+// Document ID: {khatmaId} (unique string, e.g. "khatma_123456789_abcdef")
+// Fields:
+//   - id: string (required, 1..100 chars, matches {khatmaId}) - Document identifier
+//   - title: string (required, 1..120 chars) - Title/name of the Khatma
+//   - intention: string (required, 0..500 chars) - Spiritual intention/dedication
+//   - targetDate: string (required, 0..40 chars) - Target completion date string
+//   - createdAt: string (required, 1..40 chars, ISO timestamp) - Document creation timestamp
+//   - creatorUid: string (required, 1..128 chars, matches request.auth.uid on create) - UID of creator
+//   - completedCount: int (required, 0..30, must be 0 on create) - Number of finished Juzs
+//   - reservedCount: int (required, 0..30, must be 0 on create) - Number of currently reserved Juzs
+//   - juzs: map (required, exactly 30 keys: "1" to "30") - Map of 30 Quran Juz reservations
+//     Each Juz map entry contains:
+//       * number: int (1..30)
+//       * status: string ('available' | 'reserved' | 'completed')
+//       * holderName: string | null (<= 100 chars)
+//       * hideName: bool
+//       * holderUid: string | null (<= 128 chars)
+//       * reservedAt: string | null (<= 50 chars)
+//       * completedAt: string | null (<= 50 chars)
+//
+// ===============================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Default Deny
+    // Deny all reads and writes across unspecified collections
+    // ===============================================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    // Check if the user is authenticated (including Firebase Anonymous Auth)
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Validate that the document contains only the allowed fields
+    function hasOnlyAllowedFields(data, allowedFields) {
+      return data.keys().hasOnly(allowedFields);
+    }
+
+    // Validate that the document contains all required fields
+    function hasRequiredFields(data, requiredFields) {
+      return data.keys().hasAll(requiredFields);
+    }
+
+    // Validate that specific immutable fields have not been modified during an update
+    function areImmutableFieldsUnchanged(fields) {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny(fields);
+    }
+
+    // ===============================================================
+    // Domain Validators (Validator Function Pattern)
+    // Called in BOTH create and update rules to eliminate Update Bypass
+    // ===============================================================
+
+    // Allowed top-level fields in a Khatma document
+    function khatmaFields() {
+      return [
+        'id',
+        'title',
+        'intention',
+        'targetDate',
+        'createdAt',
+        'creatorUid',
+        'completedCount',
+        'reservedCount',
+        'juzs'
+      ];
+    }
+
+    // Allowed keys in the 30-Juz map
+    function juzKeys() {
+      return [
+        '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+        '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+        '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'
+      ];
+    }
+
+    // Validate the complete schema, types, and resource bounds of a Khatma document
+    function isValidKhatma(data, khatmaId) {
+      return hasOnlyAllowedFields(data, khatmaFields()) &&
+             hasRequiredFields(data, khatmaFields()) &&
+             // Document ID integrity and bounds
+             data.id == khatmaId &&
+             data.id is string &&
+             data.id.size() >= 1 &&
+             data.id.size() <= 100 &&
+             // Title constraints (non-empty, max 120 chars)
+             data.title is string &&
+             data.title.size() >= 1 &&
+             data.title.size() <= 120 &&
+             // Intention constraints (max 500 chars)
+             data.intention is string &&
+             data.intention.size() <= 500 &&
+             // Target date constraints (max 40 chars)
+             data.targetDate is string &&
+             data.targetDate.size() <= 40 &&
+             // Creation timestamp constraints (max 40 chars)
+             data.createdAt is string &&
+             data.createdAt.size() >= 1 &&
+             data.createdAt.size() <= 40 &&
+             // Creator UID constraints
+             data.creatorUid is string &&
+             data.creatorUid.size() >= 1 &&
+             data.creatorUid.size() <= 128 &&
+             // Counter bounds and invariants
+             data.completedCount is int &&
+             data.completedCount >= 0 &&
+             data.completedCount <= 30 &&
+             data.reservedCount is int &&
+             data.reservedCount >= 0 &&
+             data.reservedCount <= 30 &&
+             (data.completedCount + data.reservedCount) <= 30 &&
+             // 30 Juzs map structure and key integrity
+             data.juzs is map &&
+             data.juzs.keys().size() == 30 &&
+             data.juzs.keys().hasOnly(juzKeys()) &&
+             data.juzs.keys().hasAll(juzKeys());
+    }
+
+    // ===============================================================
+    // Rules for Khatmas collection
+    // Path: /khatmas/{khatmaId}
+    // ===============================================================
+    match /khatmas/{khatmaId} {
+
+      // Read: Anyone with a link (or signed in via Firebase Anonymous Auth) can read
+      // so shared WhatsApp links load immediately with zero friction
+      allow read: if true;
+
+      // Create: Requires authentication (Anonymous Auth), matching creatorUid,
+      // initial counts at 0, valid title, and strict schema compliance
+      allow create: if isAuthenticated() &&
+                       request.resource.data.creatorUid == request.auth.uid &&
+                       request.resource.data.completedCount == 0 &&
+                       request.resource.data.reservedCount == 0 &&
+                       isValidKhatma(request.resource.data, khatmaId);
+
+      // Update: Requires authentication, full schema validation via Validator Pattern,
+      // strictly locks down immutable metadata (id, title, intention, targetDate, createdAt, creatorUid),
+      // and only permits updating juzs, completedCount, and reservedCount within [0, 30] bounds
+      allow update: if isAuthenticated() &&
+                       isValidKhatma(request.resource.data, khatmaId) &&
+                       request.resource.data.diff(resource.data).affectedKeys().hasOnly(['juzs', 'completedCount', 'reservedCount']) &&
+                       areImmutableFieldsUnchanged(['id', 'title', 'intention', 'targetDate', 'createdAt', 'creatorUid']);
+
+      // Delete: Permanently disallowed to prevent accidental or malicious deletion of group Khatmas
+      allow delete: if false;
+    }
+  }
+}
