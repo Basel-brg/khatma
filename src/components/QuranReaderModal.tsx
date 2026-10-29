@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { JuzContent, JuzSurahSection, JuzAyah, loadJuzFromDiskOrFetch } from '../lib/quran-loader';
+import { JuzContent, JuzAyah, loadJuzFromDiskOrFetch } from '../lib/quran-loader';
 import { JUZ_METADATA } from '../lib/quran-meta';
 import { useKhatmaTheme } from '../lib/theme';
 import AudioReciterBar from './AudioReciterBar';
+import { AyahStarMedallion, CornerCrosshairs, toArabicDigits } from './IslamicOrnaments';
 import {
   X,
-  BookOpen,
   CheckCircle,
   Undo2,
   Sun,
@@ -48,14 +48,6 @@ interface MushafPageData {
   sections: MushafPageSection[];
 }
 
-function toArabicDigits(num: number): string {
-  const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-  return String(num)
-    .split('')
-    .map((c) => (arabicNumbers[parseInt(c, 10)] !== undefined ? arabicNumbers[parseInt(c, 10)] : c))
-    .join('');
-}
-
 export default function QuranReaderModal({
   juzNumber,
   khatmaId,
@@ -86,10 +78,7 @@ export default function QuranReaderModal({
               surahNumber: meta.number === 1 ? 1 : meta.number * 2,
               ayahNumber: meta.startAyah,
               page: defaultPage,
-              textUthmani:
-                meta.number === 1
-                  ? 'بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ'
-                  : `بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ`,
+              textUthmani: 'بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ',
             },
             {
               surahNumber: meta.number === 1 ? 1 : meta.number * 2,
@@ -121,11 +110,9 @@ export default function QuranReaderModal({
   const [isSubmittingComplete, setIsSubmittingComplete] = useState<boolean>(false);
   const [isSubmittingUnreserve, setIsSubmittingUnreserve] = useState<boolean>(false);
 
-  // Touch swipe state for turning Mushaf pages on mobile
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
 
-  // Build real Madinah Mushaf pages from Juz sections
   const mushafPages = useMemo<MushafPageData[]>(() => {
     if (!juzData || !juzData.sections.length) return [];
 
@@ -191,7 +178,6 @@ export default function QuranReaderModal({
     });
   }, [juzData, juzNumber]);
 
-  // Load Juz content from static JSON
   useEffect(() => {
     let isMounted = true;
     setIsLoading(true);
@@ -234,7 +220,6 @@ export default function QuranReaderModal({
     };
   }, [juzNumber, khatmaId]);
 
-  // Keep currentPageIdx synced when activeSurahNumber / activeAyahNumber changes (e.g., via audio auto-advance or bookmark)
   useEffect(() => {
     if (!mushafPages.length) return;
     const foundPageIdx = mushafPages.findIndex((p) =>
@@ -249,7 +234,6 @@ export default function QuranReaderModal({
     }
   }, [activeSurahNumber, activeAyahNumber, mushafPages]);
 
-  // Flatten all ayahs in the Juz for sequential audio navigation
   const allAyahs = useMemo(() => {
     if (!juzData) return [];
     const list: { surahNumber: number; surahNameAr: string; ayahNumber: number }[] = [];
@@ -322,15 +306,12 @@ export default function QuranReaderModal({
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
     const deltaY = e.changedTouches[0].clientY - touchStartY.current;
 
-    // Horizontal swipe to flip Mushaf pages (in RTL, swiping right->left or left->right)
     if (Math.abs(deltaX) > 60 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
       if (deltaX > 0) {
-        // Swiped right -> next page in RTL Mushaf
         if (currentPageIdx + 1 < mushafPages.length) {
           goToPage(currentPageIdx + 1);
         }
       } else {
-        // Swiped left -> previous page in RTL Mushaf
         if (currentPageIdx - 1 >= 0) {
           goToPage(currentPageIdx - 1);
         }
@@ -367,25 +348,25 @@ export default function QuranReaderModal({
   return (
     <div
       data-testid="quran-reader-modal"
-      className="fixed inset-0 z-50 flex flex-col bg-[#0B1F19]/95 backdrop-blur-md overflow-hidden"
+      className="fixed inset-0 z-50 flex flex-col bg-[#081A14]/95 backdrop-blur-md overflow-hidden"
       dir="rtl"
     >
-      {/* Top Reader Bar */}
-      <div className="flex items-center justify-between border-b border-white/10 bg-[#0F2922] px-3 sm:px-5 py-2.5 text-white shadow-md">
+      {/* Top Architectural Reader Bar */}
+      <div className="flex items-center justify-between border-b border-[#C5A059]/40 bg-[#081A14] px-3 sm:px-5 py-2.5 text-white shadow-md">
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             type="button"
             onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white hover:bg-white/20"
+            className="flex h-9 w-9 items-center justify-center border border-[#C5A059]/40 bg-[#112A21] text-[#E8D39E] hover:bg-[#18382C]"
             aria-label="إغلاق قارئ المصحف"
           >
             <X className="h-5 w-5" />
           </button>
           <div>
-            <h2 className="text-sm sm:text-base font-bold text-[#FDF6E7] font-quran flex items-center gap-2">
+            <h2 className="text-sm sm:text-base font-bold text-[#C8A45D] font-quran flex items-center gap-2">
               <span>{meta.nameAr}</span>
               {activePage && (
-                <span className="rounded-lg bg-[#B48327]/25 border border-[#E8D39E]/30 px-2 py-0.5 text-[11px] font-sans font-semibold text-[#E8D39E]">
+                <span className="border border-[#C5A059]/40 bg-[#112A21] px-2 py-0.5 text-[11px] font-sans font-semibold text-[#E8D39E]">
                   صفحة {toArabicDigits(currentPageIdx + 1)} من {toArabicDigits(totalPagesInJuz)}
                 </span>
               )}
@@ -396,23 +377,23 @@ export default function QuranReaderModal({
         {/* Reader Controls */}
         <div className="flex items-center gap-1.5 sm:gap-2">
           {/* Font Size */}
-          <div className="flex items-center rounded-xl border border-white/15 bg-white/10 p-0.5">
+          <div className="flex items-center border border-[#C5A059]/35 bg-[#112A21] p-0.5">
             <button
               type="button"
               onClick={() => setFontSize((f) => Math.max(18, f - 2))}
-              className="p-1.5 rounded-lg text-white/80 hover:bg-white/15 hover:text-white"
+              className="p-1.5 text-[#E8D39E] hover:bg-white/10"
               title="تصغير الخط"
               aria-label="تصغير الخط"
             >
               <ZoomOut className="h-4 w-4" />
             </button>
-            <span className="text-[11px] tabular-nums px-1.5 text-[#E8D39E] font-bold">
+            <span className="text-[11px] tabular-nums px-1.5 text-[#C5A059] font-bold">
               {fontSize}
             </span>
             <button
               type="button"
               onClick={() => setFontSize((f) => Math.min(36, f + 2))}
-              className="p-1.5 rounded-lg text-white/80 hover:bg-white/15 hover:text-white"
+              className="p-1.5 text-[#E8D39E] hover:bg-white/10"
               title="تكبير الخط"
               aria-label="تكبير الخط"
             >
@@ -424,10 +405,10 @@ export default function QuranReaderModal({
           <button
             type="button"
             onClick={toggleDarkMode}
-            className={`flex h-9 px-2.5 gap-1.5 items-center justify-center rounded-xl border transition-colors ${
+            className={`flex h-9 px-2.5 gap-1.5 items-center justify-center border transition-colors ${
               isDarkMode
-                ? 'border-[#E8D39E]/50 bg-[#B48327]/25 text-[#E8D39E] hover:bg-[#B48327]/35'
-                : 'border-white/15 bg-white/10 text-white hover:bg-white/20'
+                ? 'border-[#C5A059] bg-[#C5A059]/25 text-[#FDE68A]'
+                : 'border-[#C5A059]/35 bg-[#112A21] text-[#E8D39E] hover:bg-[#18382C]'
             }`}
             aria-label={isDarkMode ? 'الوضع النهاري' : 'الوضع الليلي'}
             title={isDarkMode ? 'التبديل إلى الوضع النهاري' : 'التبديل إلى الوضع الليلي'}
@@ -435,12 +416,12 @@ export default function QuranReaderModal({
             {isDarkMode ? (
               <>
                 <Sun className="h-4 w-4 text-[#FDE68A]" />
-                <span className="hidden md:inline text-xs font-semibold text-[#FDE68A]">نهاري</span>
+                <span className="hidden md:inline text-xs font-semibold">نهاري</span>
               </>
             ) : (
               <>
-                <Moon className="h-4 w-4 text-[#E8D39E]" />
-                <span className="hidden md:inline text-xs font-semibold text-[#E8D39E]">ليلي</span>
+                <Moon className="h-4 w-4 text-[#C5A059]" />
+                <span className="hidden md:inline text-xs font-semibold">ليلي</span>
               </>
             )}
           </button>
@@ -452,23 +433,23 @@ export default function QuranReaderModal({
               data-testid="unreserve-juz-btn"
               onClick={handleUnreserveClick}
               disabled={isSubmittingUnreserve}
-              className="flex items-center gap-1 rounded-xl bg-rose-500/20 border border-rose-400/40 px-2.5 py-1.5 text-xs font-semibold text-rose-200 hover:bg-rose-500/30"
+              className="flex items-center gap-1 border border-rose-400/40 bg-rose-500/20 px-2.5 py-1.5 text-xs font-semibold text-rose-200 hover:bg-rose-500/30"
             >
               <Undo2 className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">إلغاء الحجز</span>
             </button>
           )}
 
-          {/* Always-accessible Complete Juz button in header bar */}
+          {/* Complete Juz button */}
           {!isCompleted && (
             <button
               type="button"
               data-testid="complete-juz-btn"
               onClick={handleCompleteClick}
               disabled={isSubmittingComplete}
-              className="flex items-center gap-1.5 rounded-xl bg-[#15803D] hover:bg-[#166534] border border-[#A7F3D0]/40 px-3 py-1.5 text-xs font-bold text-white shadow-sm"
+              className="flex items-center gap-1.5 border border-[#C5A059] bg-[#C5A059] hover:bg-[#D4B06A] px-3 py-1.5 text-xs font-bold text-[#081A14] shadow-xs"
             >
-              <CheckCircle className="h-3.5 w-3.5 text-[#A7F3D0]" />
+              <CheckCircle className="h-3.5 w-3.5" />
               <span>{isSubmittingComplete ? 'جاري الحفظ...' : 'أتممت القراءة'}</span>
             </button>
           )}
@@ -477,18 +458,18 @@ export default function QuranReaderModal({
 
       {/* Main Mushaf Page Viewport */}
       <div
-        className={`flex-1 overflow-y-auto px-2 sm:px-6 py-3 sm:py-6 flex flex-col items-center justify-between transition-colors duration-200 ${
-          isDarkMode ? 'bg-[#050C0A]' : 'bg-[#EFE8D8]'
+        className={`flex-1 overflow-y-auto px-2 sm:px-6 pt-3 pb-4 flex flex-col items-center justify-between transition-colors duration-200 ${
+          isDarkMode ? 'bg-[#050D0A]' : 'bg-[#E9E2D0]'
         }`}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         {isLoading && !activePage ? (
           <div className="flex flex-col items-center justify-center my-auto py-20 text-center">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#B48327] border-t-transparent" />
+            <div className="h-10 w-10 animate-spin rounded-full border-3 border-[#C5A059] border-t-transparent" />
             <p
               className={`mt-4 text-sm font-medium ${
-                isDarkMode ? 'text-[#E8D39E]' : 'text-[#0F2922]'
+                isDarkMode ? 'text-[#E8D39E]' : 'text-[#091B15]'
               }`}
             >
               جاري فتح صفحات المصحف الشريف...
@@ -496,182 +477,203 @@ export default function QuranReaderModal({
           </div>
         ) : (
           <>
-            {/* Authentic Framed Mushaf Page Sheet */}
+            {/* Curved Top Mushaf Sheet with Triple-Ruled Islamic Geometric Frame (Option 1 Mockup) */}
             <div
-              className={`relative w-full max-w-[680px] my-auto rounded-2xl border-2 transition-colors duration-200 ${
+              className={`relative w-full max-w-[680px] my-auto rounded-t-[28px] rounded-b-xl border-2 pt-3 pb-4 px-2.5 sm:px-5 transition-colors duration-200 ${
                 isDarkMode
-                  ? 'bg-[#0B1914] border-[#B48327]/50 text-[#F5EFE0] shadow-[0_24px_60px_rgba(0,0,0,0.85)]'
-                  : 'bg-[#FFFDF7] border-[#C8AD72] text-[#18120B] shadow-2xl'
+                  ? 'bg-[#0B1914] border-[#C5A059]/55 text-[#F5EFE0] shadow-[0_24px_60px_rgba(0,0,0,0.85)]'
+                  : 'bg-[#F8F5EC] border-[#C5A059] text-[#141A17] shadow-2xl'
               }`}
             >
-              {/* Outer & Inner Illuminated Mushaf Frame */}
+              {/* Top Sheet Handle Indicator (Matching Option 1 Mockup) */}
+              <div className="flex justify-center pb-2.5">
+                <div
+                  className={`h-1.5 w-14 rounded-full ${
+                    isDarkMode ? 'bg-[#C5A059]/40' : 'bg-[#C9C2B2]'
+                  }`}
+                />
+              </div>
+
+              {/* Outer Geometric Chain Border */}
               <div
-                className={`m-2 sm:m-3 rounded-xl border-2 p-3 sm:p-6 flex flex-col justify-between min-h-[68vh] transition-colors duration-200 ${
-                  isDarkMode
-                    ? 'border-[#B48327]/35 bg-gradient-to-b from-[#0E201A]/70 via-[#0B1914] to-[#0E201A]/70'
-                    : 'border-[#D9C391]'
+                className={`border-2 p-1 ${
+                  isDarkMode ? 'border-[#C5A059]/50' : 'border-[#23312B]'
                 }`}
               >
-                {/* Mushaf Page Top Margin Bar (سورة ... | الجزء ...) */}
+                {/* Middle Gold Chain Strip */}
                 <div
-                  className={`flex items-center justify-between border-b pb-2.5 mb-4 text-xs sm:text-sm font-quran font-bold ${
+                  className={`border p-1 ${
                     isDarkMode
-                      ? 'border-[#B48327]/30 text-[#E8D39E]'
-                      : 'border-[#E6DEC8] text-[#6B4E16]'
+                      ? 'border-[#C5A059]/35 bg-[#0E211A]'
+                      : 'border-[#C5A059] bg-[#EFE8D5]/60'
                   }`}
                 >
-                  <span>{meta.nameAr}</span>
-                  <span className="text-[11px] font-sans font-semibold opacity-85">
-                    صفحة المصحف {toArabicDigits(activePage?.pageNumber || 1)}
-                  </span>
-                  <span>{activePage?.firstSurahNameAr}</span>
-                </div>
-
-                {/* Mushaf Page Body (Continuous Justified Lines Like Printed Mushaf) */}
-                <div className="my-auto py-1 space-y-5">
-                  {activePage?.sections.map((section) => (
-                    <div key={`${activePage.pageNumber}-${section.surahNumber}`} className="space-y-3">
-                      {/* Ornamental Surah Banner when Surah starts on this page */}
-                      {section.showHeader && (
-                        <div
-                          className={`relative overflow-hidden rounded-xl border-2 py-2.5 px-4 text-center shadow-xs ${
-                            isDarkMode
-                              ? 'border-[#B48327]/60 bg-gradient-to-r from-[#0F2922] via-[#15362C] to-[#0F2922]'
-                              : 'border-[#C8AD72] bg-[#FBF4E2]'
-                          }`}
-                        >
-                          <div className="flex items-center justify-center gap-3">
-                            <span className="text-xs font-bold text-[#D4A13E]">۞</span>
-                            <h3
-                              className={`text-xl sm:text-2xl font-bold font-quran ${
-                                isDarkMode ? 'text-[#FDF6E7]' : 'text-[#0F2922]'
-                              }`}
-                            >
-                              {section.surahNameAr}
-                            </h3>
-                            <span
-                              className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
-                                isDarkMode
-                                  ? 'bg-[#B48327]/25 text-[#E8D39E] border border-[#E8D39E]/30'
-                                  : 'bg-[#0F2922]/10 text-[#0F2922]'
-                              }`}
-                            >
-                              {section.revelationType === 'Meccan' ? 'مكية' : 'مدنية'}
-                            </span>
-                            <span className="text-xs font-bold text-[#D4A13E]">۞</span>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Basmala Line */}
-                      {section.showBasmala && (
-                        <div className="py-1.5 text-center">
-                          <p
-                            className={`text-xl sm:text-2xl font-quran font-bold ${
-                              isDarkMode ? 'text-[#E8D39E]' : 'text-[#0F2922]'
-                            }`}
-                          >
-                            بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Continuous Justified Mushaf Text Block */}
-                      <div
-                        className="font-quran text-justify leading-[2.35]"
-                        style={{
-                          fontSize: `${fontSize}px`,
-                          textAlign: 'justify',
-                          textAlignLast: 'center',
-                        }}
-                      >
-                        {section.ayahs.map((ayah) => {
-                          const isCurrent =
-                            activeSurahNumber === ayah.surahNumber &&
-                            activeAyahNumber === ayah.ayahNumber;
-
-                          return (
-                            <span
-                              key={`${ayah.surahNumber}-${ayah.ayahNumber}`}
-                              id={`ayah-${ayah.surahNumber}-${ayah.ayahNumber}`}
-                              onClick={() => selectAyah(ayah.surahNumber, ayah.ayahNumber)}
-                              className={`inline rounded-lg px-1 py-0.5 cursor-pointer select-text transition-colors ${
-                                isCurrent
-                                  ? isDarkMode
-                                    ? 'bg-[#B48327]/30 text-[#FFFDF7] ring-1 ring-[#E8D39E]/60'
-                                    : 'bg-[#FDE68A]/75 text-[#0F2922] ring-1 ring-[#B48327]/50'
-                                  : isDarkMode
-                                  ? 'hover:bg-white/5'
-                                  : 'hover:bg-[#F4EFE6]'
-                              }`}
-                            >
-                              <span>{ayah.textUthmani} </span>
-                              <span
-                                className={`inline-flex items-center justify-center text-[0.82em] font-quran font-bold mx-1 select-none ${
-                                  isCurrent
-                                    ? isDarkMode
-                                      ? 'text-[#FDE68A]'
-                                      : 'text-[#92400E]'
-                                    : isDarkMode
-                                    ? 'text-[#D4A13E]'
-                                    : 'text-[#B48327]'
-                                }`}
-                                title={`آية ${ayah.ayahNumber}`}
-                              >
-                                ﴿{toArabicDigits(ayah.ayahNumber)}﴾
-                              </span>{' '}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Mushaf Page Bottom Medallion & Page Number */}
-                <div
-                  className={`mt-6 pt-3 border-t flex items-center justify-between text-xs ${
-                    isDarkMode
-                      ? 'border-[#B48327]/30 text-[#E8D39E]'
-                      : 'border-[#E6DEC8] text-[#6B4E16]'
-                  }`}
-                >
-                  <span className="text-[11px] opacity-80">
-                    اضغط على أي آية للاستماع إليها
-                  </span>
+                  {/* Inner Mushaf Reading Frame */}
                   <div
-                    className={`inline-flex items-center justify-center rounded-full border px-4 py-1 font-quran font-bold text-sm ${
+                    className={`relative border-2 p-3 sm:p-6 flex flex-col justify-between min-h-[65vh] ${
                       isDarkMode
-                        ? 'border-[#B48327]/50 bg-[#0F2922] text-[#E8D39E]'
-                        : 'border-[#C8AD72] bg-[#FBF4E2] text-[#0F2922]'
+                        ? 'border-[#C5A059]/45 bg-[#0B1914]'
+                        : 'border-[#23312B] bg-[#FBF9F2]'
                     }`}
                   >
-                    {toArabicDigits(activePage?.pageNumber || 1)}
+                    <CornerCrosshairs />
+
+                    {/* Mushaf Page Top Margin Bar (سورة ... | الجزء ...) */}
+                    <div
+                      className={`flex items-center justify-between border-b pb-2.5 mb-4 text-xs sm:text-sm font-quran font-bold ${
+                        isDarkMode
+                          ? 'border-[#C5A059]/30 text-[#E8D39E]'
+                          : 'border-[#C5A059]/60 text-[#3D2B08]'
+                      }`}
+                    >
+                      <span>{meta.nameAr}</span>
+                      <span className="text-[11px] font-sans font-semibold opacity-85">
+                        صفحة المصحف {toArabicDigits(activePage?.pageNumber || 1)}
+                      </span>
+                      <span>{activePage?.firstSurahNameAr}</span>
+                    </div>
+
+                    {/* Mushaf Page Body (Continuous Justified Lines Like Printed Mushaf) */}
+                    <div className="my-auto py-1 space-y-5">
+                      {activePage?.sections.map((section) => (
+                        <div
+                          key={`${activePage.pageNumber}-${section.surahNumber}`}
+                          className="space-y-3"
+                        >
+                          {/* Ornamental Surah Banner when Surah starts on this page */}
+                          {section.showHeader && (
+                            <div
+                              className={`relative overflow-hidden border-2 py-2 px-4 text-center ${
+                                isDarkMode
+                                  ? 'border-[#C5A059]/65 bg-[#081A14]'
+                                  : 'border-[#23312B] bg-[#F3EBD6]'
+                              }`}
+                            >
+                              <div className="flex items-center justify-center gap-3">
+                                <span className="text-xs font-bold text-[#C5A059]">۞</span>
+                                <h3
+                                  className={`text-xl sm:text-2xl font-bold font-quran ${
+                                    isDarkMode ? 'text-[#C8A45D]' : 'text-[#091B15]'
+                                  }`}
+                                >
+                                  {section.surahNameAr}
+                                </h3>
+                                <span
+                                  className={`px-2 py-0.5 text-[10px] font-semibold border ${
+                                    isDarkMode
+                                      ? 'border-[#C5A059]/40 bg-[#112A21] text-[#E8D39E]'
+                                      : 'border-[#C5A059] bg-[#FBF9F2] text-[#091B15]'
+                                  }`}
+                                >
+                                  {section.revelationType === 'Meccan' ? 'مكية' : 'مدنية'}
+                                </span>
+                                <span className="text-xs font-bold text-[#C5A059]">۞</span>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Basmala Line */}
+                          {section.showBasmala && (
+                            <div className="py-1.5 text-center">
+                              <p
+                                className={`text-2xl sm:text-3xl font-quran font-bold ${
+                                  isDarkMode ? 'text-[#E8D39E]' : 'text-[#111A16]'
+                                }`}
+                              >
+                                بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Continuous Justified Mushaf Text Block with 8-Pointed Gold Verse Medallions */}
+                          <div
+                            className="font-quran text-justify leading-[2.45]"
+                            style={{
+                              fontSize: `${fontSize}px`,
+                              textAlign: 'justify',
+                              textAlignLast: 'center',
+                            }}
+                          >
+                            {section.ayahs.map((ayah) => {
+                              const isCurrent =
+                                activeSurahNumber === ayah.surahNumber &&
+                                activeAyahNumber === ayah.ayahNumber;
+
+                              return (
+                                <span
+                                  key={`${ayah.surahNumber}-${ayah.ayahNumber}`}
+                                  id={`ayah-${ayah.surahNumber}-${ayah.ayahNumber}`}
+                                  onClick={() => selectAyah(ayah.surahNumber, ayah.ayahNumber)}
+                                  className={`inline rounded-md px-1 py-0.5 cursor-pointer select-text transition-colors ${
+                                    isCurrent
+                                      ? isDarkMode
+                                        ? 'bg-[#C5A059]/25 text-[#FFFDF7] ring-1 ring-[#C5A059]/60'
+                                        : 'bg-[#EED9A4]/75 text-[#091B15] ring-1 ring-[#C5A059]'
+                                      : isDarkMode
+                                      ? 'hover:bg-white/5'
+                                      : 'hover:bg-[#F2ECE0]'
+                                  }`}
+                                >
+                                  <span>{ayah.textUthmani}</span>
+                                  <AyahStarMedallion
+                                    number={ayah.ayahNumber}
+                                    isCurrent={isCurrent}
+                                    isDarkMode={isDarkMode}
+                                  />{' '}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Mushaf Page Bottom Medallion & Page Number */}
+                    <div
+                      className={`mt-6 pt-3 border-t flex items-center justify-between text-xs ${
+                        isDarkMode
+                          ? 'border-[#C5A059]/30 text-[#E8D39E]'
+                          : 'border-[#C5A059]/60 text-[#3D2B08]'
+                      }`}
+                    >
+                      <span className="text-[11px] opacity-80">
+                        اضغط على أي آية للاستماع إليها
+                      </span>
+                      <div
+                        className={`inline-flex items-center justify-center border px-4 py-0.5 font-quran font-bold text-sm ${
+                          isDarkMode
+                            ? 'border-[#C5A059]/60 bg-[#081A14] text-[#C8A45D]'
+                            : 'border-[#23312B] bg-[#F3EBD6] text-[#091B15]'
+                        }`}
+                      >
+                        {toArabicDigits(activePage?.pageNumber || 1)}
+                      </div>
+                      <span className="text-[11px] opacity-80">
+                        اسحب يميناً أو يساراً لتقليب الصفحات
+                      </span>
+                    </div>
                   </div>
-                  <span className="text-[11px] opacity-80">
-                    اسحب يميناً أو يساراً لتقليب الصفحات
-                  </span>
                 </div>
               </div>
             </div>
 
             {/* Mushaf Page Flipper Bar (Next Page / Page Selector / Prev Page) */}
-            <div className="mt-4 w-full max-w-[680px] flex flex-col gap-3">
+            <div className="mt-3 w-full max-w-[680px] flex flex-col gap-3">
               <div
-                className={`flex items-center justify-between gap-2 rounded-2xl border px-3 py-2 shadow-sm transition-colors ${
+                className={`flex items-center justify-between gap-2 border px-3 py-2 shadow-xs transition-colors ${
                   isDarkMode
-                    ? 'border-[#B48327]/35 bg-[#0B1914] text-[#F4EFE6]'
-                    : 'border-[#E6DEC8] bg-white text-[#0F2922]'
+                    ? 'border-[#C5A059]/40 bg-[#0B1914] text-[#F4EFE6]'
+                    : 'border-[#C5A059] bg-[#F8F5EC] text-[#091B15]'
                 }`}
               >
                 <button
                   type="button"
                   onClick={() => goToPage(currentPageIdx - 1)}
                   disabled={currentPageIdx <= 0}
-                  className={`flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold disabled:opacity-40 transition-colors ${
+                  className={`flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold disabled:opacity-40 transition-colors border ${
                     isDarkMode
-                      ? 'bg-[#142C24] border border-[#B48327]/30 text-[#E8D39E] hover:bg-[#1B3A30]'
-                      : 'bg-[#F4EFE6] text-[#0F2922] hover:bg-[#E6DEC8]'
+                      ? 'border-[#C5A059]/35 bg-[#112A21] text-[#E8D39E] hover:bg-[#18382C]'
+                      : 'border-[#C5A059]/60 bg-[#EFE8D6] text-[#091B15] hover:bg-[#E4DAC2]'
                   }`}
                 >
                   <ChevronRight className="h-4 w-4" />
@@ -684,10 +686,10 @@ export default function QuranReaderModal({
                     aria-label="اختر صفحة المصحف"
                     value={currentPageIdx}
                     onChange={(e) => goToPage(Number(e.target.value))}
-                    className={`rounded-xl border px-3 py-1.5 text-xs font-bold focus:outline-none transition-colors ${
+                    className={`border px-3 py-1.5 text-xs font-bold focus:outline-none transition-colors ${
                       isDarkMode
-                        ? 'border-[#B48327]/40 bg-[#08130F] text-[#F4EFE6] focus:border-[#E8D39E]'
-                        : 'border-[#E6DEC8] bg-[#FBF8F3] text-[#0F2922] focus:border-[#B48327]'
+                        ? 'border-[#C5A059]/40 bg-[#08130F] text-[#F4EFE6] focus:border-[#C5A059]'
+                        : 'border-[#C5A059] bg-[#FBF9F2] text-[#091B15] focus:border-[#8C661E]'
                     }`}
                   >
                     {mushafPages.map((p, idx) => (
@@ -703,10 +705,10 @@ export default function QuranReaderModal({
                   type="button"
                   onClick={() => goToPage(currentPageIdx + 1)}
                   disabled={currentPageIdx >= totalPagesInJuz - 1}
-                  className={`flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold disabled:opacity-40 transition-colors ${
+                  className={`flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold disabled:opacity-40 transition-colors border ${
                     isDarkMode
-                      ? 'bg-[#B48327] text-[#08130F] hover:bg-[#C99635]'
-                      : 'bg-[#0F2922] text-white hover:bg-[#14372e]'
+                      ? 'border-[#C5A059] bg-[#C5A059] text-[#081A14] hover:bg-[#D4B06A]'
+                      : 'border-[#091B15] bg-[#091B15] text-[#E8D39E] hover:bg-[#123126]'
                   }`}
                 >
                   <span>الصفحة التالية</span>
@@ -717,32 +719,21 @@ export default function QuranReaderModal({
               {/* Final Page Completion Callout */}
               {isLastPage && !isCompleted && (
                 <div
-                  className={`rounded-2xl border-2 p-4 text-center shadow-md flex flex-col sm:flex-row items-center justify-between gap-3 transition-colors ${
+                  className={`relative border-2 p-4 text-center shadow-md flex flex-col sm:flex-row items-center justify-between gap-3 transition-colors ${
                     isDarkMode
-                      ? 'border-[#22C55E]/60 bg-[#0A261B] text-[#ECFDF5]'
-                      : 'border-[#15803D] bg-[#ECFDF5] text-[#065F46]'
+                      ? 'border-[#C5A059] bg-[#081A14] text-[#F4EFE6]'
+                      : 'border-[#11382A] bg-[#EFE8D6] text-[#091B15]'
                   }`}
                 >
+                  <CornerCrosshairs />
                   <div className="flex items-center gap-2.5 text-right">
-                    <Sparkles
-                      className={`h-6 w-6 shrink-0 ${
-                        isDarkMode ? 'text-[#4ADE80]' : 'text-[#15803D]'
-                      }`}
-                    />
+                    <Sparkles className="h-6 w-6 shrink-0 text-[#C5A059]" />
                     <div>
-                      <h4
-                        className={`text-sm font-bold ${
-                          isDarkMode ? 'text-[#ECFDF5]' : 'text-[#065F46]'
-                        }`}
-                      >
+                      <h4 className="text-sm font-bold font-quran text-base">
                         وصلتَ إلى الصفحة الأخيرة من {meta.nameAr}
                       </h4>
-                      <p
-                        className={`text-xs ${
-                          isDarkMode ? 'text-[#A7F3D0]' : 'text-[#047857]'
-                        }`}
-                      >
-                        تقبل الله طاعتك! اضغط على الزر لتسجيل إتمام الجزء في الختمة.
+                      <p className="text-xs opacity-85">
+                        تقبل الله طاعتك! اضغط على الزر لختم الجزء في الربعة الشريفة.
                       </p>
                     </div>
                   </div>
@@ -750,7 +741,7 @@ export default function QuranReaderModal({
                     type="button"
                     onClick={handleCompleteClick}
                     disabled={isSubmittingComplete}
-                    className="w-full sm:w-auto shrink-0 rounded-xl bg-[#15803D] hover:bg-[#166534] px-5 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm"
+                    className="w-full sm:w-auto shrink-0 border border-[#C5A059] bg-[#11382A] hover:bg-[#174937] px-5 py-2.5 text-xs sm:text-sm font-bold text-[#E8D39E] shadow-xs"
                   >
                     <span>
                       {isSubmittingComplete
@@ -765,7 +756,7 @@ export default function QuranReaderModal({
         )}
       </div>
 
-      {/* Audio Reciter Bar */}
+      {/* Floating Pill Audio Reciter Bar */}
       <AudioReciterBar
         currentSurahNumber={activeSurahNumber}
         currentSurahNameAr={currentSurahNameAr}

@@ -3,7 +3,7 @@
 import React from 'react';
 import { JUZ_METADATA } from '../lib/quran-meta';
 import { JuzReservation } from '../types/khatma';
-import { CheckCircle2, BookOpen, Clock, Lock } from 'lucide-react';
+import { CornerCrosshairs, KhatmSealStamp, toArabicDigits } from './IslamicOrnaments';
 
 export interface JuzCardGridProps {
   juzs: Record<string, JuzReservation>;
@@ -20,7 +20,7 @@ export default function JuzCardGrid({
 }: JuzCardGridProps) {
   return (
     <div
-      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3"
+      className="grid grid-cols-3 sm:grid-cols-5 gap-2.5 sm:gap-3.5"
       dir="rtl"
     >
       {JUZ_METADATA.map((meta) => {
@@ -40,35 +40,7 @@ export default function JuzCardGrid({
           juz.status === 'reserved' && !!currentUid && juz.holderUid === currentUid;
         const isReservedByOther = juz.status === 'reserved' && !isReservedByMe;
 
-        // Determine displayed holder name
         const displayHolderName = juz.hideName ? 'فاعل خير' : juz.holderName || 'فاعل خير';
-
-        // Card styling variants — Illuminated Mushaf Folio palette (Light & Dark)
-        let borderClass = 'border-[#E6DEC8] dark:border-[#1E3A31] hover:border-[#B48327] dark:hover:border-[#D4A13E]';
-        let bgClass = 'bg-white dark:bg-[#0D1F1A]';
-        let badgeClass = 'bg-[#F4EFE6] dark:bg-[#142C24] text-[#0F2922] dark:text-[#E8D39E] border border-[#E6DEC8] dark:border-[#234238]';
-        let numberBadgeClass = 'bg-[#F4EFE6] dark:bg-[#142C24] text-[#0F2922] dark:text-[#E8D39E] border border-[#E6DEC8] dark:border-[#234238]';
-        let statusText = 'متاح للحجز';
-
-        if (isCompleted) {
-          borderClass = 'border-[#A7F3D0] dark:border-[#15803D]/60';
-          bgClass = 'bg-[#ECFDF5]/85 dark:bg-[#0A261B]';
-          badgeClass = 'bg-[#D1FAE5] dark:bg-[#15803D]/30 text-[#065F46] dark:text-[#A7F3D0] border border-[#A7F3D0] dark:border-[#15803D]/50 font-semibold';
-          numberBadgeClass = 'bg-[#065F46] dark:bg-[#15803D] text-white';
-          statusText = `مكتمل • ${displayHolderName}`;
-        } else if (isReservedByMe) {
-          borderClass = 'border-[#B48327] dark:border-[#D4A13E] ring-2 ring-[#B48327]/25 dark:ring-[#D4A13E]/30';
-          bgClass = 'bg-[#FDF6E7] dark:bg-[#1F190D]';
-          badgeClass = 'bg-[#B48327] dark:bg-[#D4A13E] text-white dark:text-[#08130F] font-bold shadow-xs';
-          numberBadgeClass = 'bg-[#B48327] dark:bg-[#D4A13E] text-white dark:text-[#08130F]';
-          statusText = 'محجوز لك • اقرأ الآن';
-        } else if (isReservedByOther) {
-          borderClass = 'border-[#FDE68A] dark:border-[#B45309]/50';
-          bgClass = 'bg-[#FFFBEB]/80 dark:bg-[#1C160B]';
-          badgeClass = 'bg-[#FEF3C7] dark:bg-[#B45309]/25 text-[#92400E] dark:text-[#FDE68A] border border-[#FDE68A] dark:border-[#B45309]/40';
-          numberBadgeClass = 'bg-[#FEF3C7] dark:bg-[#B45309]/30 text-[#92400E] dark:text-[#FDE68A]';
-          statusText = `محجوز • ${displayHolderName}`;
-        }
 
         const handleClick = () => {
           if (isAvailable) {
@@ -78,49 +50,89 @@ export default function JuzCardGrid({
           }
         };
 
+        let cellBorderClass =
+          'border-[#C5A059]/80 dark:border-[#C5A059]/40 bg-[#F8F5EC] dark:bg-[#0B1914] hover:border-[#8C661E] dark:hover:border-[#E8D39E]';
+        if (isCompleted) {
+          cellBorderClass =
+            'border-[#C5A059]/90 dark:border-[#C5A059]/55 bg-[#F6F2E6] dark:bg-[#091D15]';
+        } else if (isReservedByMe) {
+          cellBorderClass =
+            'border-[#B48327] dark:border-[#E8D39E] ring-1 ring-[#B48327]/50 bg-[#FBF6E8] dark:bg-[#141D14]';
+        } else if (isReservedByOther) {
+          cellBorderClass =
+            'border-[#C5A059]/85 dark:border-[#C5A059]/50 bg-[#F8F4E8] dark:bg-[#111A14]';
+        }
+
         return (
           <div
             key={meta.number}
             data-testid={`juz-card-${meta.number}`}
             onClick={handleClick}
-            className={`interactive-card group relative flex flex-col justify-between rounded-2xl border p-3.5 shadow-xs cursor-pointer select-none ${borderClass} ${bgClass}`}
+            className={`interactive-card group relative flex flex-col items-center justify-between rounded-[2px] border px-2 pt-3 pb-2.5 min-h-[124px] sm:min-h-[138px] cursor-pointer select-none text-center transition-colors ${cellBorderClass}`}
           >
-            {/* Top row: Juz Number and Icon */}
-            <div className="flex items-center justify-between gap-2">
-              <span className={`flex h-7 w-7 items-center justify-center rounded-xl tabular-nums text-xs font-bold ${numberBadgeClass}`}>
-                {meta.number}
-              </span>
-              <div>
-                {isCompleted && (
-                  <CheckCircle2 className="h-4 w-4 text-[#15803D]" />
-                )}
-                {isReservedByMe && (
-                  <BookOpen className="h-4 w-4 text-[#B48327]" />
-                )}
-                {isReservedByOther && (
-                  <Lock className="h-3.5 w-3.5 text-[#B45309]" />
-                )}
-              </div>
-            </div>
+            {/* 4 Architectural Corner Registration Crosshairs (+) */}
+            <CornerCrosshairs />
 
-            {/* Middle: Juz Name & Surah Range */}
-            <div className="my-2.5">
-              <h4 className="text-base font-bold text-[#0F2922] dark:text-[#F4EFE6] font-quran">
-                {meta.nameAr}
-              </h4>
-              <p className="mt-1 line-clamp-1 text-[11px] text-[#4A5D54] dark:text-[#A6B8B0]">
-                من {meta.startSurahName} {meta.startAyah} إلى {meta.endSurahName} {meta.endAyah}
-              </p>
-            </div>
-
-            {/* Bottom: Status Pill */}
-            <div className="mt-auto pt-1">
+            {/* Top Ribbon Tab for Reserved States (matching Option 1 mockup) */}
+            {(isReservedByMe || isReservedByOther) && (
               <div
-                className={`line-clamp-1 rounded-lg px-2 py-1.5 text-center text-[11px] font-medium ${badgeClass}`}
+                className={`absolute -top-[1px] inset-x-3 sm:inset-x-4 mx-auto rounded-b-md py-0.5 px-2 text-[10px] sm:text-[11px] font-bold shadow-xs ${
+                  isReservedByMe
+                    ? 'bg-gradient-to-b from-[#15803D] to-[#0F5328] text-white'
+                    : 'bg-gradient-to-b from-[#D2AF66] to-[#B68B3A] text-[#091B15]'
+                }`}
               >
-                {statusText}
+                {isReservedByMe ? 'محجوز لك' : 'محجوز'}
               </div>
-            </div>
+            )}
+
+            {/* Center Content: Either Scalloped Khatm Seal OR Classical Arabic Numeral */}
+            {isCompleted ? (
+              <div className="my-auto flex flex-col items-center justify-center pt-1">
+                <KhatmSealStamp className="w-16 h-16 sm:w-[72px] sm:h-[72px]" />
+                <div className="mt-1.5 space-y-0.5">
+                  <h4 className="text-[11px] font-bold text-[#0F2922] dark:text-[#E8D39E] font-quran leading-tight">
+                    {meta.nameAr}
+                  </h4>
+                  <p className="text-[10px] font-medium text-[#11382A] dark:text-[#A7F3D0] line-clamp-1">
+                    مكتمل • {displayHolderName}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div
+                  className={`my-auto flex flex-col items-center justify-center ${
+                    isReservedByMe || isReservedByOther ? 'pt-3' : 'pt-1'
+                  }`}
+                >
+                  <span className="font-quran text-3xl sm:text-4xl font-bold leading-none text-[#11221C] dark:text-[#F4EFE6] group-hover:text-[#9A6F1E] dark:group-hover:text-[#E8D39E] transition-colors">
+                    {toArabicDigits(meta.number)}
+                  </span>
+                  <span className="mt-1.5 font-quran text-xs sm:text-sm font-bold text-[#2C3E36] dark:text-[#D4AF61] line-clamp-1">
+                    {meta.startSurahName}
+                  </span>
+                </div>
+
+                {/* Subtle Architectural Metadata Row at Bottom */}
+                <div className="w-full pt-1 border-t border-[#C5A059]/25 dark:border-[#C5A059]/20 mt-1">
+                  <h4 className="sr-only">{meta.nameAr}</h4>
+                  {isReservedByMe ? (
+                    <p className="text-[10px] font-bold text-[#15803D] dark:text-[#4ADE80] line-clamp-1">
+                      اقرأ الآن • {displayHolderName}
+                    </p>
+                  ) : isReservedByOther ? (
+                    <p className="text-[10px] font-medium text-[#7A5413] dark:text-[#E8D39E] line-clamp-1">
+                      {displayHolderName}
+                    </p>
+                  ) : (
+                    <p className="text-[10px] font-medium text-[#5A6B63] dark:text-[#9AB0A6] line-clamp-1">
+                      متاح للحجز
+                    </p>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         );
       })}

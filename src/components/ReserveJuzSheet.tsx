@@ -7,7 +7,8 @@ import {
   getSavedReaderProfile,
   saveReaderProfile,
 } from '../lib/khatma-service';
-import { X, BookOpen, Check, Heart, Shield } from 'lucide-react';
+import { CornerCrosshairs, toArabicDigits } from './IslamicOrnaments';
+import { X, BookOpen } from 'lucide-react';
 
 export interface ReserveJuzSheetProps {
   khatmaId: string;
@@ -29,14 +30,12 @@ export default function ReserveJuzSheet({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Drag down dismissal support
   const [dragY, setDragY] = useState<number>(0);
   const touchStartY = useRef<number | null>(null);
   const isDragging = useRef<boolean>(false);
 
   const meta = JUZ_METADATA.find((m) => m.number === juzNumber) || JUZ_METADATA[0];
 
-  // Pre-fill reader profile
   useEffect(() => {
     try {
       const saved = getSavedReaderProfile();
@@ -84,10 +83,8 @@ export default function ReserveJuzSheet({
     setErrorMsg(null);
 
     try {
-      // Save reader profile for future visits
       saveReaderProfile(trimmedName, hideName);
 
-      // Reserve the juz
       await reserveJuz({
         khatmaId,
         juzNumber,
@@ -106,19 +103,18 @@ export default function ReserveJuzSheet({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm transition-opacity"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[#081A14]/70 backdrop-blur-sm transition-opacity"
       dir="rtl"
     >
-      {/* Backdrop click dismisses */}
       <div
         className="absolute inset-0"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Bottom Sheet Modal */}
+      {/* Architectural Rab'ah Reservation Sheet */}
       <div
-        className="relative z-10 w-full max-w-lg rounded-t-3xl border-t border-[#E6DEC8] dark:border-[#1E3A31] bg-[#FBF8F3] dark:bg-[#0D1F1A] p-6 shadow-2xl"
+        className="relative z-10 w-full max-w-lg rounded-t-[24px] border border-[#C5A059] bg-[#F8F5EC] dark:bg-[#0B1914] p-6 shadow-2xl"
         style={{
           transform: `translateY(${dragY}px)`,
           transition: isDragging.current ? 'none' : 'transform 0.25s cubic-bezier(0.32, 0.72, 0, 1)',
@@ -127,49 +123,49 @@ export default function ReserveJuzSheet({
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
+        <CornerCrosshairs />
+
         {/* Drag handle */}
         <div className="flex justify-center pb-3">
-          <div className="h-1.5 w-12 rounded-full bg-[#D5CBB4] dark:bg-[#234238]" />
+          <div className="h-1.5 w-12 rounded-full bg-[#C5A059]/50" />
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#E6DEC8] dark:border-[#1E3A31]">
+        <div className="flex items-center justify-between pb-3 border-b border-[#C5A059]/45">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#FDF6E7] dark:bg-[#1F190D] border border-[#E8D39E] dark:border-[#B48327]/50 text-[#B48327] dark:text-[#E8D39E] font-bold tabular-nums">
-              {meta.number}
+            <div className="flex h-12 w-12 items-center justify-center border border-[#C5A059] bg-[#081A14] text-[#C8A45D] font-quran text-2xl font-bold">
+              {toArabicDigits(meta.number)}
             </div>
             <div>
-              <h3 className="text-lg font-bold text-[#0F2922] dark:text-[#F4EFE6] font-quran">
+              <h3 className="text-lg font-bold text-[#091B15] dark:text-[#C8A45D] font-quran">
                 حجز {meta.nameAr}
               </h3>
               <p className="text-xs text-[#4A5D54] dark:text-[#A6B8B0]">
-                من {meta.startSurahName} {meta.startAyah} إلى {meta.endSurahName} {meta.endAyah}
+                من سورة {meta.startSurahName} ({toArabicDigits(meta.startAyah)}) إلى سورة {meta.endSurahName} ({toArabicDigits(meta.endAyah)})
               </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-2 text-[#4A5D54] dark:text-[#A6B8B0] hover:bg-[#F4EFE6] dark:hover:bg-white/10 hover:text-[#0F2922] dark:hover:text-white"
+            className="border border-[#C5A059]/50 p-2 text-[#091B15] dark:text-[#E8D39E] hover:bg-[#EFE8D6] dark:hover:bg-white/10"
             aria-label="إغلاق نافذة الحجز"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
-        {/* Error notification */}
         {errorMsg && (
-          <div className="mt-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 p-3 text-xs text-rose-700 dark:text-rose-300 font-medium">
+          <div className="mt-3 border border-rose-400 bg-rose-50 dark:bg-rose-950/40 p-3 text-xs text-rose-700 dark:text-rose-300 font-medium">
             {errorMsg}
           </div>
         )}
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           <div>
             <label
               htmlFor="reader-name-input"
-              className="block text-sm font-semibold text-[#0F2922] dark:text-[#F4EFE6] mb-1.5"
+              className="block text-sm font-semibold text-[#091B15] dark:text-[#F4EFE6] mb-1.5"
             >
               الاسم
             </label>
@@ -181,36 +177,35 @@ export default function ReserveJuzSheet({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="اكتب اسمك الكريم"
-              className="w-full rounded-2xl border border-[#E6DEC8] dark:border-[#234238] bg-white dark:bg-[#08130F] px-4 py-3 text-sm text-[#0F2922] dark:text-[#F4EFE6] placeholder:text-[#7D9087] focus:border-[#B48327] focus:outline-none focus:ring-2 focus:ring-[#B48327]/20"
+              className="w-full border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] px-4 py-3 text-sm text-[#091B15] dark:text-[#F4EFE6] placeholder:text-[#7D9087] focus:border-[#091B15] dark:focus:border-[#C5A059] focus:outline-none"
             />
           </div>
 
           {/* Privacy Toggle (فاعل خير) */}
-          <div className="flex items-center gap-3 rounded-2xl border border-[#E6DEC8] dark:border-[#234238] bg-white dark:bg-[#08130F] p-3.5">
+          <div className="flex items-center gap-3 border border-[#C5A059]/60 bg-[#FBF9F2] dark:bg-[#08130F] p-3.5">
             <input
               type="checkbox"
               id="hide-name-toggle"
               aria-label="عدم إظهار اسمي للآخرين (يظهر كفاعل خير)"
               checked={hideName}
               onChange={(e) => setHideName(e.target.checked)}
-              className="h-5 w-5 rounded-md border-[#E6DEC8] dark:border-[#234238] text-[#0F2922] focus:ring-[#B48327]"
+              className="h-5 w-5 border-[#C5A059] text-[#091B15] focus:ring-[#C5A059]"
             />
             <label
               htmlFor="hide-name-toggle"
-              className="text-xs sm:text-sm font-medium text-[#0F2922] dark:text-[#F4EFE6] cursor-pointer select-none"
+              className="text-xs sm:text-sm font-medium text-[#091B15] dark:text-[#F4EFE6] cursor-pointer select-none"
             >
               عدم إظهار اسمي للآخرين (يظهر كفاعل خير)
             </label>
           </div>
 
-          {/* Confirm Button */}
           <button
             type="submit"
             data-testid="confirm-reserve-btn"
             disabled={isSubmitting || !name.trim()}
-            className="btn-primary flex w-full items-center justify-center gap-2 rounded-2xl bg-[#0F2922] dark:bg-[#B48327] py-3.5 text-base font-bold text-white dark:text-[#08130F] shadow-md disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 border border-[#C5A059] bg-[#081A14] hover:bg-[#112A21] py-3.5 text-base font-bold text-[#C8A45D] shadow-md disabled:opacity-50"
           >
-            <BookOpen className="h-5 w-5 text-[#E8D39E] dark:text-[#08130F]" />
+            <BookOpen className="h-5 w-5 text-[#C5A059]" />
             <span>{isSubmitting ? 'جاري تأكيد الحجز...' : 'تأكيد الحجز والبدء بالقراءة'}</span>
           </button>
         </form>
