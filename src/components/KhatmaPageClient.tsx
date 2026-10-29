@@ -13,8 +13,10 @@ import { isValidKhatmaId } from '../lib/validation';
 import JuzCardGrid from './JuzCardGrid';
 import ReserveJuzSheet from './ReserveJuzSheet';
 import QuranReaderModal from './QuranReaderModal';
+import ShareModal from './ShareModal';
 import { ShamsaRosette, CornerCrosshairs, toArabicDigits } from './IslamicOrnaments';
 import { useKhatmaTheme } from '../lib/theme';
+import { getKhatmaShareUrl, copyTextToClipboard } from '../lib/share';
 import {
   Share2,
   Calendar,
@@ -46,7 +48,21 @@ export default function KhatmaPageClient({
   const [accessAlert, setAccessAlert] = useState<string | null>(null);
   const { isDark, toggleTheme } = useKhatmaTheme();
 
-  const [actualId, setActualId] = useState<string>(khatmaId);
+  const [actualId, setActualId] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const searchParam = new URLSearchParams(window.location.search).get('id');
+      if (searchParam && isValidKhatmaId(searchParam)) {
+        return searchParam;
+      }
+      const parts = window.location.pathname.split('/').filter(Boolean);
+      const lastPart = parts[parts.length - 1];
+      if (lastPart && lastPart !== 'khatma' && lastPart !== 'view' && isValidKhatmaId(lastPart)) {
+        return lastPart;
+      }
+    }
+    return khatmaId;
+  });
+  const [isShareModalOpen, setIsShareModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -69,6 +85,9 @@ export default function KhatmaPageClient({
   }, [initialUid]);
 
   useEffect(() => {
+    if (!effectiveKhatmaId || effectiveKhatmaId === 'view') {
+      return;
+    }
     setIsLoading(true);
     const unsubscribe = subscribeToKhatma(effectiveKhatmaId, (doc) => {
       setKhatma(doc);
@@ -84,25 +103,13 @@ export default function KhatmaPageClient({
   }, [effectiveKhatmaId]);
 
   const handleShare = async () => {
-    const url = typeof window !== 'undefined' ? window.location.href : '';
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: khatma?.title || 'ختمة قرآن كريم',
-          text: `انضم معنا في ${khatma?.title || 'ختمة القرآن'} - ${khatma?.intention || ''}`,
-          url,
-        });
-        return;
-      } catch {}
+    const cleanUrl = getKhatmaShareUrl(effectiveKhatmaId);
+    if (cleanUrl) {
+      await copyTextToClipboard(cleanUrl);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
     }
-
-    if (navigator.clipboard) {
-      try {
-        await navigator.clipboard.writeText(url);
-        setCopiedLink(true);
-        setTimeout(() => setCopiedLink(false), 2500);
-      } catch {}
-    }
+    setIsShareModalOpen(true);
   };
 
   const myReservedJuzs = useMemo(() => {
@@ -150,7 +157,13 @@ export default function KhatmaPageClient({
     setTimeout(() => setAccessAlert(null), 3500);
   };
 
-  const handleReserveSuccess = (juzNumber: number) => {
+  const handleReserveSuccess = async (juzNumber: number) => {
+    if (!uid) {
+      try {
+        const devUid = await getDeviceUid();
+        setUid(devUid);
+      } catch {}
+    }
     setReservingJuzNumber(null);
     setReadingJuzNumber(juzNumber);
   };
@@ -434,6 +447,32 @@ export default function KhatmaPageClient({
           </div>
         )}
 
+        {/* Prominent Share Invitation Bar */}
+        {availableCount > 0 && (
+          <div className="relative border border-[#C5A059] bg-[#FBF6E8] dark:bg-[#0D211A] p-3.5 sm:p-4 shadow-xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <CornerCrosshairs />
+            <div className="flex items-center gap-2.5">
+              <Share2 className="h-5 w-5 text-[#9A6F1E] dark:text-[#C5A059] shrink-0" />
+              <div>
+                <h3 className="text-sm font-bold text-[#091B15] dark:text-[#F4EFE6]">
+                  شارك الختمة مع الأهل والأصدقاء
+                </h3>
+                <p className="text-xs text-[#4A5D54] dark:text-[#A6B8B0]">
+                  متبقي {toArabicDigits(availableCount)} جزءاً متاحاً للحجز والتلاوة
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={handleShare}
+              className="inline-flex items-center justify-center gap-2 border border-[#C5A059] bg-[#091B15] hover:bg-[#123126] text-[#E8D39E] font-bold px-4 py-2 text-xs transition-colors cursor-pointer shrink-0 shadow-xs active:scale-95"
+            >
+              <Share2 className="h-3.5 w-3.5 text-[#C5A059]" />
+              <span>مشاركة الرابط الآن</span>
+            </button>
+          </div>
+        )}
+
         {/* 30 Juz Architectural Rab'ah Matrix */}
         <section aria-label="أجزاء الربعة الشريفة الثلاثون" className="space-y-3">
           <div className="flex items-center justify-between px-1">
@@ -494,6 +533,15 @@ export default function KhatmaPageClient({
           onUnreserve={handleUnreserveCurrentJuz}
         />
       )}
+
+      {/* Share Khatma Modal */}
+      <ShareModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        khatmaId={effectiveKhatmaId}
+        title={khatma.title}
+        intention={khatma.intention}
+      />
     </div>
   );
 }

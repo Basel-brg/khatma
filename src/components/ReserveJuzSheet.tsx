@@ -6,6 +6,7 @@ import {
   reserveJuz,
   getSavedReaderProfile,
   saveReaderProfile,
+  getDeviceUid,
 } from '../lib/khatma-service';
 import { SECURITY_LIMITS, validateReaderName } from '../lib/validation';
 import { CornerCrosshairs, toArabicDigits } from './IslamicOrnaments';
@@ -89,12 +90,17 @@ export default function ReserveJuzSheet({
     try {
       saveReaderProfile(cleanName, hideName);
 
+      let effectiveUid = uid;
+      if (!effectiveUid || typeof effectiveUid !== 'string' || !effectiveUid.trim()) {
+        effectiveUid = await getDeviceUid();
+      }
+
       await reserveJuz({
         khatmaId,
         juzNumber,
         readerName: cleanName,
         hideName,
-        uid,
+        uid: effectiveUid,
       });
 
       onSuccess(juzNumber);

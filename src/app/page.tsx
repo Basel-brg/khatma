@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
@@ -11,6 +11,7 @@ import {
   Check,
   Sun,
   Moon,
+  Sparkles,
 } from 'lucide-react';
 import { createKhatma, getDeviceUid, getRecentKhatmas } from '../lib/khatma-service';
 import { SECURITY_LIMITS, validateCreateKhatmaInput } from '../lib/validation';
@@ -74,6 +75,67 @@ function formatDateArabic(dateStr: string): string {
   }
 }
 
+function getDatePlusDays(days: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function getNextRamadanDate(): string {
+  try {
+    const fmt = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {
+      month: 'numeric',
+      day: 'numeric',
+    });
+    const d = new Date();
+    for (let i = 0; i < 365; i++) {
+      const parts = fmt.formatToParts(d);
+      const m = parts.find((p) => p.type === 'month')?.value;
+      const day = parts.find((p) => p.type === 'day')?.value;
+      if (m === '9' && (day === '29' || day === '30')) {
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const dayStr = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${dayStr}`;
+      }
+      d.setDate(d.getDate() + 1);
+    }
+  } catch {}
+  return getDatePlusDays(30);
+}
+
+function formatDateArabicWithDay(dateStr: string): string {
+  if (!dateStr) return '';
+  try {
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('ar-EG', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
+function formatHijriDate(dateStr: string): string {
+  if (!dateStr) return '';
+  try {
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('ar-SA-u-ca-islamic-umalqura', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  } catch {
+    return '';
+  }
+}
+
 export default function HomePage() {
   const router = useRouter();
   const { isDark, toggleTheme } = useKhatmaTheme();
@@ -88,6 +150,7 @@ export default function HomePage() {
 
   const [recentKhatmas, setRecentKhatmas] = useState<RecentKhatmaItem[]>([]);
   const [hasLoadedRecents, setHasLoadedRecents] = useState(false);
+  const dateInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     try {
@@ -289,22 +352,165 @@ export default function HomePage() {
                 />
               </div>
 
-              {/* Target Date */}
-              <div>
-                <label
-                  htmlFor="home-date"
-                  className="block text-xs font-bold text-[#091B15] dark:text-[#F4EFE6] mb-1.5 flex items-center gap-1.5"
+              {/* Target Date Section with Islamic Architectural Calendar Button */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label
+                    htmlFor="home-date"
+                    className="text-xs font-bold text-[#091B15] dark:text-[#F4EFE6] flex items-center gap-1.5"
+                  >
+                    <Calendar className="w-3.5 h-3.5 text-[#9A6F1E] dark:text-[#C5A059]" />
+                    تاريخ الإتمام المرجو (التقويم)
+                  </label>
+                  {formatHijriDate(targetDate) && (
+                    <span className="text-[11px] font-quran text-[#8C661E] dark:text-[#C5A059] font-medium">
+                      الموافق: {formatHijriDate(targetDate)}
+                    </span>
+                  )}
+                </div>
+
+                {/* Architectural Calendar Trigger Card */}
+                <div
+                  onClick={() => {
+                    const input = dateInputRef.current;
+                    if (!input) return;
+                    if (typeof (input as any).showPicker === 'function') {
+                      try {
+                        (input as any).showPicker();
+                        return;
+                      } catch {}
+                    }
+                    input.focus();
+                  }}
+                  className="interactive-card relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border border-[#C5A059] bg-[#FDFBF7] dark:bg-[#0B1E17] p-3 sm:p-3.5 shadow-xs cursor-pointer select-none group"
                 >
-                  <Calendar className="w-3.5 h-3.5 text-[#9A6F1E] dark:text-[#C5A059]" />
-                  تاريخ الإتمام المرجو
-                </label>
-                <input
-                  id="home-date"
-                  type="date"
-                  value={targetDate}
-                  onChange={(e) => setTargetDate(e.target.value)}
-                  className="w-full px-3 sm:px-3.5 py-2 border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] text-xs sm:text-sm tabular-nums focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059]"
-                />
+                  <CornerCrosshairs />
+
+                  {/* Date Information with Islamic Emblem */}
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center border border-[#C5A059] bg-[#081A14] text-[#C8A45D] shadow-inner group-hover:scale-105 transition-transform">
+                      <Calendar className="w-5 h-5 text-[#C8A45D]" />
+                    </div>
+
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-xs sm:text-sm font-bold font-quran text-[#091B15] dark:text-[#E8D39E]">
+                          {formatDateArabicWithDay(targetDate)}
+                        </span>
+                        {targetDate === getTodayString() && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-[#15803D]/15 text-[#15803D] dark:text-[#4ADE80] border border-[#15803D]/30">
+                            اليوم
+                          </span>
+                        )}
+                        {targetDate === getDatePlusDays(7) && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-[#C5A059]/15 text-[#9A6F1E] dark:text-[#E8D39E] border border-[#C5A059]/30">
+                            بعد أسبوع
+                          </span>
+                        )}
+                        {targetDate === getDatePlusDays(30) && (
+                          <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold bg-[#C5A059]/15 text-[#9A6F1E] dark:text-[#E8D39E] border border-[#C5A059]/30">
+                            بعد شهر
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="text-[11px] text-[#4A5D54] dark:text-[#A6B8B0] mt-0.5">
+                        اضغط لفتح نافذة التقويم واختيار موعد الختمة الشريفة
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Calendar Action Button */}
+                  <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const input = dateInputRef.current;
+                        if (!input) return;
+                        if (typeof (input as any).showPicker === 'function') {
+                          try {
+                            (input as any).showPicker();
+                            return;
+                          } catch {}
+                        }
+                        input.focus();
+                      }}
+                      className="inline-flex items-center justify-center gap-1.5 border border-[#C5A059] bg-[#081A14] hover:bg-[#123126] text-[#E8D39E] px-3.5 py-2 text-xs font-bold transition-colors cursor-pointer shadow-xs active:scale-95"
+                      aria-label="فتح التقويم لتحديد موعد الختمة"
+                    >
+                      <Calendar className="w-3.5 h-3.5 text-[#C5A059]" />
+                      <span>فتح التقويم</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Synchronized accessible date input with custom indicator */}
+                <div className="flex items-center gap-2 pt-0.5">
+                  <span className="text-[11px] text-[#7D9087] dark:text-[#9AB0A6] shrink-0 font-medium">
+                    أو حدد التاريخ يدوياً:
+                  </span>
+                  <input
+                    ref={dateInputRef}
+                    id="home-date"
+                    type="date"
+                    value={targetDate}
+                    onChange={(e) => setTargetDate(e.target.value)}
+                    className="flex-1 px-3 py-1.5 border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] text-xs sm:text-sm tabular-nums focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059] cursor-pointer"
+                  />
+                </div>
+
+                {/* Quick Selection Presets */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-0.5">
+                  <button
+                    type="button"
+                    onClick={() => setTargetDate(getTodayString())}
+                    className={`px-2.5 py-1.5 text-xs border transition-colors cursor-pointer text-center flex items-center justify-center gap-1 ${
+                      targetDate === getTodayString()
+                        ? 'border-[#C5A059] bg-[#081A14] text-[#E8D39E] font-bold shadow-xs'
+                        : 'border-[#C5A059]/40 bg-[#FBF9F2] dark:bg-[#0B1E17] text-[#4A5D54] dark:text-[#A6B8B0] hover:border-[#C5A059]'
+                    }`}
+                  >
+                    {targetDate === getTodayString() && <Check className="w-3 h-3 text-[#C5A059]" />}
+                    <span>اليوم</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTargetDate(getDatePlusDays(7))}
+                    className={`px-2.5 py-1.5 text-xs border transition-colors cursor-pointer text-center flex items-center justify-center gap-1 ${
+                      targetDate === getDatePlusDays(7)
+                        ? 'border-[#C5A059] bg-[#081A14] text-[#E8D39E] font-bold shadow-xs'
+                        : 'border-[#C5A059]/40 bg-[#FBF9F2] dark:bg-[#0B1E17] text-[#4A5D54] dark:text-[#A6B8B0] hover:border-[#C5A059]'
+                    }`}
+                  >
+                    {targetDate === getDatePlusDays(7) && <Check className="w-3 h-3 text-[#C5A059]" />}
+                    <span>+7 أيام (أسبوع)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTargetDate(getDatePlusDays(30))}
+                    className={`px-2.5 py-1.5 text-xs border transition-colors cursor-pointer text-center flex items-center justify-center gap-1 ${
+                      targetDate === getDatePlusDays(30)
+                        ? 'border-[#C5A059] bg-[#081A14] text-[#E8D39E] font-bold shadow-xs'
+                        : 'border-[#C5A059]/40 bg-[#FBF9F2] dark:bg-[#0B1E17] text-[#4A5D54] dark:text-[#A6B8B0] hover:border-[#C5A059]'
+                    }`}
+                  >
+                    {targetDate === getDatePlusDays(30) && <Check className="w-3 h-3 text-[#C5A059]" />}
+                    <span>+30 يوماً (شهر)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setTargetDate(getNextRamadanDate())}
+                    className={`px-2.5 py-1.5 text-xs border transition-colors cursor-pointer text-center flex items-center justify-center gap-1 ${
+                      targetDate === getNextRamadanDate()
+                        ? 'border-[#C5A059] bg-[#081A14] text-[#E8D39E] font-bold shadow-xs'
+                        : 'border-[#C5A059]/40 bg-[#FBF9F2] dark:bg-[#0B1E17] text-[#4A5D54] dark:text-[#A6B8B0] hover:border-[#C5A059]'
+                    }`}
+                  >
+                    {targetDate === getNextRamadanDate() && <Check className="w-3 h-3 text-[#C5A059]" />}
+                    <span>رمضان المبارك</span>
+                  </button>
+                </div>
               </div>
 
               {/* Submit CTA */}
@@ -382,6 +588,27 @@ export default function HomePage() {
               ))}
             </div>
           )}
+
+          {/* Live preview demo banner to demo-ramadan */}
+          <div className="mt-3.5 border border-[#C5A059] bg-[#FBF6E8] dark:bg-[#0D241C] p-3.5 sm:p-4 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="min-w-0">
+                <span className="text-[11px] font-bold text-[#8C661E] dark:text-[#C5A059] block">
+                  نموذج تجريبي جاهز للمعاينة:
+                </span>
+                <h3 className="text-sm sm:text-base font-bold font-quran text-[#091B15] dark:text-[#E8D39E]">
+                  ختمة شهر رمضان المبارك (معاينة حية للربعة)
+                </h3>
+              </div>
+              <Link
+                href="/khatma/demo-ramadan"
+                className="inline-flex items-center justify-center gap-1.5 border border-[#C5A059] bg-[#081A14] hover:bg-[#123126] text-[#E8D39E] px-4 py-2 text-xs font-bold shrink-0 transition-colors cursor-pointer"
+              >
+                <span>معاينة الختمة</span>
+                <ArrowLeft className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
         </section>
 
         {/* Footer */}

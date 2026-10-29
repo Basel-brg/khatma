@@ -106,6 +106,21 @@ html, body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Islamic Golden Date Picker Indicator for native date inputs */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 2px;
+  filter: invert(65%) sepia(50%) saturate(600%) hue-rotate(5deg);
+  opacity: 0.85;
+  transition: transform 140ms ease, opacity 140ms ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  transform: scale(1.15);
+  opacity: 1;
+}
+
 /* Tactile Mobile Touch Feedback (emil-design-eng) */
 button,
 a.button-tactile,

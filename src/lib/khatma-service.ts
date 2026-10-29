@@ -333,9 +333,14 @@ export function subscribeToKhatma(
   }
   subscribers.add(onData);
 
-  // Immediately send current local state
+  // Immediately send current local state if available in cache/storage
   const currentLocal = getLocalKhatma(khatmaId);
-  onData(currentLocal);
+  if (currentLocal) {
+    onData(currentLocal);
+  } else if (!isFirebaseConfigured() || !getFirebaseDb()) {
+    // If Firebase is not configured, local cache is the only source
+    onData(null);
+  }
 
   return () => {
     if (unsubFirestore) {
@@ -361,7 +366,8 @@ export async function reserveJuz(params: {
   const validKhatmaId = validateKhatmaId(params.khatmaId);
   const validJuzNumber = validateJuzNumber(params.juzNumber);
   const trimmedName = validateReaderName(params.readerName);
-  const validUid = validateUid(params.uid);
+  const effectiveUid = params.uid ? params.uid : await getDeviceUid();
+  const validUid = validateUid(effectiveUid);
   const hideName = Boolean(params.hideName);
 
   const juzKey = String(validJuzNumber);
@@ -469,7 +475,8 @@ export async function completeJuz(params: {
 }): Promise<KhatmaDocument> {
   const validKhatmaId = validateKhatmaId(params.khatmaId);
   const validJuzNumber = validateJuzNumber(params.juzNumber);
-  const validUid = validateUid(params.uid);
+  const effectiveUid = params.uid ? params.uid : await getDeviceUid();
+  const validUid = validateUid(effectiveUid);
   const juzKey = String(validJuzNumber);
   const now = new Date().toISOString();
 
@@ -577,7 +584,8 @@ export async function unreserveJuz(params: {
 }): Promise<KhatmaDocument> {
   const validKhatmaId = validateKhatmaId(params.khatmaId);
   const validJuzNumber = validateJuzNumber(params.juzNumber);
-  const validUid = validateUid(params.uid);
+  const effectiveUid = params.uid ? params.uid : await getDeviceUid();
+  const validUid = validateUid(effectiveUid);
   const juzKey = String(validJuzNumber);
 
   if (isFirebaseConfigured() && getFirebaseDb()) {
