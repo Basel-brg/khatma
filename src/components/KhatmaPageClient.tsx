@@ -9,6 +9,7 @@ import {
   unreserveJuz,
   recordVisitedKhatma,
 } from '../lib/khatma-service';
+import { isValidKhatmaId } from '../lib/validation';
 import JuzCardGrid from './JuzCardGrid';
 import ReserveJuzSheet from './ReserveJuzSheet';
 import QuranReaderModal from './QuranReaderModal';
@@ -45,6 +46,22 @@ export default function KhatmaPageClient({
   const [accessAlert, setAccessAlert] = useState<string | null>(null);
   const { isDark, toggleTheme } = useKhatmaTheme();
 
+  const [actualId, setActualId] = useState<string>(khatmaId);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const parts = window.location.pathname.split('/').filter(Boolean);
+      const lastPart = parts[parts.length - 1];
+      const searchParam = new URLSearchParams(window.location.search).get('id');
+      const candidate = searchParam || (lastPart && lastPart !== 'khatma' && lastPart !== 'view' ? lastPart : khatmaId);
+      if (candidate && isValidKhatmaId(candidate) && candidate !== actualId) {
+        setActualId(candidate);
+      }
+    }
+  }, [khatmaId, actualId]);
+
+  const effectiveKhatmaId = actualId && actualId !== 'view' ? actualId : khatmaId;
+
   useEffect(() => {
     if (!initialUid) {
       getDeviceUid().then((id) => setUid(id));
@@ -53,7 +70,7 @@ export default function KhatmaPageClient({
 
   useEffect(() => {
     setIsLoading(true);
-    const unsubscribe = subscribeToKhatma(khatmaId, (doc) => {
+    const unsubscribe = subscribeToKhatma(effectiveKhatmaId, (doc) => {
       setKhatma(doc);
       if (doc) {
         recordVisitedKhatma(doc);
@@ -64,7 +81,7 @@ export default function KhatmaPageClient({
     return () => {
       unsubscribe();
     };
-  }, [khatmaId]);
+  }, [effectiveKhatmaId]);
 
   const handleShare = async () => {
     const url = typeof window !== 'undefined' ? window.location.href : '';
@@ -141,7 +158,7 @@ export default function KhatmaPageClient({
   const handleCompleteCurrentJuz = async () => {
     if (!readingJuzNumber || !uid) return;
     await completeJuz({
-      khatmaId,
+      khatmaId: effectiveKhatmaId,
       juzNumber: readingJuzNumber,
       uid,
     });
@@ -150,7 +167,7 @@ export default function KhatmaPageClient({
   const handleUnreserveCurrentJuz = async () => {
     if (!readingJuzNumber || !uid) return;
     await unreserveJuz({
-      khatmaId,
+      khatmaId: effectiveKhatmaId,
       juzNumber: readingJuzNumber,
       uid,
     });
@@ -453,7 +470,7 @@ export default function KhatmaPageClient({
       {/* Reservation Bottom Sheet */}
       {reservingJuzNumber !== null && (
         <ReserveJuzSheet
-          khatmaId={khatmaId}
+          khatmaId={effectiveKhatmaId}
           juzNumber={reservingJuzNumber}
           uid={uid}
           onClose={() => setReservingJuzNumber(null)}
@@ -465,7 +482,7 @@ export default function KhatmaPageClient({
       {readingJuzNumber !== null && (
         <QuranReaderModal
           juzNumber={readingJuzNumber}
-          khatmaId={khatmaId}
+          khatmaId={effectiveKhatmaId}
           uid={uid}
           isReservedByMe={isReadingReservedByMe}
           isCompleted={isReadingCompleted}

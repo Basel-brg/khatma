@@ -3,6 +3,13 @@ import { notFound } from 'next/navigation';
 import KhatmaPageClient from '../../../components/KhatmaPageClient';
 import { isValidKhatmaId } from '../../../lib/validation';
 
+export function generateStaticParams() {
+  return [
+    { id: 'view' },
+    { id: 'demo-ramadan' },
+  ];
+}
+
 interface KhatmaPageProps {
   params: Promise<{ id: string }>;
 }
