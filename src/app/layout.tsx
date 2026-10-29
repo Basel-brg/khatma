@@ -40,7 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl" className={`${ibmPlexSansArabic.variable} ${amiri.variable}`}>
-      <body className="bg-[#FBF8F3] text-[#0F2922] font-sans antialiased min-h-screen selection:bg-[#FDF6E7] selection:text-[#B48327]">
+      <body className="bg-[#FBF8F3] dark:bg-[#07120E] text-[#0F2922] dark:text-[#F4EFE6] font-sans antialiased min-h-screen selection:bg-[#FDF6E7] dark:selection:bg-[#B48327]/30 selection:text-[#B48327] dark:selection:text-[#FDE68A] transition-colors duration-200">
         {children}
       </body>
     </html>

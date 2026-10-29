@@ -43,30 +43,30 @@ export default function JuzCardGrid({
         // Determine displayed holder name
         const displayHolderName = juz.hideName ? 'فاعل خير' : juz.holderName || 'فاعل خير';
 
-        // Card styling variants — Illuminated Mushaf Folio palette
-        let borderClass = 'border-[#E6DEC8] hover:border-[#B48327]';
-        let bgClass = 'bg-white';
-        let badgeClass = 'bg-[#F4EFE6] text-[#0F2922] border border-[#E6DEC8]';
-        let numberBadgeClass = 'bg-[#F4EFE6] text-[#0F2922] border border-[#E6DEC8]';
+        // Card styling variants — Illuminated Mushaf Folio palette (Light & Dark)
+        let borderClass = 'border-[#E6DEC8] dark:border-[#1E3A31] hover:border-[#B48327] dark:hover:border-[#D4A13E]';
+        let bgClass = 'bg-white dark:bg-[#0D1F1A]';
+        let badgeClass = 'bg-[#F4EFE6] dark:bg-[#142C24] text-[#0F2922] dark:text-[#E8D39E] border border-[#E6DEC8] dark:border-[#234238]';
+        let numberBadgeClass = 'bg-[#F4EFE6] dark:bg-[#142C24] text-[#0F2922] dark:text-[#E8D39E] border border-[#E6DEC8] dark:border-[#234238]';
         let statusText = 'متاح للحجز';
 
         if (isCompleted) {
-          borderClass = 'border-[#A7F3D0]';
-          bgClass = 'bg-[#ECFDF5]/85';
-          badgeClass = 'bg-[#D1FAE5] text-[#065F46] border border-[#A7F3D0] font-semibold';
-          numberBadgeClass = 'bg-[#065F46] text-white';
+          borderClass = 'border-[#A7F3D0] dark:border-[#15803D]/60';
+          bgClass = 'bg-[#ECFDF5]/85 dark:bg-[#0A261B]';
+          badgeClass = 'bg-[#D1FAE5] dark:bg-[#15803D]/30 text-[#065F46] dark:text-[#A7F3D0] border border-[#A7F3D0] dark:border-[#15803D]/50 font-semibold';
+          numberBadgeClass = 'bg-[#065F46] dark:bg-[#15803D] text-white';
           statusText = `مكتمل • ${displayHolderName}`;
         } else if (isReservedByMe) {
-          borderClass = 'border-[#B48327] ring-2 ring-[#B48327]/25';
-          bgClass = 'bg-[#FDF6E7]';
-          badgeClass = 'bg-[#B48327] text-white font-bold shadow-xs';
-          numberBadgeClass = 'bg-[#B48327] text-white';
+          borderClass = 'border-[#B48327] dark:border-[#D4A13E] ring-2 ring-[#B48327]/25 dark:ring-[#D4A13E]/30';
+          bgClass = 'bg-[#FDF6E7] dark:bg-[#1F190D]';
+          badgeClass = 'bg-[#B48327] dark:bg-[#D4A13E] text-white dark:text-[#08130F] font-bold shadow-xs';
+          numberBadgeClass = 'bg-[#B48327] dark:bg-[#D4A13E] text-white dark:text-[#08130F]';
           statusText = 'محجوز لك • اقرأ الآن';
         } else if (isReservedByOther) {
-          borderClass = 'border-[#FDE68A]';
-          bgClass = 'bg-[#FFFBEB]/80';
-          badgeClass = 'bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A]';
-          numberBadgeClass = 'bg-[#FEF3C7] text-[#92400E]';
+          borderClass = 'border-[#FDE68A] dark:border-[#B45309]/50';
+          bgClass = 'bg-[#FFFBEB]/80 dark:bg-[#1C160B]';
+          badgeClass = 'bg-[#FEF3C7] dark:bg-[#B45309]/25 text-[#92400E] dark:text-[#FDE68A] border border-[#FDE68A] dark:border-[#B45309]/40';
+          numberBadgeClass = 'bg-[#FEF3C7] dark:bg-[#B45309]/30 text-[#92400E] dark:text-[#FDE68A]';
           statusText = `محجوز • ${displayHolderName}`;
         }
 
@@ -105,10 +105,10 @@ export default function JuzCardGrid({
 
             {/* Middle: Juz Name & Surah Range */}
             <div className="my-2.5">
-              <h4 className="text-base font-bold text-[#0F2922] font-quran">
+              <h4 className="text-base font-bold text-[#0F2922] dark:text-[#F4EFE6] font-quran">
                 {meta.nameAr}
               </h4>
-              <p className="mt-1 line-clamp-1 text-[11px] text-[#4A5D54]">
+              <p className="mt-1 line-clamp-1 text-[11px] text-[#4A5D54] dark:text-[#A6B8B0]">
                 من {meta.startSurahName} {meta.startAyah} إلى {meta.endSurahName} {meta.endAyah}
               </p>
             </div>

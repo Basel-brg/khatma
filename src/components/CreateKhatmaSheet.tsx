@@ -159,23 +159,23 @@ export default function CreateKhatmaSheet({
       />
 
       {/* Main Sheet / Modal Panel */}
-      <div className="relative w-full max-w-lg mx-auto bg-white rounded-t-3xl sm:rounded-2xl border border-[#E6DEC8] shadow-2xl p-6 sm:p-7 max-h-[92vh] overflow-y-auto sheet-panel z-10">
+      <div className="relative w-full max-w-lg mx-auto bg-white dark:bg-[#0D1F1A] rounded-t-3xl sm:rounded-2xl border border-[#E6DEC8] dark:border-[#1E3A31] shadow-2xl p-6 sm:p-7 max-h-[92vh] overflow-y-auto sheet-panel z-10">
         {/* Mobile Drag Indicator */}
         <div className="sm:hidden flex justify-center mb-3">
-          <div className="w-12 h-1.5 bg-[#E6DEC8] rounded-full" />
+          <div className="w-12 h-1.5 bg-[#E6DEC8] dark:bg-[#234238] rounded-full" />
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-[#E6DEC8]">
+        <div className="flex items-center justify-between pb-4 border-b border-[#E6DEC8] dark:border-[#1E3A31]">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-[#FDF6E7] border border-[#E8D39E] flex items-center justify-center text-[#B48327]">
+            <div className="w-10 h-10 rounded-xl bg-[#FDF6E7] dark:bg-[#1F190D] border border-[#E8D39E] dark:border-[#B48327]/50 flex items-center justify-center text-[#B48327] dark:text-[#E8D39E]">
               <BookOpen className="w-5 h-5" />
             </div>
             <div>
-              <h2 id="sheet-title" className="text-xl font-bold text-[#0F2922] font-quran leading-tight">
+              <h2 id="sheet-title" className="text-xl font-bold text-[#0F2922] dark:text-[#F4EFE6] font-quran leading-tight">
                 بدء ختمة قرآنية جديدة
               </h2>
-              <p className="text-xs text-[#4A5D54]">
+              <p className="text-xs text-[#4A5D54] dark:text-[#A6B8B0]">
                 أنشئ الختمة وشارك الرابط ليتشارك الأهل والأصحاب قراءة أجزائها
               </p>
             </div>
@@ -184,7 +184,7 @@ export default function CreateKhatmaSheet({
             type="button"
             onClick={onClose}
             disabled={isSubmitting}
-            className="w-8 h-8 rounded-full bg-[#F4EFE6] hover:bg-[#E6DEC8] text-[#4A5D54] flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-full bg-[#F4EFE6] dark:bg-[#142C24] hover:bg-[#E6DEC8] dark:hover:bg-[#1E3A31] text-[#4A5D54] dark:text-[#A6B8B0] flex items-center justify-center transition-colors"
             aria-label="إغلاق النافذة"
           >
             <X className="w-4 h-4" />
@@ -193,7 +193,7 @@ export default function CreateKhatmaSheet({
 
         {/* Error Alert */}
         {errorMessage && (
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 flex items-center gap-2">
+          <div className="mt-4 p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded-xl text-xs text-red-700 dark:text-red-300 flex items-center gap-2">
             <span>⚠️</span>
             <span>{errorMessage}</span>
           </div>
@@ -202,7 +202,7 @@ export default function CreateKhatmaSheet({
         <form onSubmit={handleSubmit} className="mt-5 space-y-5">
           {/* Title Field */}
           <div>
-            <label htmlFor="khatma-title" className="block text-sm font-semibold text-[#0F2922] mb-1.5">
+            <label htmlFor="khatma-title" className="block text-sm font-semibold text-[#0F2922] dark:text-[#F4EFE6] mb-1.5">
               اسم الختمة <span className="text-[#B48327]">*</span>
             </label>
             <input
@@ -215,7 +215,7 @@ export default function CreateKhatmaSheet({
                 if (errorMessage) setErrorMessage(null);
               }}
               placeholder="مثال: ختمة شهر رمضان المبارك، ختمة في ثواب الوالدين..."
-              className="w-full px-4 py-3 rounded-xl border border-[#E6DEC8] bg-[#FBF8F3] text-[#0F2922] placeholder:text-[#7D9087] text-sm focus:outline-none focus:ring-2 focus:ring-[#B48327]/30 focus:border-[#B48327] transition-[border-color,box-shadow]"
+              className="w-full px-4 py-3 rounded-xl border border-[#E6DEC8] dark:border-[#234238] bg-[#FBF8F3] dark:bg-[#08130F] text-[#0F2922] dark:text-[#F4EFE6] placeholder:text-[#7D9087] text-sm focus:outline-none focus:ring-2 focus:ring-[#B48327]/30 focus:border-[#B48327] transition-[border-color,box-shadow]"
               autoFocus
             />
           </div>
@@ -223,7 +223,7 @@ export default function CreateKhatmaSheet({
           {/* Quick Presets */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-[#4A5D54] flex items-center gap-1.5">
+              <span className="text-xs font-medium text-[#4A5D54] dark:text-[#A6B8B0] flex items-center gap-1.5">
                 <Sparkles className="w-3.5 h-3.5 text-[#B48327]" />
                 نماذج جاهزة للنية والاسم:
               </span>
@@ -238,8 +238,8 @@ export default function CreateKhatmaSheet({
                     onClick={() => handleSelectPreset(preset, index)}
                     className={`text-xs px-3 py-1.5 rounded-full border transition-colors flex items-center gap-1.5 ${
                       isSelected
-                        ? 'bg-[#FDF6E7] border-[#B48327] text-[#B48327] font-semibold shadow-xs'
-                        : 'bg-[#FBF8F3] border-[#E6DEC8] text-[#4A5D54] hover:border-[#B48327]/60'
+                        ? 'bg-[#FDF6E7] dark:bg-[#1F190D] border-[#B48327] text-[#B48327] dark:text-[#E8D39E] font-semibold shadow-xs'
+                        : 'bg-[#FBF8F3] dark:bg-[#08130F] border-[#E6DEC8] dark:border-[#234238] text-[#4A5D54] dark:text-[#A6B8B0] hover:border-[#B48327]/60'
                     }`}
                   >
                     {isSelected && <Check className="w-3 h-3 text-[#B48327]" />}
@@ -252,7 +252,7 @@ export default function CreateKhatmaSheet({
 
           {/* Intention Field */}
           <div>
-            <label htmlFor="khatma-intention" className="block text-sm font-semibold text-[#0F2922] mb-1.5 flex items-center gap-1.5">
+            <label htmlFor="khatma-intention" className="block text-sm font-semibold text-[#0F2922] dark:text-[#F4EFE6] mb-1.5 flex items-center gap-1.5">
               <Heart className="w-4 h-4 text-[#B48327]" />
               نية الختمة والدعاء <span className="text-xs text-[#7D9087] font-normal">(اختياري)</span>
             </label>
@@ -262,13 +262,13 @@ export default function CreateKhatmaSheet({
               value={intention}
               onChange={(e) => setIntention(e.target.value)}
               placeholder="اكتب نية الختمة أو دعاءً يظهر في أعلى صفحة الختمة لكل من يفتحها..."
-              className="w-full px-4 py-2.5 rounded-xl border border-[#E6DEC8] bg-[#FBF8F3] text-[#0F2922] placeholder:text-[#7D9087] text-sm focus:outline-none focus:ring-2 focus:ring-[#B48327]/30 focus:border-[#B48327] transition-[border-color,box-shadow] resize-none"
+              className="w-full px-4 py-2.5 rounded-xl border border-[#E6DEC8] dark:border-[#234238] bg-[#FBF8F3] dark:bg-[#08130F] text-[#0F2922] dark:text-[#F4EFE6] placeholder:text-[#7D9087] text-sm focus:outline-none focus:ring-2 focus:ring-[#B48327]/30 focus:border-[#B48327] transition-[border-color,box-shadow] resize-none"
             />
           </div>
 
           {/* Target Date Field */}
           <div>
-            <label htmlFor="khatma-target-date" className="block text-sm font-semibold text-[#0F2922] mb-1.5 flex items-center gap-1.5">
+            <label htmlFor="khatma-target-date" className="block text-sm font-semibold text-[#0F2922] dark:text-[#F4EFE6] mb-1.5 flex items-center gap-1.5">
               <Calendar className="w-4 h-4 text-[#B48327]" />
               تاريخ القراءة / الإتمام المرجو
             </label>
@@ -278,27 +278,27 @@ export default function CreateKhatmaSheet({
                 type="date"
                 value={targetDate}
                 onChange={(e) => setTargetDate(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-[#E6DEC8] bg-[#FBF8F3] text-[#0F2922] text-sm tabular-nums focus:outline-none focus:ring-2 focus:ring-[#B48327]/30 focus:border-[#B48327] transition-[border-color,box-shadow]"
+                className="w-full px-4 py-2.5 rounded-xl border border-[#E6DEC8] dark:border-[#234238] bg-[#FBF8F3] dark:bg-[#08130F] text-[#0F2922] dark:text-[#F4EFE6] text-sm tabular-nums focus:outline-none focus:ring-2 focus:ring-[#B48327]/30 focus:border-[#B48327] transition-[border-color,box-shadow]"
               />
               <div className="flex items-center gap-1.5 shrink-0">
                 <button
                   type="button"
                   onClick={() => setTargetDate(getTodayString())}
-                  className="px-2.5 py-2 text-xs rounded-lg border border-[#E6DEC8] bg-[#FBF8F3] text-[#4A5D54] hover:bg-white"
+                  className="px-2.5 py-2 text-xs rounded-lg border border-[#E6DEC8] dark:border-[#234238] bg-[#FBF8F3] dark:bg-[#08130F] text-[#4A5D54] dark:text-[#A6B8B0] hover:bg-white dark:hover:bg-[#142C24]"
                 >
                   اليوم
                 </button>
                 <button
                   type="button"
                   onClick={() => setTargetDate(getDatePlusDays(7))}
-                  className="px-2.5 py-2 text-xs rounded-lg border border-[#E6DEC8] bg-[#FBF8F3] text-[#4A5D54] hover:bg-white"
+                  className="px-2.5 py-2 text-xs rounded-lg border border-[#E6DEC8] dark:border-[#234238] bg-[#FBF8F3] dark:bg-[#08130F] text-[#4A5D54] dark:text-[#A6B8B0] hover:bg-white dark:hover:bg-[#142C24]"
                 >
                   خلال أسبوع
                 </button>
                 <button
                   type="button"
                   onClick={() => setTargetDate(getDatePlusDays(30))}
-                  className="px-2.5 py-2 text-xs rounded-lg border border-[#E6DEC8] bg-[#FBF8F3] text-[#4A5D54] hover:bg-white"
+                  className="px-2.5 py-2 text-xs rounded-lg border border-[#E6DEC8] dark:border-[#234238] bg-[#FBF8F3] dark:bg-[#08130F] text-[#4A5D54] dark:text-[#A6B8B0] hover:bg-white dark:hover:bg-[#142C24]"
                 >
                   خلال شهر
                 </button>
@@ -311,11 +311,11 @@ export default function CreateKhatmaSheet({
             <button
               type="submit"
               disabled={isSubmitting || !title.trim()}
-              className="w-full py-3.5 px-6 rounded-xl bg-[#0F2922] hover:bg-[#153a30] text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-sm transition-colors disabled:opacity-50"
+              className="w-full py-3.5 px-6 rounded-xl bg-[#0F2922] dark:bg-[#B48327] hover:bg-[#153a30] dark:hover:bg-[#C99635] text-white dark:text-[#08130F] font-semibold text-sm flex items-center justify-center gap-2 shadow-sm transition-colors disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin text-[#B48327]" />
+                  <Loader2 className="w-4 h-4 animate-spin text-[#B48327] dark:text-[#08130F]" />
                   <span>جاري إنشاء الختمة...</span>
                 </>
               ) : (
@@ -329,7 +329,7 @@ export default function CreateKhatmaSheet({
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="w-full sm:w-auto py-3 px-5 rounded-xl border border-[#E6DEC8] bg-transparent text-[#4A5D54] hover:bg-[#F4EFE6] text-sm font-medium transition-colors"
+              className="w-full sm:w-auto py-3 px-5 rounded-xl border border-[#E6DEC8] dark:border-[#234238] bg-transparent text-[#4A5D54] dark:text-[#A6B8B0] hover:bg-[#F4EFE6] dark:hover:bg-[#142C24] text-sm font-medium transition-colors"
             >
               إلغاء
             </button>

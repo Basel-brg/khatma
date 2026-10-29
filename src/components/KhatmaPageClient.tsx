@@ -12,6 +12,7 @@ import {
 import JuzCardGrid from './JuzCardGrid';
 import ReserveJuzSheet from './ReserveJuzSheet';
 import QuranReaderModal from './QuranReaderModal';
+import { useKhatmaTheme } from '../lib/theme';
 import {
   Share2,
   Calendar,
@@ -23,6 +24,8 @@ import {
   ArrowRight,
   Copy,
   Check,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 export interface KhatmaPageClientProps {
@@ -40,6 +43,7 @@ export default function KhatmaPageClient({
   const [reservingJuzNumber, setReservingJuzNumber] = useState<number | null>(null);
   const [readingJuzNumber, setReadingJuzNumber] = useState<number | null>(null);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
+  const { isDark, toggleTheme } = useKhatmaTheme();
 
   // Initialize UID
   useEffect(() => {
@@ -172,15 +176,37 @@ export default function KhatmaPageClient({
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 space-y-6" dir="rtl">
       {/* Top Navigation Row */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <a
           href="/"
-          className="button-tactile inline-flex items-center gap-1.5 rounded-xl border border-[#E6DEC8] bg-white px-3.5 py-2 text-xs font-semibold text-[#0F2922] shadow-xs"
+          className="button-tactile inline-flex items-center gap-1.5 rounded-xl border border-[#E6DEC8] dark:border-[#1E3A31] bg-white dark:bg-[#0D1F1A] px-3.5 py-2 text-xs font-semibold text-[#0F2922] dark:text-[#F4EFE6] shadow-xs"
         >
           <ArrowRight className="h-3.5 w-3.5" />
           <span>العودة للرئيسية</span>
         </a>
-        <span className="text-xs font-medium text-[#4A5D54]">ختمة جماعية تشاركية</span>
+        <div className="flex items-center gap-2.5">
+          <span className="hidden sm:inline text-xs font-medium text-[#4A5D54] dark:text-[#A6B8B0]">
+            ختمة جماعية تشاركية
+          </span>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[#E6DEC8] dark:border-[#B48327]/40 bg-white dark:bg-[#0D1F1A] px-3 py-2 text-xs font-semibold text-[#0F2922] dark:text-[#E8D39E] shadow-xs hover:border-[#B48327] transition-colors"
+            aria-label={isDark ? 'تفعيل المظهر الفاتح' : 'تفعيل المظهر الداكن'}
+          >
+            {isDark ? (
+              <>
+                <Sun className="h-3.5 w-3.5 text-[#FDE68A]" />
+                <span>المظهر الفاتح</span>
+              </>
+            ) : (
+              <>
+                <Moon className="h-3.5 w-3.5 text-[#B48327]" />
+                <span>المظهر الداكن</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Top Header Card */}
@@ -335,11 +361,11 @@ export default function KhatmaPageClient({
       {/* 30 Juz Grid */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-[#0F2922] flex items-center gap-2 font-quran">
-            <BookOpen className="h-5 w-5 text-[#B48327]" />
+          <h2 className="text-lg font-bold text-[#0F2922] dark:text-[#F4EFE6] flex items-center gap-2 font-quran">
+            <BookOpen className="h-5 w-5 text-[#B48327] dark:text-[#D4A13E]" />
             <span>أجزاء القرآن الكريم (٣٠ جزءاً)</span>
           </h2>
-          <span className="text-xs text-[#4A5D54]">
+          <span className="text-xs text-[#4A5D54] dark:text-[#A6B8B0]">
             اضغط على أي جزء للحجز أو القراءة
           </span>
         </div>

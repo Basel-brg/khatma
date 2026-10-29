@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { JuzContent, JuzSurahSection, JuzAyah, loadJuzFromDiskOrFetch } from '../lib/quran-loader';
 import { JUZ_METADATA } from '../lib/quran-meta';
+import { useKhatmaTheme } from '../lib/theme';
 import AudioReciterBar from './AudioReciterBar';
 import {
   X,
@@ -109,7 +110,7 @@ export default function QuranReaderModal({
   const [juzData, setJuzData] = useState<JuzContent>(initialFallbackContent);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [fontSize, setFontSize] = useState<number>(25);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const { isDark: isDarkMode, toggleTheme: toggleDarkMode } = useKhatmaTheme();
   const [activeSurahNumber, setActiveSurahNumber] = useState<number>(
     initialFallbackContent.sections[0].surahNumber
   );
@@ -422,14 +423,25 @@ export default function QuranReaderModal({
           {/* Day/Night Theme Toggle */}
           <button
             type="button"
-            onClick={() => setIsDarkMode((d) => !d)}
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-white hover:bg-white/20"
+            onClick={toggleDarkMode}
+            className={`flex h-9 px-2.5 gap-1.5 items-center justify-center rounded-xl border transition-colors ${
+              isDarkMode
+                ? 'border-[#E8D39E]/50 bg-[#B48327]/25 text-[#E8D39E] hover:bg-[#B48327]/35'
+                : 'border-white/15 bg-white/10 text-white hover:bg-white/20'
+            }`}
             aria-label={isDarkMode ? 'الوضع النهاري' : 'الوضع الليلي'}
+            title={isDarkMode ? 'التبديل إلى الوضع النهاري' : 'التبديل إلى الوضع الليلي'}
           >
             {isDarkMode ? (
-              <Sun className="h-4 w-4 text-[#E8D39E]" />
+              <>
+                <Sun className="h-4 w-4 text-[#FDE68A]" />
+                <span className="hidden md:inline text-xs font-semibold text-[#FDE68A]">نهاري</span>
+              </>
             ) : (
-              <Moon className="h-4 w-4 text-[#E8D39E]" />
+              <>
+                <Moon className="h-4 w-4 text-[#E8D39E]" />
+                <span className="hidden md:inline text-xs font-semibold text-[#E8D39E]">ليلي</span>
+              </>
             )}
           </button>
 
@@ -465,8 +477,8 @@ export default function QuranReaderModal({
 
       {/* Main Mushaf Page Viewport */}
       <div
-        className={`flex-1 overflow-y-auto px-2 sm:px-6 py-3 sm:py-6 flex flex-col items-center justify-between ${
-          isDarkMode ? 'bg-[#091410]' : 'bg-[#EFE8D8]'
+        className={`flex-1 overflow-y-auto px-2 sm:px-6 py-3 sm:py-6 flex flex-col items-center justify-between transition-colors duration-200 ${
+          isDarkMode ? 'bg-[#050C0A]' : 'bg-[#EFE8D8]'
         }`}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -474,7 +486,11 @@ export default function QuranReaderModal({
         {isLoading && !activePage ? (
           <div className="flex flex-col items-center justify-center my-auto py-20 text-center">
             <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#B48327] border-t-transparent" />
-            <p className="mt-4 text-sm font-medium text-[#0F2922]">
+            <p
+              className={`mt-4 text-sm font-medium ${
+                isDarkMode ? 'text-[#E8D39E]' : 'text-[#0F2922]'
+              }`}
+            >
               جاري فتح صفحات المصحف الشريف...
             </p>
           </div>
@@ -482,16 +498,18 @@ export default function QuranReaderModal({
           <>
             {/* Authentic Framed Mushaf Page Sheet */}
             <div
-              className={`relative w-full max-w-[680px] my-auto rounded-2xl shadow-2xl border-2 transition-colors ${
+              className={`relative w-full max-w-[680px] my-auto rounded-2xl border-2 transition-colors duration-200 ${
                 isDarkMode
-                  ? 'bg-[#111E19] border-[#B48327]/50 text-[#F4EFE6]'
-                  : 'bg-[#FFFDF7] border-[#C8AD72] text-[#18120B]'
+                  ? 'bg-[#0B1914] border-[#B48327]/50 text-[#F5EFE0] shadow-[0_24px_60px_rgba(0,0,0,0.85)]'
+                  : 'bg-[#FFFDF7] border-[#C8AD72] text-[#18120B] shadow-2xl'
               }`}
             >
               {/* Outer & Inner Illuminated Mushaf Frame */}
               <div
-                className={`m-2 sm:m-3 rounded-xl border-2 p-3 sm:p-6 flex flex-col justify-between min-h-[68vh] ${
-                  isDarkMode ? 'border-[#B48327]/35' : 'border-[#D9C391]'
+                className={`m-2 sm:m-3 rounded-xl border-2 p-3 sm:p-6 flex flex-col justify-between min-h-[68vh] transition-colors duration-200 ${
+                  isDarkMode
+                    ? 'border-[#B48327]/35 bg-gradient-to-b from-[#0E201A]/70 via-[#0B1914] to-[#0E201A]/70'
+                    : 'border-[#D9C391]'
                 }`}
               >
                 {/* Mushaf Page Top Margin Bar (سورة ... | الجزء ...) */}
@@ -503,7 +521,7 @@ export default function QuranReaderModal({
                   }`}
                 >
                   <span>{meta.nameAr}</span>
-                  <span className="text-[11px] font-sans font-semibold opacity-80">
+                  <span className="text-[11px] font-sans font-semibold opacity-85">
                     صفحة المصحف {toArabicDigits(activePage?.pageNumber || 1)}
                   </span>
                   <span>{activePage?.firstSurahNameAr}</span>
@@ -518,12 +536,12 @@ export default function QuranReaderModal({
                         <div
                           className={`relative overflow-hidden rounded-xl border-2 py-2.5 px-4 text-center shadow-xs ${
                             isDarkMode
-                              ? 'border-[#B48327]/60 bg-[#0F2922]'
+                              ? 'border-[#B48327]/60 bg-gradient-to-r from-[#0F2922] via-[#15362C] to-[#0F2922]'
                               : 'border-[#C8AD72] bg-[#FBF4E2]'
                           }`}
                         >
                           <div className="flex items-center justify-center gap-3">
-                            <span className="text-xs font-bold text-[#B48327]">۞</span>
+                            <span className="text-xs font-bold text-[#D4A13E]">۞</span>
                             <h3
                               className={`text-xl sm:text-2xl font-bold font-quran ${
                                 isDarkMode ? 'text-[#FDF6E7]' : 'text-[#0F2922]'
@@ -534,13 +552,13 @@ export default function QuranReaderModal({
                             <span
                               className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                                 isDarkMode
-                                  ? 'bg-white/10 text-[#E8D39E]'
+                                  ? 'bg-[#B48327]/25 text-[#E8D39E] border border-[#E8D39E]/30'
                                   : 'bg-[#0F2922]/10 text-[#0F2922]'
                               }`}
                             >
                               {section.revelationType === 'Meccan' ? 'مكية' : 'مدنية'}
                             </span>
-                            <span className="text-xs font-bold text-[#B48327]">۞</span>
+                            <span className="text-xs font-bold text-[#D4A13E]">۞</span>
                           </div>
                         </div>
                       )}
@@ -580,7 +598,7 @@ export default function QuranReaderModal({
                               className={`inline rounded-lg px-1 py-0.5 cursor-pointer select-text transition-colors ${
                                 isCurrent
                                   ? isDarkMode
-                                    ? 'bg-[#B48327]/35 text-white ring-1 ring-[#E8D39E]/60'
+                                    ? 'bg-[#B48327]/30 text-[#FFFDF7] ring-1 ring-[#E8D39E]/60'
                                     : 'bg-[#FDE68A]/75 text-[#0F2922] ring-1 ring-[#B48327]/50'
                                   : isDarkMode
                                   ? 'hover:bg-white/5'
@@ -592,10 +610,10 @@ export default function QuranReaderModal({
                                 className={`inline-flex items-center justify-center text-[0.82em] font-quran font-bold mx-1 select-none ${
                                   isCurrent
                                     ? isDarkMode
-                                      ? 'text-[#E8D39E]'
+                                      ? 'text-[#FDE68A]'
                                       : 'text-[#92400E]'
                                     : isDarkMode
-                                    ? 'text-[#B48327]'
+                                    ? 'text-[#D4A13E]'
                                     : 'text-[#B48327]'
                                 }`}
                                 title={`آية ${ayah.ayahNumber}`}
@@ -639,12 +657,22 @@ export default function QuranReaderModal({
 
             {/* Mushaf Page Flipper Bar (Next Page / Page Selector / Prev Page) */}
             <div className="mt-4 w-full max-w-[680px] flex flex-col gap-3">
-              <div className="flex items-center justify-between gap-2 rounded-2xl border border-[#E6DEC8] bg-white px-3 py-2 shadow-sm text-[#0F2922]">
+              <div
+                className={`flex items-center justify-between gap-2 rounded-2xl border px-3 py-2 shadow-sm transition-colors ${
+                  isDarkMode
+                    ? 'border-[#B48327]/35 bg-[#0B1914] text-[#F4EFE6]'
+                    : 'border-[#E6DEC8] bg-white text-[#0F2922]'
+                }`}
+              >
                 <button
                   type="button"
                   onClick={() => goToPage(currentPageIdx - 1)}
                   disabled={currentPageIdx <= 0}
-                  className="flex items-center gap-1.5 rounded-xl bg-[#F4EFE6] px-3.5 py-2 text-xs font-bold text-[#0F2922] disabled:opacity-40"
+                  className={`flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold disabled:opacity-40 transition-colors ${
+                    isDarkMode
+                      ? 'bg-[#142C24] border border-[#B48327]/30 text-[#E8D39E] hover:bg-[#1B3A30]'
+                      : 'bg-[#F4EFE6] text-[#0F2922] hover:bg-[#E6DEC8]'
+                  }`}
                 >
                   <ChevronRight className="h-4 w-4" />
                   <span>الصفحة السابقة</span>
@@ -656,7 +684,11 @@ export default function QuranReaderModal({
                     aria-label="اختر صفحة المصحف"
                     value={currentPageIdx}
                     onChange={(e) => goToPage(Number(e.target.value))}
-                    className="rounded-xl border border-[#E6DEC8] bg-[#FBF8F3] px-3 py-1.5 text-xs font-bold text-[#0F2922] focus:border-[#B48327] focus:outline-none"
+                    className={`rounded-xl border px-3 py-1.5 text-xs font-bold focus:outline-none transition-colors ${
+                      isDarkMode
+                        ? 'border-[#B48327]/40 bg-[#08130F] text-[#F4EFE6] focus:border-[#E8D39E]'
+                        : 'border-[#E6DEC8] bg-[#FBF8F3] text-[#0F2922] focus:border-[#B48327]'
+                    }`}
                   >
                     {mushafPages.map((p, idx) => (
                       <option key={p.pageNumber} value={idx}>
@@ -671,7 +703,11 @@ export default function QuranReaderModal({
                   type="button"
                   onClick={() => goToPage(currentPageIdx + 1)}
                   disabled={currentPageIdx >= totalPagesInJuz - 1}
-                  className="flex items-center gap-1.5 rounded-xl bg-[#0F2922] px-3.5 py-2 text-xs font-bold text-white disabled:opacity-40"
+                  className={`flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-xs font-bold disabled:opacity-40 transition-colors ${
+                    isDarkMode
+                      ? 'bg-[#B48327] text-[#08130F] hover:bg-[#C99635]'
+                      : 'bg-[#0F2922] text-white hover:bg-[#14372e]'
+                  }`}
                 >
                   <span>الصفحة التالية</span>
                   <ChevronLeft className="h-4 w-4" />
@@ -680,14 +716,32 @@ export default function QuranReaderModal({
 
               {/* Final Page Completion Callout */}
               {isLastPage && !isCompleted && (
-                <div className="rounded-2xl border-2 border-[#15803D] bg-[#ECFDF5] p-4 text-center shadow-md flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div
+                  className={`rounded-2xl border-2 p-4 text-center shadow-md flex flex-col sm:flex-row items-center justify-between gap-3 transition-colors ${
+                    isDarkMode
+                      ? 'border-[#22C55E]/60 bg-[#0A261B] text-[#ECFDF5]'
+                      : 'border-[#15803D] bg-[#ECFDF5] text-[#065F46]'
+                  }`}
+                >
                   <div className="flex items-center gap-2.5 text-right">
-                    <Sparkles className="h-6 w-6 text-[#15803D] shrink-0" />
+                    <Sparkles
+                      className={`h-6 w-6 shrink-0 ${
+                        isDarkMode ? 'text-[#4ADE80]' : 'text-[#15803D]'
+                      }`}
+                    />
                     <div>
-                      <h4 className="text-sm font-bold text-[#065F46]">
+                      <h4
+                        className={`text-sm font-bold ${
+                          isDarkMode ? 'text-[#ECFDF5]' : 'text-[#065F46]'
+                        }`}
+                      >
                         وصلتَ إلى الصفحة الأخيرة من {meta.nameAr}
                       </h4>
-                      <p className="text-xs text-[#047857]">
+                      <p
+                        className={`text-xs ${
+                          isDarkMode ? 'text-[#A7F3D0]' : 'text-[#047857]'
+                        }`}
+                      >
                         تقبل الله طاعتك! اضغط على الزر لتسجيل إتمام الجزء في الختمة.
                       </p>
                     </div>
@@ -718,6 +772,7 @@ export default function QuranReaderModal({
         currentAyahNumber={activeAyahNumber}
         onNextAyah={handleNextAyah}
         onPrevAyah={handlePrevAyah}
+        isDarkMode={isDarkMode}
       />
     </div>
   );

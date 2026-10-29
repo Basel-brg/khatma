@@ -34,6 +34,29 @@
   --font-quran-fallback: 'Amiri', 'Traditional Arabic', serif;
 }
 
+html.dark {
+  --bg-parchment: #07120E;
+  --bg-parchment-deep: #0B1B15;
+  --surface-card: #0D1F1A;
+  --border-folio: #1E3A31;
+
+  --ink-primary: #F4EFE6;
+  --ink-secondary: #A6B8B0;
+  --ink-faint: #6D857B;
+
+  --gold-accent: #D4A13E;
+  --gold-light: #1B180F;
+  --gold-border: #5E471B;
+
+  --seal-emerald: #22C55E;
+  --seal-emerald-light: #0A261B;
+  --seal-emerald-border: #14532D;
+
+  --reserved-amber: #F59E0B;
+  --reserved-amber-light: #221A0B;
+  --reserved-amber-border: #78350F;
+}
+
 @theme {
   --color-parchment: var(--bg-parchment);
   --color-parchment-deep: var(--bg-parchment-deep);

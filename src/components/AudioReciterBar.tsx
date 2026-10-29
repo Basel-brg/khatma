@@ -25,6 +25,7 @@ export interface AudioReciterBarProps {
   onNextAyah: () => void;
   onPrevAyah: () => void;
   onAyahEnded?: () => void;
+  isDarkMode?: boolean;
   className?: string;
 }
 
@@ -35,6 +36,7 @@ export default function AudioReciterBar({
   onNextAyah,
   onPrevAyah,
   onAyahEnded,
+  isDarkMode = false,
   className = '',
 }: AudioReciterBarProps) {
   const [selectedReciterId, setSelectedReciterId] = useState<string>('al-dosari');
@@ -159,7 +161,11 @@ export default function AudioReciterBar({
   return (
     <div
       data-testid="audio-reciter-bar"
-      className={`sticky bottom-0 z-30 w-full border-t border-[#E6DEC8]/30 bg-[#0F2922] text-white px-3 sm:px-5 py-2.5 shadow-2xl ${className}`}
+      className={`sticky bottom-0 z-30 w-full border-t px-3 sm:px-5 py-2.5 shadow-2xl transition-colors ${
+        isDarkMode
+          ? 'border-[#B48327]/30 bg-[#081511] text-[#F4EFE6]'
+          : 'border-[#E6DEC8]/30 bg-[#0F2922] text-white'
+      } ${className}`}
       dir="rtl"
     >
       <audio
@@ -189,10 +195,20 @@ export default function AudioReciterBar({
 
           {isSelectorOpen && (
             <div
-              className="absolute bottom-full mb-2 right-0 w-60 rounded-2xl border border-[#E6DEC8] bg-[#FBF8F3] p-1.5 shadow-2xl z-50 text-right text-[#0F2922]"
+              className={`absolute bottom-full mb-2 right-0 w-64 rounded-2xl border p-1.5 shadow-2xl z-50 text-right ${
+                isDarkMode
+                  ? 'border-[#B48327]/40 bg-[#0D211B] text-[#F4EFE6]'
+                  : 'border-[#E6DEC8] bg-[#FBF8F3] text-[#0F2922]'
+              }`}
               role="listbox"
             >
-              <div className="px-3 py-1.5 text-[11px] font-bold text-[#4A5D54] border-b border-[#E6DEC8]/60 mb-1">
+              <div
+                className={`px-3 py-1.5 text-[11px] font-bold border-b mb-1 ${
+                  isDarkMode
+                    ? 'text-[#E8D39E] border-[#B48327]/25'
+                    : 'text-[#4A5D54] border-[#E6DEC8]/60'
+                }`}
+              >
                 اختر القارئ المفضل
               </div>
               {RECITERS.map((reciter) => {
@@ -209,12 +225,26 @@ export default function AudioReciterBar({
                     }}
                     className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs transition-colors ${
                       isSelected
-                        ? 'bg-[#0F2922] text-white font-bold'
+                        ? isDarkMode
+                          ? 'bg-[#B48327] text-[#081511] font-bold'
+                          : 'bg-[#0F2922] text-white font-bold'
+                        : isDarkMode
+                        ? 'text-[#F4EFE6] hover:bg-white/10'
                         : 'text-[#0F2922] hover:bg-[#F4EFE6]'
                     }`}
                   >
                     <span>{reciter.nameAr}</span>
-                    <span className={`text-[10px] ${isSelected ? 'text-[#E8D39E]' : 'text-[#4A5D54]'}`}>
+                    <span
+                      className={`text-[10px] ${
+                        isSelected
+                          ? isDarkMode
+                            ? 'text-[#081511]/80 font-semibold'
+                            : 'text-[#E8D39E]'
+                          : isDarkMode
+                          ? 'text-[#A6B8B0]'
+                          : 'text-[#4A5D54]'
+                      }`}
+                    >
                       {reciter.styleAr}
                     </span>
                   </button>
