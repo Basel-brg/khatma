@@ -172,102 +172,14 @@ export default function AudioReciterBar({
         preload="none"
       />
 
-      {/* Floating Obsidian-Emerald Pill Bar (Matching Option 1 Mockup) */}
-      <div className="pointer-events-auto mx-auto flex max-w-[660px] items-center justify-between gap-2 sm:gap-4 rounded-full border border-[#C5A059]/45 bg-[#091B15]/98 px-3 sm:px-5 py-2 text-white shadow-[0_12px_36px_rgba(0,0,0,0.55)] backdrop-blur-md">
-        {/* Reciter Selector */}
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => setIsSelectorOpen(!isSelectorOpen)}
-            className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-[#C5A059]/35 bg-[#112A21] px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-semibold text-[#F4EFE6] hover:border-[#C5A059]"
-            aria-label="اختيار القارئ"
-            aria-haspopup="listbox"
-          >
-            <span className="truncate max-w-[120px] sm:max-w-none">{currentReciter.nameAr}</span>
-            <ChevronDown className="h-3.5 w-3.5 text-[#C5A059] shrink-0" />
-          </button>
-
-          {isSelectorOpen && (
-            <div
-              className={`absolute bottom-full mb-2.5 right-0 w-64 rounded-xl border p-1.5 shadow-2xl z-50 text-right ${
-                isDarkMode
-                  ? 'border-[#C5A059]/50 bg-[#0B1D17] text-[#F4EFE6]'
-                  : 'border-[#C5A059] bg-[#F8F5EC] text-[#091B15]'
-              }`}
-              role="listbox"
-            >
-              <div
-                className={`px-3 py-1.5 text-[11px] font-bold border-b mb-1 ${
-                  isDarkMode
-                    ? 'text-[#C5A059] border-[#C5A059]/25'
-                    : 'text-[#5A4214] border-[#C5A059]/40'
-                }`}
-              >
-                اختر القارئ المفضل
-              </div>
-              {RECITERS.map((reciter) => {
-                const isSelected = reciter.id === selectedReciterId;
-                return (
-                  <button
-                    key={reciter.id}
-                    type="button"
-                    role="option"
-                    aria-selected={isSelected}
-                    onClick={() => {
-                      setSelectedReciterId(reciter.id);
-                      setIsSelectorOpen(false);
-                    }}
-                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs transition-colors ${
-                      isSelected
-                        ? 'bg-[#C5A059] text-[#091B15] font-bold'
-                        : isDarkMode
-                        ? 'text-[#F4EFE6] hover:bg-white/10'
-                        : 'text-[#091B15] hover:bg-[#EFE8D6]'
-                    }`}
-                  >
-                    <span>{reciter.nameAr}</span>
-                    <span
-                      className={`text-[10px] ${
-                        isSelected
-                          ? 'text-[#091B15]/80 font-semibold'
-                          : isDarkMode
-                          ? 'text-[#A6B8B0]'
-                          : 'text-[#5A6B63]'
-                      }`}
-                    >
-                      {reciter.styleAr}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Current Ayah Info */}
-        <div className="flex items-center gap-1.5 text-xs sm:text-sm text-[#E8D39E]">
-          <Volume2 className={`h-4 w-4 text-[#C5A059] shrink-0 ${isPlaying ? 'animate-pulse' : ''}`} />
-          <span className="truncate">
-            {currentSurahNameAr ? `${currentSurahNameAr} • ` : ''}
-            آية <strong className="text-white tabular-nums">{toArabicDigits(currentAyahNumber)}</strong>
-          </span>
-        </div>
-
-        {/* Gold Circular Playback Controls (Matching Option 1 Mockup) */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          <button
-            type="button"
-            onClick={onPrevAyah}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-[#C5A059]/40 bg-[#112A21] text-[#C5A059] hover:bg-[#18382C]"
-            aria-label="الآية السابقة"
-          >
-            <SkipForward className="h-4 w-4" />
-          </button>
-
+      {/* Floating Ayah App Style Pill Bar */}
+      <div className="pointer-events-auto mx-auto flex max-w-[500px] items-center justify-between gap-3 rounded-full border border-white/10 bg-[#1C1C1E] px-3.5 py-1.5 text-white shadow-[0_12px_36px_rgba(0,0,0,0.6)] backdrop-blur-md">
+        {/* Play/Pause Button on Left (Emerald Green matching Image 2) */}
+        <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={togglePlay}
-            className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-[#C5A059] text-[#091B15] shadow-md hover:bg-[#D4B06A]"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#10B981] text-white shadow-md hover:bg-[#059669] transition-transform active:scale-95"
             aria-label={isPlaying ? 'إيقاف مؤقت' : 'تشغيل التلاوة'}
           >
             {isBuffering ? (
@@ -275,17 +187,88 @@ export default function AudioReciterBar({
             ) : isPlaying ? (
               <Pause className="h-5 w-5 fill-current" />
             ) : (
-              <Play className="h-5 w-5 fill-current" />
+              <Play className="h-5 w-5 fill-current ml-0.5" />
             )}
           </button>
 
           <button
             type="button"
-            onClick={onNextAyah}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-[#C5A059]/40 bg-[#112A21] text-[#C5A059] hover:bg-[#18382C]"
-            aria-label="الآية التالية"
+            onClick={onPrevAyah}
+            className="flex h-8 w-8 items-center justify-center rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+            aria-label="الآية السابقة"
           >
             <SkipBack className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* Reciter Selector in Center (Emerald Green matching Image 2) */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setIsSelectorOpen(!isSelectorOpen)}
+            className="flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold text-[#10B981] hover:bg-white/5 transition-colors"
+            aria-label="اختيار القارئ"
+            aria-haspopup="listbox"
+          >
+            <span className="truncate max-w-[150px] sm:max-w-none">{currentReciter.nameAr}</span>
+            <ChevronDown className="h-3.5 w-3.5 text-[#10B981] shrink-0" />
+          </button>
+
+          {isSelectorOpen && (
+            <div
+              className="absolute bottom-full mb-2.5 right-1/2 translate-x-1/2 w-64 rounded-2xl border border-white/15 bg-[#242426] p-2 shadow-2xl z-50 text-right text-white"
+              role="listbox"
+            >
+              <div className="px-3 py-1.5 text-xs font-bold text-[#10B981] border-b border-white/10 mb-1">
+                اختر القارئ
+              </div>
+              <div className="max-h-56 overflow-y-auto space-y-1">
+                {RECITERS.map((reciter) => {
+                  const isSelected = reciter.id === selectedReciterId;
+                  return (
+                    <button
+                      key={reciter.id}
+                      type="button"
+                      role="option"
+                      aria-selected={isSelected}
+                      onClick={() => {
+                        setSelectedReciterId(reciter.id);
+                        setIsSelectorOpen(false);
+                      }}
+                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs transition-colors ${
+                        isSelected
+                          ? 'bg-[#10B981] text-white font-bold'
+                          : 'text-[#E5E5EA] hover:bg-white/10'
+                      }`}
+                    >
+                      <span>{reciter.nameAr}</span>
+                      <span
+                        className={`text-[10px] ${
+                          isSelected ? 'text-white/90' : 'text-[#8E8E93]'
+                        }`}
+                      >
+                        {reciter.styleAr}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Current Ayah indicator & Next Ayah button */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-[#8E8E93] tabular-nums">
+            {toArabicDigits(currentAyahNumber)}
+          </span>
+          <button
+            type="button"
+            onClick={onNextAyah}
+            className="flex h-8 w-8 items-center justify-center rounded-full text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+            aria-label="الآية التالية"
+          >
+            <SkipForward className="h-4 w-4" />
           </button>
         </div>
       </div>

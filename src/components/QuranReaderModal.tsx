@@ -5,19 +5,20 @@ import { JuzContent, JuzAyah, loadJuzFromDiskOrFetch } from '../lib/quran-loader
 import { JUZ_METADATA } from '../lib/quran-meta';
 import { useKhatmaTheme } from '../lib/theme';
 import AudioReciterBar from './AudioReciterBar';
-import { AyahStarMedallion, toArabicDigits } from './IslamicOrnaments';
+import { AyahStarMedallion, SurahCartoucheBanner, toArabicDigits } from './IslamicOrnaments';
 import {
   X,
   CheckCircle,
   Undo2,
   Sun,
   Moon,
-  ChevronLeft,
-  ChevronRight,
   ZoomIn,
   ZoomOut,
-  Sparkles,
-  Sliders,
+  Settings,
+  Search,
+  List,
+  MessageSquareText,
+  CornerUpLeft,
 } from 'lucide-react';
 
 export interface QuranReaderModalProps {
@@ -101,6 +102,7 @@ export default function QuranReaderModal({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [fontSize, setFontSize] = useState<number>(25);
   const { isDark: isDarkMode, toggleTheme: toggleDarkMode } = useKhatmaTheme();
+  // By default, show controls so users notice options, and clicking the page toggles full-screen mode
   const [showControls, setShowControls] = useState<boolean>(true);
 
   const [activeSurahNumber, setActiveSurahNumber] = useState<number>(
@@ -309,7 +311,7 @@ export default function QuranReaderModal({
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
     const deltaY = e.changedTouches[0].clientY - touchStartY.current;
 
-    if (Math.abs(deltaX) > 60 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+    if (Math.abs(deltaX) > 55 && Math.abs(deltaX) > Math.abs(deltaY) * 1.4) {
       if (deltaX > 0) {
         if (currentPageIdx + 1 < mushafPages.length) {
           goToPage(currentPageIdx + 1);
@@ -346,76 +348,94 @@ export default function QuranReaderModal({
 
   const activePage = mushafPages[currentPageIdx] || mushafPages[0];
   const totalPagesInJuz = mushafPages.length || 1;
-  const isLastPage = currentPageIdx === totalPagesInJuz - 1;
-
-  const firstPageNumber = mushafPages[0]?.pageNumber || 1;
-  const lastPageNumber = mushafPages[mushafPages.length - 1]?.pageNumber || 604;
 
   return (
     <div
       data-testid="quran-reader-modal"
-      className={`fixed inset-0 z-50 flex flex-col overflow-hidden select-none transition-colors duration-200 ${
-        isDarkMode ? 'bg-[#06100C] text-[#F4EFE6]' : 'bg-[#F5F1E8] text-[#111F19]'
+      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden select-none transition-colors duration-200 ${
+        isDarkMode ? 'bg-[#181818] text-[#EDEBE8]' : 'bg-[#FAF7F0] text-[#1A1A1A]'
       }`}
       dir="rtl"
     >
-      {/* 1. Floating Top Controls Header (Toggles on tap) */}
+      {/* 1. Sleek Floating Top Bar (Matching user's Reference Image) */}
       <header
-        className={`fixed top-0 inset-x-0 z-40 flex items-center justify-between border-b px-3 sm:px-6 py-2.5 shadow-md backdrop-blur-md transition-all duration-300 ${
+        className={`fixed top-0 inset-x-0 z-40 flex items-center justify-between px-3 sm:px-6 py-2.5 backdrop-blur-md border-b transition-all duration-300 ${
           isDarkMode
-            ? 'border-[#C5A059]/30 bg-[#081A14]/95 text-white'
-            : 'border-[#C5A059]/40 bg-[#F8F5EC]/95 text-[#091B15]'
+            ? 'border-white/10 bg-[#1F1F1F]/95 text-white'
+            : 'border-black/10 bg-[#FFFFFF]/95 text-[#1A1A1A]'
         } ${
           showControls
             ? 'opacity-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
       >
+        {/* Right side: Close & Ayah-style Navigation Icons */}
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             type="button"
             onClick={onClose}
-            className={`flex h-9 w-9 items-center justify-center border transition-colors ${
-              isDarkMode
-                ? 'border-[#C5A059]/40 bg-[#112A21] text-[#E8D39E] hover:bg-[#18382C]'
-                : 'border-[#C5A059] bg-[#EFE8D6] text-[#091B15] hover:bg-[#E4DAC2]'
-            }`}
+            className="flex h-9 w-9 items-center justify-center rounded-full text-current hover:bg-black/10 dark:hover:bg-white/10 transition-colors"
             aria-label="إغلاق قارئ المصحف"
           >
             <X className="h-5 w-5" />
           </button>
-          <div>
-            <h2 className="text-sm sm:text-base font-bold text-[#C8A45D] font-quran flex items-center gap-2">
-              <span>{meta.nameAr}</span>
-              {activePage && (
-                <span className="border border-[#C5A059]/40 px-2 py-0.5 text-[11px] font-sans font-semibold">
-                  صـ {toArabicDigits(activePage.pageNumber)}
-                </span>
-              )}
-            </h2>
+
+          {/* Surah/Juz Index List Icon (Emerald Green from Image 2) */}
+          <div className="flex items-center gap-1.5 border border-[#10B981]/30 bg-[#10B981]/10 rounded-full px-2.5 py-1 text-xs font-bold font-quran text-[#10B981]">
+            <List className="h-4 w-4" />
+            <span>{meta.nameAr}</span>
+          </div>
+
+          {/* Search Icon (Emerald Green from Image 2) */}
+          <button
+            type="button"
+            onClick={() => {
+              const surahTarget = prompt('ادخل رقم السورة أو الآية:');
+              if (surahTarget) {
+                const sNum = parseInt(surahTarget, 10);
+                if (!isNaN(sNum) && sNum >= 1 && sNum <= 114) {
+                  selectAyah(sNum, 1);
+                }
+              }
+            }}
+            className="flex h-8 w-8 items-center justify-center rounded-full text-[#10B981] hover:bg-[#10B981]/15 transition-colors"
+            aria-label="بحث في الآيات"
+            title="بحث"
+          >
+            <Search className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* Center: Square Calendar/Juz Badge (Exact square '18' badge from Image 2) */}
+        <div className="flex items-center justify-center">
+          <div
+            className="flex h-8 w-8 items-center justify-center rounded-md border border-[#10B981] bg-[#10B981]/10 text-xs font-bold text-[#10B981] tabular-nums shadow-xs"
+            title={`الجزء ${toArabicDigits(juzNumber)}`}
+          >
+            <span>{toArabicDigits(juzNumber)}</span>
           </div>
         </div>
 
-        {/* Reader Action Controls */}
+        {/* Left side: Settings & Action Buttons */}
         <div className="flex items-center gap-1.5 sm:gap-2">
-          {/* Font Size */}
-          <div className="flex items-center border border-[#C5A059]/40 p-0.5">
+          {/* Font Size controls */}
+          <div className="flex items-center rounded-lg bg-black/5 dark:bg-white/10 px-1 py-0.5">
             <button
               type="button"
               onClick={() => setFontSize((f) => Math.max(18, f - 2))}
-              className="p-1.5 hover:bg-black/10 dark:hover:bg-white/10"
+              className="p-1.5 text-current hover:text-[#10B981]"
               title="تصغير الخط"
               aria-label="تصغير الخط"
             >
               <ZoomOut className="h-4 w-4" />
             </button>
-            <span className="text-[11px] tabular-nums px-1.5 text-[#C5A059] font-bold">
+            <span className="text-xs font-bold tabular-nums px-1 text-[#10B981]">
               {fontSize}
             </span>
             <button
               type="button"
               onClick={() => setFontSize((f) => Math.min(36, f + 2))}
-              className="p-1.5 hover:bg-black/10 dark:hover:bg-white/10"
+              className="p-1.5 text-current hover:text-[#10B981]"
               title="تكبير الخط"
               aria-label="تكبير الخط"
             >
@@ -427,25 +447,11 @@ export default function QuranReaderModal({
           <button
             type="button"
             onClick={toggleDarkMode}
-            className={`flex h-9 px-2.5 gap-1.5 items-center justify-center border transition-colors ${
-              isDarkMode
-                ? 'border-[#C5A059] bg-[#C5A059]/25 text-[#FDE68A]'
-                : 'border-[#C5A059]/60 bg-[#EFE8D6] text-[#091B15] hover:bg-[#E4DAC2]'
-            }`}
+            className="flex h-8 w-8 items-center justify-center rounded-full text-[#10B981] hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
             aria-label={isDarkMode ? 'الوضع النهاري' : 'الوضع الليلي'}
             title={isDarkMode ? 'التبديل إلى الوضع النهاري' : 'التبديل إلى الوضع الليلي'}
           >
-            {isDarkMode ? (
-              <>
-                <Sun className="h-4 w-4 text-[#FDE68A]" />
-                <span className="hidden md:inline text-xs font-semibold">نهاري</span>
-              </>
-            ) : (
-              <>
-                <Moon className="h-4 w-4 text-[#C5A059]" />
-                <span className="hidden md:inline text-xs font-semibold">ليلي</span>
-              </>
-            )}
+            {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
 
           {/* Unreserve button */}
@@ -455,7 +461,7 @@ export default function QuranReaderModal({
               data-testid="unreserve-juz-btn"
               onClick={handleUnreserveClick}
               disabled={isSubmittingUnreserve}
-              className="flex items-center gap-1 border border-rose-400/50 bg-rose-500/20 px-2.5 py-1.5 text-xs font-semibold text-rose-200 hover:bg-rose-500/30"
+              className="flex items-center gap-1 rounded-full border border-rose-400/40 bg-rose-500/15 px-3 py-1 text-xs font-semibold text-rose-300 hover:bg-rose-500/25"
             >
               <Undo2 className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">إلغاء الحجز</span>
@@ -469,7 +475,7 @@ export default function QuranReaderModal({
               data-testid="complete-juz-btn"
               onClick={handleCompleteClick}
               disabled={isSubmittingComplete}
-              className="flex items-center gap-1.5 border border-[#C5A059] bg-[#C5A059] hover:bg-[#D4B06A] px-3 py-1.5 text-xs font-bold text-[#081A14] shadow-xs"
+              className="flex items-center gap-1.5 rounded-full bg-[#10B981] hover:bg-[#059669] px-3.5 py-1.5 text-xs font-bold text-white shadow-sm transition-colors"
             >
               <CheckCircle className="h-3.5 w-3.5" />
               <span>{isSubmittingComplete ? 'جاري الحفظ...' : 'أتممت القراءة'}</span>
@@ -478,63 +484,52 @@ export default function QuranReaderModal({
         </div>
       </header>
 
-      {/* 2. Full-Screen Quran Page Canvas (Fills entire screen like Mobile Quran App) */}
-      <div
-        className="flex-1 overflow-y-auto w-full flex flex-col justify-between cursor-pointer px-4 sm:px-8 py-3 pt-4 sm:pt-6 pb-28"
+      {/* 2. Full-Screen Quran Page Layout (Matching user's Image 2 & 3 pixel-for-pixel) */}
+      <main
+        className="flex-1 w-full flex flex-col justify-between overflow-y-auto cursor-pointer px-4 sm:px-8 pt-4 pb-24 max-w-xl mx-auto"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
         onClick={() => setShowControls((prev) => !prev)}
       >
         {isLoading && !activePage ? (
           <div className="flex flex-col items-center justify-center my-auto py-24 text-center">
-            <div className="h-10 w-10 animate-spin rounded-full border-3 border-[#C5A059] border-t-transparent" />
-            <p className="mt-4 text-sm font-medium text-[#C5A059]">
+            <div className="h-10 w-10 animate-spin rounded-full border-3 border-[#10B981] border-t-transparent" />
+            <p className="mt-4 text-sm font-medium text-[#10B981]">
               جاري فتح صفحات المصحف الشريف...
             </p>
           </div>
         ) : (
-          <div className="max-w-2xl mx-auto w-full flex-1 flex flex-col justify-between">
-            {/* Minimal Top Header (Matching user's Image 2: "الغاشية" on left, "الجزء 30" on right) */}
-            <div className="flex items-center justify-between text-xs sm:text-sm font-quran font-bold text-[#A68037] dark:text-[#C5A059] pb-3 select-none">
-              <span>سورة {activePage?.firstSurahNameAr}</span>
-              <span className="opacity-75">{meta.nameAr}</span>
+          <div className="flex-1 flex flex-col justify-between w-full">
+            {/* Top Minimal Line in Full-Screen: "الجزء 30" on Right, "الغاشية" on Left */}
+            <div className="flex items-center justify-between text-xs font-sans font-medium text-[#8E8E93] pb-2 select-none">
+              <span>{meta.nameAr}</span>
+              <span>{activePage?.firstSurahNameAr ? activePage.firstSurahNameAr.replace('سورة ', '') : ''}</span>
             </div>
 
-            {/* Verses & Surah Header Banners Body */}
-            <div className="my-auto py-2 space-y-5">
+            {/* Quran Text Content */}
+            <div className="my-auto py-2 space-y-4">
               {activePage?.sections.map((section) => (
-                <div key={`${activePage.pageNumber}-${section.surahNumber}`} className="space-y-4">
-                  {/* Classical Islamic Arabesque Surah Header Banner (Matching user's screenshot) */}
+                <div key={`${activePage.pageNumber}-${section.surahNumber}`} className="space-y-3">
+                  {/* Surah Header Cartouche Banner (Exact engraving like Image 1, 2 & 3) */}
                   {section.showHeader && (
-                    <div
-                      className={`relative overflow-hidden border-2 py-2 px-4 text-center my-3 select-none ${
-                        isDarkMode
-                          ? 'border-[#C5A059]/60 bg-[#0A1D16]'
-                          : 'border-[#2A3B34] bg-[#EFE8D6]'
-                      }`}
-                    >
-                      <div className="flex items-center justify-center gap-4">
-                        <span className="text-base text-[#C5A059]">۞</span>
-                        <h3 className="text-xl sm:text-2xl font-bold font-quran tracking-wide">
-                          {section.surahNameAr}
-                        </h3>
-                        <span className="text-base text-[#C5A059]">۞</span>
-                      </div>
-                    </div>
+                    <SurahCartoucheBanner
+                      surahNameAr={section.surahNameAr}
+                      isDarkMode={isDarkMode}
+                    />
                   )}
 
                   {/* Basmala Calligraphy */}
                   {section.showBasmala && (
-                    <div className="py-2 text-center select-none">
-                      <p className="text-2xl sm:text-3xl font-quran font-bold text-[#A68037] dark:text-[#C5A059]">
+                    <div className="py-2.5 text-center select-none">
+                      <p className="text-2xl sm:text-3xl font-quran font-bold tracking-wide">
                         بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
                       </p>
                     </div>
                   )}
 
-                  {/* Continuous Justified Mushaf Text */}
+                  {/* Uthmani Verses with Classical End Medallions */}
                   <div
-                    className="font-quran text-justify leading-[2.5] tracking-wide select-text"
+                    className="font-quran text-justify leading-[2.65] select-text"
                     style={{
                       fontSize: `${fontSize}px`,
                       textAlign: 'justify',
@@ -554,11 +549,9 @@ export default function QuranReaderModal({
                             e.stopPropagation();
                             selectAyah(ayah.surahNumber, ayah.ayahNumber);
                           }}
-                          className={`inline rounded-md px-1 py-0.5 cursor-pointer transition-colors ${
+                          className={`inline rounded-sm px-1 py-0.5 cursor-pointer transition-colors ${
                             isCurrent
-                              ? isDarkMode
-                                ? 'bg-[#C5A059]/30 text-white ring-1 ring-[#C5A059]'
-                                : 'bg-[#EBD292] text-[#091B15] ring-1 ring-[#9A6F1E]'
+                              ? 'bg-[#10B981]/25 text-[#10B981] font-bold ring-1 ring-[#10B981]'
                               : isDarkMode
                               ? 'hover:bg-white/5'
                               : 'hover:bg-black/5'
@@ -578,13 +571,13 @@ export default function QuranReaderModal({
               ))}
             </div>
 
-            {/* Bottom Minimal Page Capsule Medallion (Matching user's Image 2: "592") */}
-            <div className="pt-4 flex items-center justify-center select-none">
+            {/* Bottom Minimal Page Capsule Medallion: Exact "592" Pill from Image 2 & 3 */}
+            <div className="pt-3 pb-1 flex items-center justify-center select-none">
               <div
-                className={`inline-flex items-center justify-center rounded-full border px-4 py-1 text-xs font-bold font-sans tabular-nums shadow-xs ${
+                className={`inline-flex items-center justify-center rounded-full border px-4 py-0.5 text-xs font-bold font-sans tabular-nums shadow-xs ${
                   isDarkMode
-                    ? 'border-[#C5A059]/40 bg-[#0A1F17] text-[#E8D39E]'
-                    : 'border-[#C5A059] bg-[#EFE8D6] text-[#091B15]'
+                    ? 'border-[#38383A] bg-[#242426] text-[#D1D1D6]'
+                    : 'border-[#D1D1D6] bg-[#ECE9E0] text-[#3A3A3C]'
                 }`}
               >
                 <span>{toArabicDigits(activePage?.pageNumber || 1)}</span>
@@ -592,19 +585,19 @@ export default function QuranReaderModal({
             </div>
           </div>
         )}
-      </div>
+      </main>
 
-      {/* 3. Floating Bottom Controls: Audio Player Bar + Page Navigation Slider (Matching Image 1) */}
+      {/* 3. Floating Bottom Controls: Audio Bar + Page Slider (Matching user's Image 1 & 2) */}
       <footer
-        className={`fixed bottom-0 inset-x-0 z-40 px-3 sm:px-6 pb-3 pt-2 flex flex-col items-center gap-2 transition-all duration-300 pointer-events-none ${
+        className={`fixed bottom-0 inset-x-0 z-40 px-3 sm:px-6 pb-4 pt-2 flex flex-col items-center gap-2.5 transition-all duration-300 pointer-events-none ${
           showControls
             ? 'opacity-100 translate-y-0'
-            : 'opacity-0 translate-y-6'
+            : 'opacity-0 translate-y-8'
         }`}
         dir="rtl"
       >
-        {/* Docked Floating Audio Reciter Bar */}
-        <div className="w-full max-w-xl pointer-events-auto">
+        {/* Floating Audio Reciter Bar */}
+        <div className="w-full max-w-md pointer-events-auto">
           <AudioReciterBar
             currentSurahNumber={activeSurahNumber}
             currentSurahNameAr={currentSurahNameAr}
@@ -612,61 +605,51 @@ export default function QuranReaderModal({
             onNextAyah={handleNextAyah}
             onPrevAyah={handlePrevAyah}
             isDarkMode={isDarkMode}
-            className="!pb-0 !pt-0 !px-0"
+            className="!p-0 !bg-transparent !border-0 shadow-none"
           />
         </div>
 
-        {/* Page Navigation Slider Bar (Matching user's Image 1) */}
-        <div className="w-full max-w-xl pointer-events-auto">
+        {/* Bottom Page Navigation Slider Bar (Matching user's Image 1 & 2) */}
+        <div className="w-full max-w-md pointer-events-auto">
           <div
-            className={`flex items-center justify-between gap-3 rounded-2xl border px-3 sm:px-4 py-2 shadow-2xl backdrop-blur-md ${
+            className={`flex items-center justify-between gap-3 rounded-full border px-4 py-2 shadow-xl backdrop-blur-md ${
               isDarkMode
-                ? 'border-[#C5A059]/40 bg-[#081A14]/98 text-white'
-                : 'border-[#C5A059] bg-[#F8F5EC]/98 text-[#091B15]'
+                ? 'border-[#38383A] bg-[#1C1C1E]/95 text-white'
+                : 'border-[#D1D1D6] bg-[#FFFFFF]/95 text-[#1C1C1E]'
             }`}
           >
-            {/* Right: Last Page Marker / Jump */}
-            <button
-              type="button"
-              onClick={() => goToPage(totalPagesInJuz - 1)}
-              className="flex items-center gap-1 text-xs font-bold text-[#C5A059] hover:underline shrink-0"
-              title="الانتقال لآخر صفحة في الجزء"
-            >
-              <span>{toArabicDigits(lastPageNumber)}</span>
-              <ChevronLeft className="h-3.5 w-3.5" />
-            </button>
+            {/* Left: Notes / Speech bubble icon (Image 2) */}
+            <div className="flex items-center gap-1.5 shrink-0 text-[#10B981]">
+              <MessageSquareText className="h-4 w-4" />
+            </div>
 
-            {/* Center: Interactive Page Slider */}
-            <div className="flex-1 flex flex-col items-center gap-1 px-1">
-              <div className="w-full flex items-center gap-2">
-                <input
-                  type="range"
-                  min={0}
-                  max={Math.max(0, totalPagesInJuz - 1)}
-                  value={currentPageIdx}
-                  onChange={(e) => goToPage(Number(e.target.value))}
-                  aria-label="سلايدر التنقل بين صفحات المصحف"
-                  className="w-full h-2 bg-[#2D3F37] dark:bg-[#1A3127] rounded-lg appearance-none cursor-pointer accent-[#C5A059]"
-                />
-              </div>
-              <div className="flex items-center justify-between w-full text-[10px] sm:text-[11px] font-sans font-semibold text-[#A68037] dark:text-[#E8D39E]">
-                <span>صفحة {toArabicDigits(currentPageIdx + 1)} من {toArabicDigits(totalPagesInJuz)}</span>
-                <span className="font-bold text-white bg-[#C5A059] px-2 py-0.5 rounded-full text-[10px] text-[#081A14]">
-                  صـ {toArabicDigits(activePage?.pageNumber || 1)}
-                </span>
-                <span>بالمصحف</span>
+            {/* Center: Range Slider with Green Page Badge (Image 2) */}
+            <div className="flex-1 flex items-center gap-2.5">
+              <input
+                type="range"
+                min={0}
+                max={Math.max(0, totalPagesInJuz - 1)}
+                value={currentPageIdx}
+                onChange={(e) => goToPage(Number(e.target.value))}
+                aria-label="سلايدر التنقل بين صفحات المصحف"
+                className="w-full h-1.5 bg-[#38383A] dark:bg-[#38383A] rounded-lg appearance-none cursor-pointer accent-[#10B981]"
+              />
+
+              {/* Current Page Pill Badge (Matching green "592" badge in Image 1 & 2) */}
+              <div className="rounded-full bg-[#10B981] px-2.5 py-0.5 text-xs font-bold text-white tabular-nums shrink-0 shadow-xs">
+                {toArabicDigits(activePage?.pageNumber || 1)}
               </div>
             </div>
 
-            {/* Left: First Page Marker / Jump */}
+            {/* Right: Last Page Jump with Return Arrow and "604" (Matching Image 1 & 2) */}
             <button
               type="button"
-              onClick={() => goToPage(0)}
-              className="flex items-center gap-1 text-xs font-bold text-[#C5A059] hover:underline shrink-0"
-              title="الانتقال لأول صفحة في الجزء"
+              onClick={() => goToPage(totalPagesInJuz - 1)}
+              className="flex items-center gap-1 text-xs font-bold text-[#10B981] hover:opacity-80 shrink-0 tabular-nums"
+              title="الانتقال لآخر صفحة"
             >
-              <ChevronRight className="h-3.5 w-3.5" />
-              <span>{toArabicDigits(firstPageNumber)}</span>
+              <CornerUpLeft className="h-3.5 w-3.5" />
+              <span>{toArabicDigits(604)}</span>
             </button>
           </div>
         </div>
