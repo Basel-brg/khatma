@@ -16,7 +16,7 @@ const amiri = Amiri({
   display: 'swap',
 });
 
-const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://khatma-a9e15.web.app';
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://khatma.space';
 
 export const metadata: Metadata = {
   metadataBase: new URL(appUrl),
