@@ -43,26 +43,30 @@ export default function JuzCardGrid({
         // Determine displayed holder name
         const displayHolderName = juz.hideName ? 'فاعل خير' : juz.holderName || 'فاعل خير';
 
-        // Card styling variants
-        let borderClass = 'border-stone-200 dark:border-stone-800 hover:border-emerald-500/50';
-        let bgClass = 'bg-white dark:bg-stone-900/90';
-        let badgeClass = 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300';
+        // Card styling variants — Illuminated Mushaf Folio palette
+        let borderClass = 'border-[#E6DEC8] hover:border-[#B48327]';
+        let bgClass = 'bg-white';
+        let badgeClass = 'bg-[#F4EFE6] text-[#0F2922] border border-[#E6DEC8]';
+        let numberBadgeClass = 'bg-[#F4EFE6] text-[#0F2922] border border-[#E6DEC8]';
         let statusText = 'متاح للحجز';
 
         if (isCompleted) {
-          borderClass = 'border-emerald-500/40 dark:border-emerald-500/30';
-          bgClass = 'bg-emerald-50/40 dark:bg-emerald-950/20';
-          badgeClass = 'bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300';
+          borderClass = 'border-[#A7F3D0]';
+          bgClass = 'bg-[#ECFDF5]/85';
+          badgeClass = 'bg-[#D1FAE5] text-[#065F46] border border-[#A7F3D0] font-semibold';
+          numberBadgeClass = 'bg-[#065F46] text-white';
           statusText = `مكتمل • ${displayHolderName}`;
         } else if (isReservedByMe) {
-          borderClass = 'border-amber-500/60 dark:border-amber-500/40 ring-1 ring-amber-500/40';
-          bgClass = 'bg-amber-50/50 dark:bg-amber-950/25';
-          badgeClass = 'bg-amber-100 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 font-bold';
+          borderClass = 'border-[#B48327] ring-2 ring-[#B48327]/25';
+          bgClass = 'bg-[#FDF6E7]';
+          badgeClass = 'bg-[#B48327] text-white font-bold shadow-xs';
+          numberBadgeClass = 'bg-[#B48327] text-white';
           statusText = 'محجوز لك • اقرأ الآن';
         } else if (isReservedByOther) {
-          borderClass = 'border-stone-200 dark:border-stone-800';
-          bgClass = 'bg-stone-50/80 dark:bg-stone-900/60 opacity-90';
-          badgeClass = 'bg-stone-200 dark:bg-stone-800 text-stone-600 dark:text-stone-400';
+          borderClass = 'border-[#FDE68A]';
+          bgClass = 'bg-[#FFFBEB]/80';
+          badgeClass = 'bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A]';
+          numberBadgeClass = 'bg-[#FEF3C7] text-[#92400E]';
           statusText = `محجوز • ${displayHolderName}`;
         }
 
@@ -79,32 +83,32 @@ export default function JuzCardGrid({
             key={meta.number}
             data-testid={`juz-card-${meta.number}`}
             onClick={handleClick}
-            className={`group relative flex flex-col justify-between rounded-2xl border p-3.5 shadow-sm transition-all duration-150 cursor-pointer select-none active:scale-[0.97] hover:shadow-md ${borderClass} ${bgClass}`}
+            className={`interactive-card group relative flex flex-col justify-between rounded-2xl border p-3.5 shadow-xs cursor-pointer select-none ${borderClass} ${bgClass}`}
           >
             {/* Top row: Juz Number and Icon */}
             <div className="flex items-center justify-between gap-2">
-              <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-stone-100 dark:bg-stone-800 font-mono text-xs font-bold text-stone-700 dark:text-stone-200">
+              <span className={`flex h-7 w-7 items-center justify-center rounded-xl tabular-nums text-xs font-bold ${numberBadgeClass}`}>
                 {meta.number}
               </span>
               <div>
                 {isCompleted && (
-                  <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                  <CheckCircle2 className="h-4 w-4 text-[#15803D]" />
                 )}
                 {isReservedByMe && (
-                  <BookOpen className="h-4 w-4 text-amber-500 animate-pulse" />
+                  <BookOpen className="h-4 w-4 text-[#B48327]" />
                 )}
                 {isReservedByOther && (
-                  <Lock className="h-3.5 w-3.5 text-stone-400" />
+                  <Lock className="h-3.5 w-3.5 text-[#B45309]" />
                 )}
               </div>
             </div>
 
             {/* Middle: Juz Name & Surah Range */}
             <div className="my-2.5">
-              <h4 className="text-sm font-bold text-stone-900 dark:text-stone-100 font-serif">
+              <h4 className="text-base font-bold text-[#0F2922] font-quran">
                 {meta.nameAr}
               </h4>
-              <p className="mt-1 line-clamp-1 text-[11px] text-stone-500 dark:text-stone-400">
+              <p className="mt-1 line-clamp-1 text-[11px] text-[#4A5D54]">
                 من {meta.startSurahName} {meta.startAyah} إلى {meta.endSurahName} {meta.endAyah}
               </p>
             </div>
@@ -112,7 +116,7 @@ export default function JuzCardGrid({
             {/* Bottom: Status Pill */}
             <div className="mt-auto pt-1">
               <div
-                className={`line-clamp-1 rounded-lg px-2 py-1 text-center text-[10px] font-medium transition-colors ${badgeClass}`}
+                className={`line-clamp-1 rounded-lg px-2 py-1.5 text-center text-[11px] font-medium ${badgeClass}`}
               >
                 {statusText}
               </div>

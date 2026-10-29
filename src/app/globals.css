@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   /* Motion & Physics (emil-design-eng) */
@@ -55,8 +56,8 @@
   --color-amber-light: var(--reserved-amber-light);
   --color-amber-border: var(--reserved-amber-border);
 
-  --font-sans: var(--font-sans), var(--font-sans-fallback);
-  --font-quran: var(--font-quran), var(--font-quran-fallback);
+  --font-sans: var(--font-ibm-arabic), var(--font-sans-fallback);
+  --font-quran: var(--font-amiri-quran), var(--font-quran-fallback);
 }
 
 html, body {

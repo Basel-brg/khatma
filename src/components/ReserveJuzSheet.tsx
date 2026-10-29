@@ -118,7 +118,7 @@ export default function ReserveJuzSheet({
 
       {/* Bottom Sheet Modal */}
       <div
-        className="relative z-10 w-full max-w-lg rounded-t-3xl bg-white dark:bg-stone-900 p-6 shadow-2xl transition-transform duration-200"
+        className="relative z-10 w-full max-w-lg rounded-t-3xl border-t border-[#E6DEC8] bg-[#FBF8F3] p-6 shadow-2xl"
         style={{
           transform: `translateY(${dragY}px)`,
           transition: isDragging.current ? 'none' : 'transform 0.25s cubic-bezier(0.32, 0.72, 0, 1)',
@@ -129,20 +129,20 @@ export default function ReserveJuzSheet({
       >
         {/* Drag handle */}
         <div className="flex justify-center pb-3">
-          <div className="h-1.5 w-12 rounded-full bg-stone-300 dark:bg-stone-700" />
+          <div className="h-1.5 w-12 rounded-full bg-[#D5CBB4]" />
         </div>
 
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-stone-100 dark:border-stone-800">
+        <div className="flex items-center justify-between pb-3 border-b border-[#E6DEC8]">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 font-bold">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#FDF6E7] border border-[#E8D39E] text-[#B48327] font-bold tabular-nums">
               {meta.number}
             </div>
             <div>
-              <h3 className="text-lg font-bold text-stone-900 dark:text-stone-100">
+              <h3 className="text-lg font-bold text-[#0F2922] font-quran">
                 حجز {meta.nameAr}
               </h3>
-              <p className="text-xs text-stone-500 dark:text-stone-400">
+              <p className="text-xs text-[#4A5D54]">
                 من {meta.startSurahName} {meta.startAyah} إلى {meta.endSurahName} {meta.endAyah}
               </p>
             </div>
@@ -150,7 +150,7 @@ export default function ReserveJuzSheet({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-2 text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 hover:text-stone-700 dark:hover:text-stone-200 active:scale-95 transition-transform"
+            className="rounded-full p-2 text-[#4A5D54] hover:bg-[#F4EFE6] hover:text-[#0F2922]"
             aria-label="إغلاق نافذة الحجز"
           >
             <X className="h-5 w-5" />
@@ -159,7 +159,7 @@ export default function ReserveJuzSheet({
 
         {/* Error notification */}
         {errorMsg && (
-          <div className="mt-3 rounded-xl bg-rose-50 dark:bg-rose-950/50 p-3 text-xs text-rose-600 dark:text-rose-400 font-medium">
+          <div className="mt-3 rounded-xl bg-rose-50 border border-rose-200 p-3 text-xs text-rose-700 font-medium">
             {errorMsg}
           </div>
         )}
@@ -169,7 +169,7 @@ export default function ReserveJuzSheet({
           <div>
             <label
               htmlFor="reader-name-input"
-              className="block text-sm font-semibold text-stone-800 dark:text-stone-200 mb-1.5"
+              className="block text-sm font-semibold text-[#0F2922] mb-1.5"
             >
               الاسم
             </label>
@@ -181,23 +181,23 @@ export default function ReserveJuzSheet({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="اكتب اسمك الكريم"
-              className="w-full rounded-2xl border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-800/80 px-4 py-3 text-sm text-stone-900 dark:text-stone-100 placeholder:text-stone-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
+              className="w-full rounded-2xl border border-[#E6DEC8] bg-white px-4 py-3 text-sm text-[#0F2922] placeholder:text-[#7D9087] focus:border-[#B48327] focus:outline-none focus:ring-2 focus:ring-[#B48327]/20"
             />
           </div>
 
           {/* Privacy Toggle (فاعل خير) */}
-          <div className="flex items-center gap-3 rounded-2xl border border-stone-200 dark:border-stone-800 bg-stone-50/50 dark:bg-stone-800/40 p-3.5">
+          <div className="flex items-center gap-3 rounded-2xl border border-[#E6DEC8] bg-white p-3.5">
             <input
               type="checkbox"
               id="hide-name-toggle"
               aria-label="عدم إظهار اسمي للآخرين (يظهر كفاعل خير)"
               checked={hideName}
               onChange={(e) => setHideName(e.target.checked)}
-              className="h-5 w-5 rounded-md border-stone-300 text-emerald-600 focus:ring-emerald-500"
+              className="h-5 w-5 rounded-md border-[#E6DEC8] text-[#0F2922] focus:ring-[#B48327]"
             />
             <label
               htmlFor="hide-name-toggle"
-              className="text-xs sm:text-sm font-medium text-stone-700 dark:text-stone-300 cursor-pointer select-none"
+              className="text-xs sm:text-sm font-medium text-[#0F2922] cursor-pointer select-none"
             >
               عدم إظهار اسمي للآخرين (يظهر كفاعل خير)
             </label>
@@ -208,9 +208,9 @@ export default function ReserveJuzSheet({
             type="submit"
             data-testid="confirm-reserve-btn"
             disabled={isSubmitting || !name.trim()}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 py-3.5 text-base font-bold text-white shadow-xl shadow-emerald-950/20 hover:from-emerald-500 hover:to-teal-500 disabled:opacity-50 active:scale-[0.98] transition-all"
+            className="btn-primary flex w-full items-center justify-center gap-2 rounded-2xl bg-[#0F2922] py-3.5 text-base font-bold text-white shadow-md disabled:opacity-50"
           >
-            <BookOpen className="h-5 w-5" />
+            <BookOpen className="h-5 w-5 text-[#E8D39E]" />
             <span>{isSubmitting ? 'جاري تأكيد الحجز...' : 'تأكيد الحجز والبدء بالقراءة'}</span>
           </button>
         </form>

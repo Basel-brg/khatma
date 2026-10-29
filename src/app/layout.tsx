@@ -5,14 +5,14 @@ import './globals.css';
 const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
   subsets: ['arabic'],
   weight: ['400', '500', '600', '700'],
-  variable: '--font-sans',
+  variable: '--font-ibm-arabic',
   display: 'swap',
 });
 
 const amiri = Amiri({
   subsets: ['arabic'],
   weight: ['400', '700'],
-  variable: '--font-quran',
+  variable: '--font-amiri-quran',
   display: 'swap',
 });
 

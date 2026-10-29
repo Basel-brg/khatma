@@ -171,8 +171,20 @@ export default function KhatmaPageClient({
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 space-y-6" dir="rtl">
+      {/* Top Navigation Row */}
+      <div className="flex items-center justify-between">
+        <a
+          href="/"
+          className="button-tactile inline-flex items-center gap-1.5 rounded-xl border border-[#E6DEC8] bg-white px-3.5 py-2 text-xs font-semibold text-[#0F2922] shadow-xs"
+        >
+          <ArrowRight className="h-3.5 w-3.5" />
+          <span>العودة للرئيسية</span>
+        </a>
+        <span className="text-xs font-medium text-[#4A5D54]">ختمة جماعية تشاركية</span>
+      </div>
+
       {/* Top Header Card */}
-      <div className="relative overflow-hidden rounded-3xl border border-emerald-900/15 bg-gradient-to-br from-emerald-900/90 via-teal-900/90 to-stone-900 text-white p-6 sm:p-8 shadow-xl">
+      <div className="relative overflow-hidden rounded-3xl border border-[#0F2922] bg-[#0F2922] text-white p-5 sm:p-8 shadow-lg">
         {/* Subtle decorative circles */}
         <div className="pointer-events-none absolute -left-10 -top-10 h-40 w-40 rounded-full bg-emerald-500/10 blur-2xl" />
         <div className="pointer-events-none absolute -right-10 -bottom-10 h-40 w-40 rounded-full bg-teal-400/10 blur-2xl" />
@@ -323,11 +335,11 @@ export default function KhatmaPageClient({
       {/* 30 Juz Grid */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-stone-900 dark:text-stone-100 flex items-center gap-2">
-            <BookOpen className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+          <h2 className="text-lg font-bold text-[#0F2922] flex items-center gap-2 font-quran">
+            <BookOpen className="h-5 w-5 text-[#B48327]" />
             <span>أجزاء القرآن الكريم (٣٠ جزءاً)</span>
           </h2>
-          <span className="text-xs text-stone-500 dark:text-stone-400">
+          <span className="text-xs text-[#4A5D54]">
             اضغط على أي جزء للحجز أو القراءة
           </span>
         </div>
