@@ -15,7 +15,7 @@ import {
 import { createKhatma, getDeviceUid, getRecentKhatmas } from '../lib/khatma-service';
 import { SECURITY_LIMITS, validateCreateKhatmaInput } from '../lib/validation';
 import { useKhatmaTheme } from '../lib/theme';
-import { ShamsaRosette, CornerCrosshairs, KhatmSealStamp, toArabicDigits } from '../components/IslamicOrnaments';
+import { ShamsaRosette, CornerCrosshairs, toArabicDigits } from '../components/IslamicOrnaments';
 import CreateKhatmaSheet from '../components/CreateKhatmaSheet';
 
 interface RecentKhatmaItem {
@@ -187,32 +187,6 @@ export default function HomePage() {
             <div className="shrink-0">
               <ShamsaRosette className="w-14 h-14 sm:w-28 sm:h-28 text-[#C5A059]" />
             </div>
-          </div>
-
-          {/* Live Interactive Demo Rab'ah Strip inside the Hero */}
-          <div className="mt-5 sm:mt-6 pt-3.5 sm:pt-4 border-t border-[#C5A059]/25">
-            <Link
-              href="/khatma/demo-ramadan"
-              className="group block border border-[#C5A059]/50 bg-[#0D241C] hover:bg-[#123025] p-3 sm:p-4 transition-colors"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5 sm:gap-3">
-                  <KhatmSealStamp className="w-10 h-10 sm:w-11 sm:h-11 shrink-0" />
-                  <div>
-                    <h2 className="font-quran text-base sm:text-xl font-bold text-[#C8A45D] group-hover:text-[#E8D39E]">
-                      ختمة شهر رمضان المبارك (معاينة حية للربعة)
-                    </h2>
-                    <p className="text-[11px] sm:text-xs text-[#A6B8B0] mt-0.5">
-                      مكتمل ٢ من ٣٠ جزءاً • محجوز ٢ • متاح ٢٦ جزءاً — اضغط لتجربة الخانات والمصحف والصوت
-                    </p>
-                  </div>
-                </div>
-                <span className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 border border-[#C5A059] bg-[#C5A059] px-4 py-2 text-xs font-bold text-[#081A14] shrink-0">
-                  <span>فتح الربعة التجريبية</span>
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                </span>
-              </div>
-            </Link>
           </div>
         </div>
       </header>
