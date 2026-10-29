@@ -16,8 +16,10 @@ const amiri = Amiri({
   display: 'swap',
 });
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://khatma-a9e15.web.app';
+
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://khatma.app'),
+  metadataBase: new URL(appUrl),
   title: 'ختمة | تنظيم قراءة وختمات القرآن الكريم الجماعية',
   description: 'تنظيم ختمات القرآن الكريم الجماعية ومتابعة الأجزاء وقراءتها مباشرة بالرسم العثماني وبدون تسجيل.',
   keywords: ['ختمة', 'قرآن كريم', 'ختمة جماعية', 'أجزاء القرآن', 'رسم عثماني', 'رمضان'],
@@ -25,13 +27,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'ختمة | تنظيم قراءة وختمات القرآن الكريم الجماعية',
     description: 'شارك الأجر واختم القرآن مع أهلك وأصحابك برابط واحد سهل ومباشر وبدون تسجيل.',
-    url: 'https://khatma.app',
+    url: appUrl,
     siteName: 'ختمة',
     images: [
       {
-        url: '/og-image.png',
+        url: `${appUrl}/og-image.png`,
+        secureUrl: `${appUrl}/og-image.png`,
         width: 1200,
         height: 630,
+        type: 'image/png',
         alt: 'تطبيق ختمة - تنظيم قراءة وختمات القرآن الكريم الجماعية',
       },
     ],
@@ -42,7 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'ختمة | تنظيم قراءة وختمات القرآن الكريم الجماعية',
     description: 'شارك الأجر واختم القرآن مع أهلك وأصحابك برابط واحد سهل ومباشر وبدون تسجيل.',
-    images: ['/og-image.png'],
+    images: [`${appUrl}/og-image.png`],
   },
   icons: {
     icon: [
