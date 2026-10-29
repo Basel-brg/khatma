@@ -7,6 +7,7 @@ import {
   getSavedReaderProfile,
   saveReaderProfile,
 } from '../lib/khatma-service';
+import { SECURITY_LIMITS, validateReaderName } from '../lib/validation';
 import { CornerCrosshairs, toArabicDigits } from './IslamicOrnaments';
 import { X, BookOpen } from 'lucide-react';
 
@@ -73,9 +74,12 @@ export default function ReserveJuzSheet({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmedName = name.trim();
-    if (!trimmedName) {
-      setErrorMsg('يرجى كتابة الاسم للمتابعة');
+
+    let cleanName: string;
+    try {
+      cleanName = validateReaderName(name);
+    } catch (validationErr: any) {
+      setErrorMsg(validationErr?.message || 'يرجى كتابة الاسم للمتابعة');
       return;
     }
 
@@ -83,12 +87,12 @@ export default function ReserveJuzSheet({
     setErrorMsg(null);
 
     try {
-      saveReaderProfile(trimmedName, hideName);
+      saveReaderProfile(cleanName, hideName);
 
       await reserveJuz({
         khatmaId,
         juzNumber,
-        readerName: trimmedName,
+        readerName: cleanName,
         hideName,
         uid,
       });
@@ -114,7 +118,7 @@ export default function ReserveJuzSheet({
 
       {/* Architectural Rab'ah Reservation Sheet */}
       <div
-        className="relative z-10 w-full max-w-lg rounded-t-[24px] border border-[#C5A059] bg-[#F8F5EC] dark:bg-[#0B1914] p-6 shadow-2xl"
+        className="relative z-10 w-full max-w-lg rounded-t-[24px] border border-[#C5A059] bg-[#F8F5EC] dark:bg-[#0B1914] p-6 shadow-2xl max-h-[92vh] overflow-y-auto"
         style={{
           transform: `translateY(${dragY}px)`,
           transition: isDragging.current ? 'none' : 'transform 0.25s cubic-bezier(0.32, 0.72, 0, 1)',
@@ -155,6 +159,38 @@ export default function ReserveJuzSheet({
           </button>
         </div>
 
+        {/* Surahs in this Juz */}
+        <div className="mt-3.5 rounded-xl border border-[#C5A059]/35 bg-[#FAF7F0] dark:bg-[#071510]/85 p-3.5 shadow-sm">
+          <div className="flex items-center justify-between mb-2.5">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-[#091B15] dark:text-[#E8D39E] font-quran">
+              <BookOpen className="h-3.5 w-3.5 text-[#C5A059]" />
+              <span>السور المتضمنة في هذا الجزء:</span>
+            </div>
+            <span className="text-[11px] font-semibold text-[#8C6D2D] dark:text-[#C8A45D] bg-[#C5A059]/10 px-2.5 py-0.5 rounded-full border border-[#C5A059]/25">
+              {meta.surahNames && meta.surahNames.length === 1
+                ? 'سورة واحدة'
+                : meta.surahNames && meta.surahNames.length === 2
+                ? 'سورتان'
+                : `${toArabicDigits(meta.surahNames?.length || 0)} سورة`}
+            </span>
+          </div>
+
+          <div
+            data-testid="juz-surah-tags"
+            className="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto pr-0.5"
+          >
+            {meta.surahNames?.map((surah, idx) => (
+              <span
+                key={`${surah}-${idx}`}
+                className="inline-flex items-center gap-1 rounded-md border border-[#C5A059]/40 bg-[#FFFFFF] dark:bg-[#0D221A] px-2 py-0.5 text-xs font-medium text-[#091B15] dark:text-[#F4EFE6] shadow-[0_1px_2px_rgba(0,0,0,0.03)]"
+              >
+                <span className="text-[9px] text-[#C5A059]">✦</span>
+                <span>سورة {surah}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+
         {errorMsg && (
           <div className="mt-3 border border-rose-400 bg-rose-50 dark:bg-rose-950/40 p-3 text-xs text-rose-700 dark:text-rose-300 font-medium">
             {errorMsg}
@@ -174,8 +210,13 @@ export default function ReserveJuzSheet({
               aria-label="الاسم"
               type="text"
               required
+              minLength={SECURITY_LIMITS.READER_NAME_MIN_LEN}
+              maxLength={SECURITY_LIMITS.READER_NAME_MAX_LEN}
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                setName(e.target.value);
+                if (errorMsg) setErrorMsg(null);
+              }}
               placeholder="اكتب اسمك الكريم"
               className="w-full border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] px-4 py-3 text-sm text-[#091B15] dark:text-[#F4EFE6] placeholder:text-[#7D9087] focus:border-[#091B15] dark:focus:border-[#C5A059] focus:outline-none"
             />

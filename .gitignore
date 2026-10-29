@@ -6,3 +6,5 @@ build/
 .env*.local
 *.log
 *.tsbuildinfo
+.DS_Store
+test-results/

@@ -13,6 +13,7 @@ import {
   Moon,
 } from 'lucide-react';
 import { createKhatma, getDeviceUid, getRecentKhatmas } from '../lib/khatma-service';
+import { SECURITY_LIMITS, validateCreateKhatmaInput } from '../lib/validation';
 import { useKhatmaTheme } from '../lib/theme';
 import { ShamsaRosette, CornerCrosshairs, KhatmSealStamp, toArabicDigits } from '../components/IslamicOrnaments';
 import CreateKhatmaSheet from '../components/CreateKhatmaSheet';
@@ -112,26 +113,19 @@ export default function HomePage() {
 
   const handleInlineSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmedTitle = title.trim();
-
-    if (!trimmedTitle) {
-      setErrorMessage('يرجى كتابة اسم الختمة للبدء');
-      return;
-    }
-
-    setErrorMessage(null);
-    setIsSubmitting(true);
 
     try {
+      const validated = validateCreateKhatmaInput({
+        title,
+        intention,
+        targetDate: targetDate || getTodayString(),
+      });
+
+      setErrorMessage(null);
+      setIsSubmitting(true);
+
       const uid = await getDeviceUid();
-      const created = await createKhatma(
-        {
-          title: trimmedTitle,
-          intention: intention.trim(),
-          targetDate: targetDate || getTodayString(),
-        },
-        uid
-      );
+      const created = await createKhatma(validated, uid);
 
       router.push(`/khatma/${created.id}`);
     } catch (err: any) {
@@ -144,7 +138,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-[#F5F1E8] dark:bg-[#07120E] text-[#091B15] dark:text-[#F4EFE6] pb-20 transition-colors duration-200" dir="rtl">
       {/* Top Full-Width Architectural Obsidian-Emerald Banner (Option 1 World) */}
       <header className="w-full bg-[#081A14] border-b-2 border-[#C5A059]/75 text-[#F4EFE6] shadow-md">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-4 pb-7">
+        <div className="mx-auto max-w-3xl px-3.5 sm:px-6 pt-4 pb-6 sm:pb-7">
           {/* Top Utility Bar */}
           <div className="flex items-center justify-between pb-4 border-b border-[#C5A059]/20">
             <span className="font-quran text-2xl font-bold text-white tracking-wider">
@@ -154,25 +148,25 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={toggleTheme}
-                className="inline-flex items-center gap-1.5 border border-[#C5A059]/40 bg-[#0D261D] hover:bg-[#133328] px-3 py-1.5 text-xs font-semibold text-[#E8D39E] transition-colors"
+                className="inline-flex items-center gap-1.5 border border-[#C5A059]/40 bg-[#0D261D] hover:bg-[#133328] px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-[#E8D39E] transition-colors"
                 aria-label={isDark ? 'تفعيل المظهر الفاتح' : 'تفعيل المظهر الداكن'}
               >
                 {isDark ? (
                   <>
                     <Sun className="h-3.5 w-3.5 text-[#FDE68A]" />
-                    <span>المظهر الفاتح</span>
+                    <span className="hidden sm:inline">المظهر الفاتح</span>
                   </>
                 ) : (
                   <>
                     <Moon className="h-3.5 w-3.5 text-[#C5A059]" />
-                    <span>المظهر الداكن</span>
+                    <span className="hidden sm:inline">المظهر الداكن</span>
                   </>
                 )}
               </button>
               <button
                 type="button"
                 onClick={() => setIsSheetOpen(true)}
-                className="inline-flex items-center gap-1.5 border border-[#C5A059] bg-[#C5A059] hover:bg-[#D4B06A] px-3.5 py-1.5 text-xs font-bold text-[#081A14] transition-colors"
+                className="inline-flex items-center gap-1.5 border border-[#C5A059] bg-[#C5A059] hover:bg-[#D4B06A] px-3 sm:px-3.5 py-1.5 text-xs font-bold text-[#081A14] transition-colors"
               >
                 <span>إنشاء ختمة سريعة</span>
               </button>
@@ -180,9 +174,9 @@ export default function HomePage() {
           </div>
 
           {/* Hero Calligraphic Centerpiece + 8-Pointed Gold Shamsa Rosette */}
-          <div className="mt-6 flex items-center justify-between gap-4 sm:gap-8">
-            <div className="space-y-3 flex-1">
-              <h1 className="text-3xl sm:text-5xl font-bold font-quran text-[#C8A45D] leading-[1.3]">
+          <div className="mt-5 sm:mt-6 flex items-center justify-between gap-3.5 sm:gap-8">
+            <div className="space-y-2 sm:space-y-3 flex-1">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold font-quran text-[#C8A45D] leading-[1.35]">
                 الرَّبْعَةُ القرآنية التشاركية
               </h1>
               <p className="text-xs sm:text-sm text-[#E6DEC8]/90 leading-relaxed max-w-lg">
@@ -191,29 +185,29 @@ export default function HomePage() {
             </div>
 
             <div className="shrink-0">
-              <ShamsaRosette className="w-20 h-20 sm:w-28 sm:h-28 text-[#C5A059]" />
+              <ShamsaRosette className="w-14 h-14 sm:w-28 sm:h-28 text-[#C5A059]" />
             </div>
           </div>
 
           {/* Live Interactive Demo Rab'ah Strip inside the Hero */}
-          <div className="mt-6 pt-4 border-t border-[#C5A059]/25">
+          <div className="mt-5 sm:mt-6 pt-3.5 sm:pt-4 border-t border-[#C5A059]/25">
             <Link
               href="/khatma/demo-ramadan"
-              className="group block border border-[#C5A059]/50 bg-[#0D241C] hover:bg-[#123025] p-3.5 sm:p-4 transition-colors"
+              className="group block border border-[#C5A059]/50 bg-[#0D241C] hover:bg-[#123025] p-3 sm:p-4 transition-colors"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-3">
-                  <KhatmSealStamp className="w-11 h-11 shrink-0" />
+                <div className="flex items-center gap-2.5 sm:gap-3">
+                  <KhatmSealStamp className="w-10 h-10 sm:w-11 sm:h-11 shrink-0" />
                   <div>
-                    <h2 className="font-quran text-lg sm:text-xl font-bold text-[#C8A45D] group-hover:text-[#E8D39E]">
+                    <h2 className="font-quran text-base sm:text-xl font-bold text-[#C8A45D] group-hover:text-[#E8D39E]">
                       ختمة شهر رمضان المبارك (معاينة حية للربعة)
                     </h2>
-                    <p className="text-xs text-[#A6B8B0]">
+                    <p className="text-[11px] sm:text-xs text-[#A6B8B0] mt-0.5">
                       مكتمل ٢ من ٣٠ جزءاً • محجوز ٢ • متاح ٢٦ جزءاً — اضغط لتجربة الخانات والمصحف والصوت
                     </p>
                   </div>
                 </div>
-                <span className="inline-flex items-center justify-center gap-1.5 border border-[#C5A059] bg-[#C5A059] px-4 py-2 text-xs font-bold text-[#081A14] shrink-0">
+                <span className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 border border-[#C5A059] bg-[#C5A059] px-4 py-2 text-xs font-bold text-[#081A14] shrink-0">
                   <span>فتح الربعة التجريبية</span>
                   <ArrowLeft className="w-3.5 h-3.5" />
                 </span>
@@ -224,22 +218,22 @@ export default function HomePage() {
       </header>
 
       {/* Main Architectural Ledger Content */}
-      <main className="mx-auto max-w-3xl px-4 sm:px-6 pt-8 space-y-8">
+      <main className="mx-auto max-w-3xl px-3 sm:px-6 pt-5 sm:pt-8 space-y-5 sm:space-y-8">
         {/* Architectural Khatma Creation Ledger */}
         <section aria-label="إنشاء ختمة جديدة">
-          <div className="relative border border-[#C5A059] bg-[#F8F5EC] dark:bg-[#0B1914] p-5 sm:p-7 shadow-xs">
+          <div className="relative border border-[#C5A059] bg-[#F8F5EC] dark:bg-[#0B1914] p-4 sm:p-7 shadow-xs">
             <CornerCrosshairs />
 
-            <div className="flex items-center justify-between pb-4 mb-5 border-b border-[#C5A059]/45">
+            <div className="flex items-center justify-between pb-3.5 sm:pb-4 mb-4 sm:mb-5 border-b border-[#C5A059]/45">
               <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-[#091B15] dark:text-[#C8A45D] font-quran">
+                <h2 className="text-lg sm:text-2xl font-bold text-[#091B15] dark:text-[#C8A45D] font-quran">
                   تأسيس ختمة جديدة
                 </h2>
-                <p className="text-xs text-[#4A5D54] dark:text-[#A6B8B0] mt-0.5">
+                <p className="text-[11px] sm:text-xs text-[#4A5D54] dark:text-[#A6B8B0] mt-0.5">
                   حدد عنوان الختمة ونيتها وتاريخ إتمامها، ثم شارك رابطها فوراً
                 </p>
               </div>
-              <span className="font-quran text-xs font-bold border border-[#C5A059]/60 bg-[#EFE8D6] dark:bg-[#112A21] px-2.5 py-1 text-[#5A4214] dark:text-[#E8D39E]">
+              <span className="font-quran text-xs font-bold border border-[#C5A059]/60 bg-[#EFE8D6] dark:bg-[#112A21] px-2.5 py-1 text-[#5A4214] dark:text-[#E8D39E] shrink-0">
                 ٣٠ جزءاً
               </span>
             </div>
@@ -250,7 +244,7 @@ export default function HomePage() {
               </div>
             )}
 
-            <form onSubmit={handleInlineSubmit} className="space-y-4">
+            <form onSubmit={handleInlineSubmit} className="space-y-3.5 sm:space-y-4">
               <div>
                 <label
                   htmlFor="home-title"
@@ -262,13 +256,15 @@ export default function HomePage() {
                   id="home-title"
                   type="text"
                   required
+                  minLength={SECURITY_LIMITS.TITLE_MIN_LEN}
+                  maxLength={SECURITY_LIMITS.TITLE_MAX_LEN}
                   value={title}
                   onChange={(e) => {
                     setTitle(e.target.value);
                     if (errorMessage) setErrorMessage(null);
                   }}
                   placeholder="مثال: ختمة شهر رمضان المبارك، ختمة في ثواب الوالدين..."
-                  className="w-full px-3.5 py-2.5 border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] placeholder:text-[#7D9087] text-sm focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059]"
+                  className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] placeholder:text-[#7D9087] text-xs sm:text-sm focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059]"
                 />
               </div>
 
@@ -277,7 +273,7 @@ export default function HomePage() {
                 <span className="block text-xs font-semibold text-[#4A5D54] dark:text-[#A6B8B0] mb-1.5">
                   مقترحات سريعة للعنوان والنية:
                 </span>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-1.5">
                   {QUICK_PRESETS.map((preset, index) => {
                     const isSelected = selectedPresetIndex === index;
                     return (
@@ -285,14 +281,14 @@ export default function HomePage() {
                         key={index}
                         type="button"
                         onClick={() => handleSelectPreset(preset, index)}
-                        className={`text-xs px-3 py-1.5 border transition-colors flex items-center gap-1.5 ${
+                        className={`text-xs px-2.5 sm:px-3 py-2 sm:py-1.5 border transition-colors flex items-center justify-center sm:justify-start gap-1.5 text-center ${
                           isSelected
-                            ? 'bg-[#081A14] border-[#C5A059] text-[#C8A45D] font-bold'
+                            ? 'bg-[#081A14] border-[#C5A059] text-[#C8A45D] font-bold shadow-xs'
                             : 'bg-[#FBF9F2] dark:bg-[#08130F] border-[#C5A059]/60 text-[#091B15] dark:text-[#E8D39E] hover:border-[#C5A059]'
                         }`}
                       >
-                        {isSelected && <Check className="w-3 h-3 text-[#C5A059]" />}
-                        {preset.label}
+                        {isSelected && <Check className="w-3 h-3 text-[#C5A059] shrink-0" />}
+                        <span className="truncate">{preset.label}</span>
                       </button>
                     );
                   })}
@@ -311,10 +307,11 @@ export default function HomePage() {
                 <textarea
                   id="home-intention"
                   rows={2}
+                  maxLength={SECURITY_LIMITS.INTENTION_MAX_LEN}
                   value={intention}
                   onChange={(e) => setIntention(e.target.value)}
                   placeholder="اكتب نية الختمة أو دعاءً يظهر في أعلى صفحة الختمة..."
-                  className="w-full px-3.5 py-2 border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] placeholder:text-[#7D9087] text-sm focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059] resize-none"
+                  className="w-full px-3 sm:px-3.5 py-2 border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] placeholder:text-[#7D9087] text-xs sm:text-sm focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059] resize-none"
                 />
               </div>
 
@@ -332,7 +329,7 @@ export default function HomePage() {
                   type="date"
                   value={targetDate}
                   onChange={(e) => setTargetDate(e.target.value)}
-                  className="w-full px-3.5 py-2 border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] text-sm tabular-nums focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059]"
+                  className="w-full px-3 sm:px-3.5 py-2 border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] text-xs sm:text-sm tabular-nums focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059]"
                 />
               </div>
 
@@ -340,17 +337,17 @@ export default function HomePage() {
               <button
                 type="submit"
                 disabled={isSubmitting || !title.trim()}
-                className="w-full py-3.5 px-5 border border-[#C5A059] bg-[#081A14] hover:bg-[#112A21] text-[#C8A45D] font-bold text-sm flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer"
+                className="w-full py-3 sm:py-3.5 px-4 sm:px-5 border border-[#C5A059] bg-[#081A14] hover:bg-[#112A21] text-[#C8A45D] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-colors disabled:opacity-50 cursor-pointer"
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin text-[#C5A059]" />
+                    <Loader2 className="w-4 h-4 animate-spin text-[#C5A059] shrink-0" />
                     <span>جاري إنشاء الختمة...</span>
                   </>
                 ) : (
                   <>
                     <span>إنشاء الختمة وفتح خانات الأجزاء الثلاثين</span>
-                    <ArrowLeft className="w-4 h-4" />
+                    <ArrowLeft className="w-4 h-4 shrink-0" />
                   </>
                 )}
               </button>
@@ -360,12 +357,12 @@ export default function HomePage() {
 
         {/* Recent Khatmas Ledger Index */}
         <section aria-label="ختماتي الأخيرة">
-          <div className="flex items-center justify-between mb-3 px-1">
-            <h2 className="text-lg font-bold text-[#091B15] dark:text-[#C8A45D] font-quran">
+          <div className="flex items-center justify-between mb-2.5 sm:mb-3 px-1">
+            <h2 className="text-base sm:text-lg font-bold text-[#091B15] dark:text-[#C8A45D] font-quran">
               سجل الختمات المحفوظة على هذا الجهاز
             </h2>
             {recentKhatmas.length > 0 && (
-              <span className="text-xs text-[#4A5D54] dark:text-[#A6B8B0] tabular-nums">
+              <span className="text-xs font-semibold border border-[#C5A059]/60 bg-[#EFE8D6] dark:bg-[#112A21] px-2 py-0.5 text-[#5A4214] dark:text-[#E8D39E] tabular-nums">
                 {toArabicDigits(recentKhatmas.length)}
               </span>
             )}
@@ -376,7 +373,7 @@ export default function HomePage() {
               جاري تحميل السجل...
             </div>
           ) : recentKhatmas.length === 0 ? (
-            <div className="relative border border-[#C5A059]/60 bg-[#F8F5EC] dark:bg-[#0B1914] p-6 text-center space-y-1.5">
+            <div className="relative border border-[#C5A059]/60 bg-[#F8F5EC] dark:bg-[#0B1914] p-5 sm:p-6 text-center space-y-1.5">
               <CornerCrosshairs />
               <p className="text-xs font-semibold text-[#091B15] dark:text-[#F4EFE6]">
                 لا توجد ختمات مسجلة في هذا المتصفح بعد.
@@ -391,19 +388,19 @@ export default function HomePage() {
                 <Link
                   key={item.id}
                   href={`/khatma/${item.id}`}
-                  className="flex items-center justify-between gap-3 bg-[#F8F5EC] dark:bg-[#0B1914] hover:bg-[#EFE8D6] dark:hover:bg-[#11261E] p-4 transition-colors"
+                  className="flex items-center justify-between gap-3 bg-[#F8F5EC] dark:bg-[#0B1914] hover:bg-[#EFE8D6] dark:hover:bg-[#11261E] p-3.5 sm:p-4 transition-colors"
                 >
                   <div className="min-w-0 flex-1">
-                    <h3 className="text-base font-bold font-quran text-[#091B15] dark:text-[#E8D39E] truncate">
+                    <h3 className="text-sm sm:text-base font-bold font-quran text-[#091B15] dark:text-[#E8D39E] truncate">
                       {item.title}
                     </h3>
                     {item.targetDate && (
-                      <p className="text-xs text-[#4A5D54] dark:text-[#A6B8B0] mt-0.5 tabular-nums">
+                      <p className="text-[11px] sm:text-xs text-[#4A5D54] dark:text-[#A6B8B0] mt-0.5 tabular-nums">
                         موعد الختم: {formatDateArabic(item.targetDate)}
                       </p>
                     )}
                   </div>
-                  <span className="inline-flex items-center gap-1 border border-[#C5A059]/60 bg-[#081A14] px-3 py-1.5 text-xs font-bold text-[#C8A45D]">
+                  <span className="inline-flex items-center gap-1 border border-[#C5A059]/60 bg-[#081A14] px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-bold text-[#C8A45D] shrink-0">
                     <span>فتح</span>
                     <ArrowLeft className="w-3.5 h-3.5" />
                   </span>
@@ -414,11 +411,11 @@ export default function HomePage() {
         </section>
 
         {/* Footer */}
-        <footer className="text-center space-y-2 pt-6 border-t border-[#C5A059]/40 text-xs text-[#4A5D54] dark:text-[#A6B8B0]">
-          <p className="font-quran text-base text-[#091B15] dark:text-[#C8A45D]">
+        <footer className="text-center space-y-1.5 sm:space-y-2 pt-5 sm:pt-6 pb-2 border-t border-[#C5A059]/40 text-xs text-[#4A5D54] dark:text-[#A6B8B0]">
+          <p className="font-quran text-sm sm:text-base text-[#091B15] dark:text-[#C8A45D]">
             بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
           </p>
-          <p className="max-w-md mx-auto leading-relaxed">
+          <p className="max-w-md mx-auto text-[11px] sm:text-xs leading-relaxed px-2">
             اللهم اجعل القرآن الكريم ربيع قلوبنا، ونور صدورنا، وجلاء أحزاننا، وذهاب همومنا
           </p>
         </footer>

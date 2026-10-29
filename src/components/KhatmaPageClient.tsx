@@ -24,6 +24,7 @@ import {
   Check,
   Sun,
   Moon,
+  Lock,
 } from 'lucide-react';
 
 export interface KhatmaPageClientProps {
@@ -41,6 +42,7 @@ export default function KhatmaPageClient({
   const [reservingJuzNumber, setReservingJuzNumber] = useState<number | null>(null);
   const [readingJuzNumber, setReadingJuzNumber] = useState<number | null>(null);
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
+  const [accessAlert, setAccessAlert] = useState<string | null>(null);
   const { isDark, toggleTheme } = useKhatmaTheme();
 
   useEffect(() => {
@@ -102,7 +104,33 @@ export default function KhatmaPageClient({
   };
 
   const handleOpenRead = (juzNumber: number) => {
+    if (!khatma) return;
+    const targetJuz = khatma.juzs[String(juzNumber)];
+    if (!targetJuz) return;
+
+    if (targetJuz.status === 'available') {
+      setReservingJuzNumber(juzNumber);
+      return;
+    }
+
+    const isMine = Boolean(uid && targetJuz.holderUid === uid);
+    if (!isMine) {
+      const displayHolder = targetJuz.hideName ? 'فاعل خير' : targetJuz.holderName || 'قارئ آخر';
+      const msg =
+        targetJuz.status === 'completed'
+          ? `هذا الجزء مكتمل بواسطة ${displayHolder} ولا يمكن فتحه`
+          : `هذا الجزء محجوز لـ ${displayHolder} ولا يمكن فتحه من قبل شخص آخر`;
+      setAccessAlert(msg);
+      setTimeout(() => setAccessAlert(null), 3500);
+      return;
+    }
+
     setReadingJuzNumber(juzNumber);
+  };
+
+  const handleBlockedAccess = (message: string) => {
+    setAccessAlert(message);
+    setTimeout(() => setAccessAlert(null), 3500);
   };
 
   const handleReserveSuccess = (juzNumber: number) => {
@@ -169,8 +197,24 @@ export default function KhatmaPageClient({
   const isReadingReservedByMe =
     !!currentReadingJuz &&
     currentReadingJuz.status === 'reserved' &&
-    currentReadingJuz.holderUid === uid;
+    Boolean(uid && currentReadingJuz.holderUid === uid);
+  const isReadingCompletedByMe =
+    !!currentReadingJuz &&
+    currentReadingJuz.status === 'completed' &&
+    Boolean(uid && currentReadingJuz.holderUid === uid);
   const isReadingCompleted = currentReadingJuz?.status === 'completed';
+  const isReadingReservedByOther =
+    !!currentReadingJuz &&
+    currentReadingJuz.status === 'reserved' &&
+    !isReadingReservedByMe;
+  const isReadingCompletedByOther =
+    !!currentReadingJuz &&
+    currentReadingJuz.status === 'completed' &&
+    !isReadingCompletedByMe;
+  const isReadingAccessDenied = isReadingReservedByOther || isReadingCompletedByOther;
+  const readingHolderDisplayName = currentReadingJuz
+    ? (currentReadingJuz.hideName ? 'فاعل خير' : currentReadingJuz.holderName || 'فاعل خير')
+    : null;
 
   return (
     <div className="min-h-screen bg-[#F5F1E8] dark:bg-[#07120E] pb-16 transition-colors" dir="rtl">
@@ -389,9 +433,22 @@ export default function KhatmaPageClient({
             currentUid={uid}
             onSelectReserve={handleOpenReserve}
             onSelectRead={handleOpenRead}
+            onBlockedAccess={handleBlockedAccess}
           />
         </section>
       </main>
+
+      {/* Floating Access Denied Alert Toast */}
+      {accessAlert && (
+        <div
+          role="alert"
+          data-testid="khatma-access-alert"
+          className="fixed top-16 left-1/2 -translate-x-1/2 z-50 rounded-full border border-amber-500/80 bg-[#161208] text-amber-200 px-5 py-2.5 text-xs sm:text-sm font-bold shadow-2xl flex items-center gap-2 animate-fade-in"
+        >
+          <Lock className="h-4 w-4 text-amber-400 shrink-0" />
+          <span>{accessAlert}</span>
+        </div>
+      )}
 
       {/* Reservation Bottom Sheet */}
       {reservingJuzNumber !== null && (
@@ -412,6 +469,9 @@ export default function KhatmaPageClient({
           uid={uid}
           isReservedByMe={isReadingReservedByMe}
           isCompleted={isReadingCompleted}
+          isCompletedByMe={isReadingCompletedByMe}
+          isAccessDenied={isReadingAccessDenied}
+          holderName={readingHolderDisplayName}
           onClose={() => setReadingJuzNumber(null)}
           onComplete={handleCompleteCurrentJuz}
           onUnreserve={handleUnreserveCurrentJuz}

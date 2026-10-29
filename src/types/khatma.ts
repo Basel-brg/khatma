@@ -29,6 +29,7 @@ export interface JuzMeta {
   startAyah: number;
   endSurahName: string;
   endAyah: number;
+  surahNames: readonly string[];
 }
 
 export interface Reciter {

@@ -168,8 +168,8 @@ export function SurahCartoucheBanner({
     <div
       className={`relative w-full my-4 select-none overflow-hidden rounded-md transition-colors ${
         isDarkMode
-          ? 'bg-[#091B15] text-[#C8A45D] border border-[#C5A059]/60 shadow-[inset_0_0_15px_rgba(197,160,89,0.12)]'
-          : 'bg-[#F8F5EC] text-[#5A4214] border border-[#C5A059]/80 shadow-[inset_0_0_15px_rgba(197,160,89,0.08)]'
+          ? 'bg-[#07140E] text-[#FFFFFF] border border-[#C5A059] shadow-[inset_0_0_15px_rgba(197,160,89,0.15)]'
+          : 'bg-[#FFFFFF] text-[#091B15] border border-[#C5A059] shadow-xs'
       }`}
       aria-label={cleanName}
     >
@@ -247,7 +247,7 @@ export function AyahStarMedallion({
           cx="18"
           cy="18"
           r="14"
-          fill={isCurrent ? '#C5A059' : isDarkMode ? '#0F261E' : '#F5EEDC'}
+          fill={isCurrent ? '#C5A059' : isDarkMode ? '#0A1C15' : '#FFFFFF'}
           stroke={isCurrent ? '#FDF6E7' : '#C5A059'}
           strokeWidth="1.3"
         />
@@ -266,8 +266,8 @@ export function AyahStarMedallion({
           isCurrent
             ? 'text-[#091B15]'
             : isDarkMode
-            ? 'text-[#E8D39E]'
-            : 'text-[#5A4214]'
+            ? 'text-[#FFFFFF]'
+            : 'text-[#091B15]'
         }`}
       >
         {toArabicDigits(number)}

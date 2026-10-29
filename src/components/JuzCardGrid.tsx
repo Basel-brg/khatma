@@ -10,6 +10,7 @@ export interface JuzCardGridProps {
   currentUid: string;
   onSelectReserve: (juzNumber: number) => void;
   onSelectRead: (juzNumber: number) => void;
+  onBlockedAccess?: (message: string) => void;
 }
 
 export default function JuzCardGrid({
@@ -17,6 +18,7 @@ export default function JuzCardGrid({
   currentUid,
   onSelectReserve,
   onSelectRead,
+  onBlockedAccess,
 }: JuzCardGridProps) {
   return (
     <div
@@ -37,16 +39,27 @@ export default function JuzCardGrid({
         const isAvailable = juz.status === 'available';
         const isCompleted = juz.status === 'completed';
         const isReservedByMe =
-          juz.status === 'reserved' && !!currentUid && juz.holderUid === currentUid;
+          juz.status === 'reserved' && Boolean(currentUid && juz.holderUid === currentUid);
+        const isCompletedByMe =
+          isCompleted && Boolean(currentUid && juz.holderUid === currentUid);
         const isReservedByOther = juz.status === 'reserved' && !isReservedByMe;
+        const isCompletedByOther = isCompleted && !isCompletedByMe;
 
+        const canOpen = isAvailable || isReservedByMe || isCompletedByMe;
         const displayHolderName = juz.hideName ? 'فاعل خير' : juz.holderName || 'فاعل خير';
 
         const handleClick = () => {
           if (isAvailable) {
             onSelectReserve(meta.number);
-          } else {
+          } else if (isReservedByMe || isCompletedByMe) {
             onSelectRead(meta.number);
+          } else {
+            const msg = isCompleted
+              ? `هذا الجزء مكتمل بواسطة ${displayHolderName} ولا يمكن فتحه`
+              : `هذا الجزء محجوز لـ ${displayHolderName} ولا يمكن فتحه من قبل شخص آخر`;
+            if (onBlockedAccess) {
+              onBlockedAccess(msg);
+            }
           }
         };
 
@@ -68,7 +81,16 @@ export default function JuzCardGrid({
             key={meta.number}
             data-testid={`juz-card-${meta.number}`}
             onClick={handleClick}
-            className={`interactive-card group relative flex flex-col items-center justify-between rounded-[2px] border px-2 pt-3 pb-2.5 min-h-[124px] sm:min-h-[138px] cursor-pointer select-none text-center transition-colors ${cellBorderClass}`}
+            className={`interactive-card group relative flex flex-col items-center justify-between rounded-[2px] border px-2 pt-3 pb-2.5 min-h-[124px] sm:min-h-[138px] select-none text-center transition-colors ${
+              canOpen ? 'cursor-pointer' : 'cursor-not-allowed opacity-95'
+            } ${cellBorderClass}`}
+            title={
+              !canOpen
+                ? isCompleted
+                  ? `مكتمل بواسطة ${displayHolderName} (لا يمكن فتحه)`
+                  : `محجوز لـ ${displayHolderName} (لا يمكن فتحه)`
+                : undefined
+            }
           >
             {/* 4 Architectural Corner Registration Crosshairs (+) */}
             <CornerCrosshairs />

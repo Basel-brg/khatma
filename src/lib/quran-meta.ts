@@ -8,6 +8,10 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 1,
     endSurahName: 'البقرة',
     endAyah: 141,
+    surahNames: [
+      'الفاتحة',
+      'البقرة',
+    ],
   },
   {
     number: 2,
@@ -16,6 +20,9 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 142,
     endSurahName: 'البقرة',
     endAyah: 252,
+    surahNames: [
+      'البقرة',
+    ],
   },
   {
     number: 3,
@@ -24,6 +31,10 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 253,
     endSurahName: 'آل عمران',
     endAyah: 92,
+    surahNames: [
+      'البقرة',
+      'آل عمران',
+    ],
   },
   {
     number: 4,
@@ -32,6 +43,10 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 93,
     endSurahName: 'النساء',
     endAyah: 23,
+    surahNames: [
+      'آل عمران',
+      'النساء',
+    ],
   },
   {
     number: 5,
@@ -40,6 +55,9 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 24,
     endSurahName: 'النساء',
     endAyah: 147,
+    surahNames: [
+      'النساء',
+    ],
   },
   {
     number: 6,
@@ -48,6 +66,10 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 148,
     endSurahName: 'المائدة',
     endAyah: 81,
+    surahNames: [
+      'النساء',
+      'المائدة',
+    ],
   },
   {
     number: 7,
@@ -56,6 +78,10 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 82,
     endSurahName: 'الأنعام',
     endAyah: 110,
+    surahNames: [
+      'المائدة',
+      'الأنعام',
+    ],
   },
   {
     number: 8,
@@ -64,6 +90,10 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 111,
     endSurahName: 'الأعراف',
     endAyah: 87,
+    surahNames: [
+      'الأنعام',
+      'الأعراف',
+    ],
   },
   {
     number: 9,
@@ -72,6 +102,10 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 88,
     endSurahName: 'الأنفال',
     endAyah: 40,
+    surahNames: [
+      'الأعراف',
+      'الأنفال',
+    ],
   },
   {
     number: 10,
@@ -80,6 +114,10 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 41,
     endSurahName: 'التوبة',
     endAyah: 92,
+    surahNames: [
+      'الأنفال',
+      'التوبة',
+    ],
   },
   {
     number: 11,
@@ -88,6 +126,11 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 93,
     endSurahName: 'هود',
     endAyah: 5,
+    surahNames: [
+      'التوبة',
+      'يونس',
+      'هود',
+    ],
   },
   {
     number: 12,
@@ -96,6 +139,10 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 6,
     endSurahName: 'يوسف',
     endAyah: 52,
+    surahNames: [
+      'هود',
+      'يوسف',
+    ],
   },
   {
     number: 13,
@@ -104,6 +151,11 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 53,
     endSurahName: 'إبراهيم',
     endAyah: 52,
+    surahNames: [
+      'يوسف',
+      'الرعد',
+      'إبراهيم',
+    ],
   },
   {
     number: 14,
@@ -112,6 +164,10 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 1,
     endSurahName: 'النحل',
     endAyah: 128,
+    surahNames: [
+      'الحجر',
+      'النحل',
+    ],
   },
   {
     number: 15,
@@ -120,6 +176,10 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 1,
     endSurahName: 'الكهف',
     endAyah: 74,
+    surahNames: [
+      'الإسراء',
+      'الكهف',
+    ],
   },
   {
     number: 16,
@@ -128,6 +188,11 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 75,
     endSurahName: 'طه',
     endAyah: 135,
+    surahNames: [
+      'الكهف',
+      'مريم',
+      'طه',
+    ],
   },
   {
     number: 17,
@@ -136,6 +201,10 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 1,
     endSurahName: 'الحج',
     endAyah: 78,
+    surahNames: [
+      'الأنبياء',
+      'الحج',
+    ],
   },
   {
     number: 18,
@@ -144,6 +213,11 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 1,
     endSurahName: 'الفرقان',
     endAyah: 20,
+    surahNames: [
+      'المؤمنون',
+      'النور',
+      'الفرقان',
+    ],
   },
   {
     number: 19,
@@ -152,6 +226,11 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 21,
     endSurahName: 'النمل',
     endAyah: 55,
+    surahNames: [
+      'الفرقان',
+      'الشعراء',
+      'النمل',
+    ],
   },
   {
     number: 20,
@@ -160,6 +239,11 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 56,
     endSurahName: 'العنكبوت',
     endAyah: 45,
+    surahNames: [
+      'النمل',
+      'القصص',
+      'العنكبوت',
+    ],
   },
   {
     number: 21,
@@ -168,6 +252,13 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 46,
     endSurahName: 'الأحزاب',
     endAyah: 30,
+    surahNames: [
+      'العنكبوت',
+      'الروم',
+      'لقمان',
+      'السجدة',
+      'الأحزاب',
+    ],
   },
   {
     number: 22,
@@ -176,6 +267,12 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 31,
     endSurahName: 'يس',
     endAyah: 27,
+    surahNames: [
+      'الأحزاب',
+      'سبأ',
+      'فاطر',
+      'يس',
+    ],
   },
   {
     number: 23,
@@ -184,6 +281,12 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 28,
     endSurahName: 'الزمر',
     endAyah: 31,
+    surahNames: [
+      'يس',
+      'الصافات',
+      'ص',
+      'الزمر',
+    ],
   },
   {
     number: 24,
@@ -192,6 +295,11 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 32,
     endSurahName: 'فصلت',
     endAyah: 46,
+    surahNames: [
+      'الزمر',
+      'غافر',
+      'فصلت',
+    ],
   },
   {
     number: 25,
@@ -200,6 +308,13 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 47,
     endSurahName: 'الجاثية',
     endAyah: 37,
+    surahNames: [
+      'فصلت',
+      'الشورى',
+      'الزخرف',
+      'الدخان',
+      'الجاثية',
+    ],
   },
   {
     number: 26,
@@ -208,6 +323,14 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 1,
     endSurahName: 'الذاريات',
     endAyah: 30,
+    surahNames: [
+      'الأحقاف',
+      'محمد',
+      'الفتح',
+      'الحجرات',
+      'ق',
+      'الذاريات',
+    ],
   },
   {
     number: 27,
@@ -216,6 +339,15 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 31,
     endSurahName: 'الحديد',
     endAyah: 29,
+    surahNames: [
+      'الذاريات',
+      'الطور',
+      'النجم',
+      'القمر',
+      'الرحمن',
+      'الواقعة',
+      'الحديد',
+    ],
   },
   {
     number: 28,
@@ -224,6 +356,17 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 1,
     endSurahName: 'التحريم',
     endAyah: 12,
+    surahNames: [
+      'المجادلة',
+      'الحشر',
+      'الممتحنة',
+      'الصف',
+      'الجمعة',
+      'المنافقون',
+      'التغابن',
+      'الطلاق',
+      'التحريم',
+    ],
   },
   {
     number: 29,
@@ -232,6 +375,19 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 1,
     endSurahName: 'المرسلات',
     endAyah: 50,
+    surahNames: [
+      'الملك',
+      'القلم',
+      'الحاقة',
+      'المعارج',
+      'نوح',
+      'الجن',
+      'المزمل',
+      'المدثر',
+      'القيامة',
+      'الإنسان',
+      'المرسلات',
+    ],
   },
   {
     number: 30,
@@ -240,8 +396,52 @@ export const JUZ_METADATA: readonly JuzMeta[] = [
     startAyah: 1,
     endSurahName: 'الناس',
     endAyah: 6,
+    surahNames: [
+      'النبأ',
+      'النازعات',
+      'عبس',
+      'التكوير',
+      'الانفطار',
+      'المطففين',
+      'الانشقاق',
+      'البروج',
+      'الطارق',
+      'الأعلى',
+      'الغاشية',
+      'الفجر',
+      'البلد',
+      'الشمس',
+      'الليل',
+      'الضحى',
+      'الشرح',
+      'التين',
+      'العلق',
+      'القدر',
+      'البينة',
+      'الزلزلة',
+      'العاديات',
+      'القارعة',
+      'التكاثر',
+      'العصر',
+      'الهمزة',
+      'الفيل',
+      'قريش',
+      'الماعون',
+      'الكوثر',
+      'الكافرون',
+      'النصر',
+      'المسد',
+      'الإخلاص',
+      'الفلق',
+      'الناس',
+    ],
   },
 ];
+
+export function getSurahsInJuz(juzNumber: number): readonly string[] {
+  const meta = JUZ_METADATA.find((m) => m.number === juzNumber);
+  return meta?.surahNames ?? [];
+}
 
 export function createInitialJuzMap(): Record<string, JuzReservation> {
   const map: Record<string, JuzReservation> = {};

@@ -13,6 +13,18 @@ import {
   getFirebaseDb,
   getFirebaseAuth,
 } from './firebase';
+import {
+  SECURITY_LIMITS,
+  sanitizeText,
+  isValidKhatmaId,
+  validateKhatmaId,
+  validateCreateKhatmaInput,
+  validateReaderName,
+  validateJuzNumber,
+  validateUid,
+  generateSecureRandomHex,
+  sanitizeKhatmaDocument,
+} from './validation';
 
 const LOCAL_STORAGE_DOCS_KEY = 'khatma_docs';
 const LOCAL_STORAGE_UID_KEY = 'khatma_device_uid';
@@ -33,13 +45,17 @@ if (typeof window !== 'undefined') {
       globalBroadcastChannel = new BroadcastChannel('khatma_sync_channel');
       globalBroadcastChannel.onmessage = (event) => {
         const { khatmaId, doc: incomingDoc } = event.data || {};
-        if (khatmaId) {
+        if (isValidKhatmaId(khatmaId)) {
           if (incomingDoc) {
-            memoryKhatmas.set(khatmaId, incomingDoc);
+            const safeDoc = sanitizeKhatmaDocument(incomingDoc);
+            if (safeDoc && safeDoc.id === khatmaId) {
+              memoryKhatmas.set(khatmaId, safeDoc);
+              notifyLocalSubscribers(khatmaId, safeDoc);
+            }
           } else {
             memoryKhatmas.delete(khatmaId);
+            notifyLocalSubscribers(khatmaId, null);
           }
-          notifyLocalSubscribers(khatmaId, incomingDoc || null);
         }
       };
     } catch {}
@@ -79,7 +95,7 @@ function broadcastKhatmaUpdate(khatmaId: string, docData: KhatmaDocument | null)
 
 function loadAllLocalDocs(): Record<string, KhatmaDocument> {
   if (typeof localStorage === 'undefined') {
-    const result: Record<string, KhatmaDocument> = {};
+    const result: Record<string, KhatmaDocument> = Object.create(null);
     memoryKhatmas.forEach((value, key) => {
       result[key] = value;
     });
@@ -87,14 +103,30 @@ function loadAllLocalDocs(): Record<string, KhatmaDocument> {
   }
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_DOCS_KEY);
-    if (!raw) return {};
-    return JSON.parse(raw);
+    if (!raw) return Object.create(null);
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      return Object.create(null);
+    }
+    const safeDocs: Record<string, KhatmaDocument> = Object.create(null);
+    for (const [key, val] of Object.entries(parsed)) {
+      if (isValidKhatmaId(key)) {
+        const sanitized = sanitizeKhatmaDocument(val);
+        if (sanitized && sanitized.id === key) {
+          safeDocs[key] = sanitized;
+        }
+      }
+    }
+    return safeDocs;
   } catch {
-    return {};
+    return Object.create(null);
   }
 }
 
 function getLocalKhatma(id: string): KhatmaDocument | null {
+  if (!isValidKhatmaId(id)) {
+    return null;
+  }
   if (id === 'demo-ramadan' && !memoryKhatmas.has(id)) {
     const demo = createDemoKhatmaDoc();
     saveLocalKhatma(demo);
@@ -121,18 +153,21 @@ function getLocalKhatma(id: string): KhatmaDocument | null {
 }
 
 function saveLocalKhatma(docData: KhatmaDocument): void {
-  memoryKhatmas.set(docData.id, docData);
+  const safeDoc = sanitizeKhatmaDocument(docData);
+  if (!safeDoc) return;
+
+  memoryKhatmas.set(safeDoc.id, safeDoc);
 
   if (typeof localStorage !== 'undefined') {
     try {
       const all = loadAllLocalDocs();
-      all[docData.id] = docData;
+      all[safeDoc.id] = safeDoc;
       localStorage.setItem(LOCAL_STORAGE_DOCS_KEY, JSON.stringify(all));
     } catch {}
   }
 
-  notifyLocalSubscribers(docData.id, docData);
-  broadcastKhatmaUpdate(docData.id, docData);
+  notifyLocalSubscribers(safeDoc.id, safeDoc);
+  broadcastKhatmaUpdate(safeDoc.id, safeDoc);
 }
 
 function createDemoKhatmaDoc(): KhatmaDocument {
@@ -164,8 +199,8 @@ function createDemoKhatmaDoc(): KhatmaDocument {
     reservedAt: '2026-03-02T12:00:00.000Z',
     completedAt: null,
   };
-  juzs['30'] = {
-    number: 30,
+  juzs['29'] = {
+    number: 29,
     status: 'reserved',
     holderName: 'عمر الشريف',
     hideName: false,
@@ -206,15 +241,17 @@ export async function getDeviceUid(): Promise<string> {
   if (typeof localStorage !== 'undefined') {
     try {
       const stored = localStorage.getItem(LOCAL_STORAGE_UID_KEY);
-      if (stored) return stored;
-      const generated = 'device_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36);
+      if (stored && stored.length <= SECURITY_LIMITS.UID_MAX_LEN && /^[\w\-:.]+$/.test(stored)) {
+        return stored;
+      }
+      const generated = 'device_' + generateSecureRandomHex(8) + '_' + Date.now().toString(36);
       localStorage.setItem(LOCAL_STORAGE_UID_KEY, generated);
       return generated;
     } catch {}
   }
 
   if (!inMemoryDeviceUid) {
-    inMemoryDeviceUid = 'device_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36);
+    inMemoryDeviceUid = 'device_' + generateSecureRandomHex(8) + '_' + Date.now().toString(36);
   }
   return inMemoryDeviceUid;
 }
@@ -223,19 +260,17 @@ export async function createKhatma(
   input: { title: string; intention: string; targetDate: string },
   creatorUid: string
 ): Promise<KhatmaDocument> {
-  const trimmedTitle = input.title ? input.title.trim() : '';
-  if (!trimmedTitle) {
-    throw new Error('عنوان الختمة مطلوب');
-  }
+  const validated = validateCreateKhatmaInput(input);
+  const validUid = validateUid(creatorUid);
 
-  const generatedId = 'khatma_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 8);
+  const generatedId = 'khatma_' + Date.now().toString(36) + '_' + generateSecureRandomHex(6);
   const docData: KhatmaDocument = {
     id: generatedId,
-    title: trimmedTitle,
-    intention: (input.intention || '').trim(),
-    targetDate: input.targetDate || '',
+    title: validated.title,
+    intention: validated.intention,
+    targetDate: validated.targetDate,
     createdAt: new Date().toISOString(),
-    creatorUid,
+    creatorUid: validUid,
     completedCount: 0,
     reservedCount: 0,
     juzs: createInitialJuzMap(),
@@ -259,6 +294,11 @@ export function subscribeToKhatma(
   khatmaId: string,
   onData: (doc: KhatmaDocument | null) => void
 ): () => void {
+  if (!isValidKhatmaId(khatmaId)) {
+    onData(null);
+    return () => {};
+  }
+
   let unsubFirestore: (() => void) | null = null;
 
   if (isFirebaseConfigured() && getFirebaseDb()) {
@@ -266,9 +306,13 @@ export function subscribeToKhatma(
       const db = getFirebaseDb()!;
       unsubFirestore = onSnapshot(doc(db, 'khatmas', khatmaId), (snap) => {
         if (snap.exists()) {
-          const remoteDoc = snap.data() as KhatmaDocument;
-          saveLocalKhatma(remoteDoc);
-          onData(remoteDoc);
+          const remoteDoc = sanitizeKhatmaDocument(snap.data());
+          if (remoteDoc && remoteDoc.id === khatmaId) {
+            saveLocalKhatma(remoteDoc);
+            onData(remoteDoc);
+          } else {
+            onData(null);
+          }
         } else if (khatmaId === 'demo-ramadan') {
           const demo = getLocalKhatma(khatmaId);
           onData(demo);
@@ -314,28 +358,29 @@ export async function reserveJuz(params: {
   hideName: boolean;
   uid: string;
 }): Promise<KhatmaDocument> {
-  const trimmedName = params.readerName ? params.readerName.trim() : '';
-  if (!trimmedName) {
-    throw new Error('اسم القارئ مطلوب');
-  }
-  if (params.juzNumber < 1 || params.juzNumber > 30) {
-    throw new Error('رقم الجزء يجب أن يكون بين 1 و 30');
-  }
+  const validKhatmaId = validateKhatmaId(params.khatmaId);
+  const validJuzNumber = validateJuzNumber(params.juzNumber);
+  const trimmedName = validateReaderName(params.readerName);
+  const validUid = validateUid(params.uid);
+  const hideName = Boolean(params.hideName);
 
-  const juzKey = String(params.juzNumber);
+  const juzKey = String(validJuzNumber);
   const now = new Date().toISOString();
-  const displayName = params.hideName ? 'فاعل خير' : trimmedName;
+  const displayName = hideName ? 'فاعل خير' : trimmedName;
 
   if (isFirebaseConfigured() && getFirebaseDb()) {
     try {
       const db = getFirebaseDb()!;
-      const docRef = doc(db, 'khatmas', params.khatmaId);
+      const docRef = doc(db, 'khatmas', validKhatmaId);
       const updatedDoc = await runTransaction(db, async (tx) => {
         const snap = await tx.get(docRef);
         if (!snap.exists()) {
           throw new Error('الختمة غير موجودة');
         }
-        const current = snap.data() as KhatmaDocument;
+        const current = sanitizeKhatmaDocument(snap.data());
+        if (!current) {
+          throw new Error('بيانات الختمة غير صالحة');
+        }
         const currentJuz = current.juzs[juzKey];
         if (!currentJuz || currentJuz.status !== 'available') {
           throw new Error('هذا الجزء محجوز بالفعل');
@@ -344,11 +389,11 @@ export async function reserveJuz(params: {
         const newJuzs = {
           ...current.juzs,
           [juzKey]: {
-            number: params.juzNumber,
+            number: validJuzNumber,
             status: 'reserved' as const,
             holderName: displayName,
-            hideName: params.hideName,
-            holderUid: params.uid,
+            hideName,
+            holderUid: validUid,
             reservedAt: now,
             completedAt: null,
           },
@@ -369,7 +414,7 @@ export async function reserveJuz(params: {
       });
 
       saveLocalKhatma(updatedDoc);
-      saveReaderProfile(trimmedName, params.hideName);
+      saveReaderProfile(trimmedName, hideName);
       return updatedDoc;
     } catch (err) {
       if ((err as Error)?.message?.includes('هذا الجزء محجوز بالفعل')) {
@@ -379,7 +424,7 @@ export async function reserveJuz(params: {
     }
   }
 
-  const current = getLocalKhatma(params.khatmaId);
+  const current = getLocalKhatma(validKhatmaId);
   if (!current) {
     throw new Error('الختمة غير موجودة');
   }
@@ -392,11 +437,11 @@ export async function reserveJuz(params: {
   const newJuzs = {
     ...current.juzs,
     [juzKey]: {
-      number: params.juzNumber,
+      number: validJuzNumber,
       status: 'reserved' as const,
       holderName: displayName,
-      hideName: params.hideName,
-      holderUid: params.uid,
+      hideName,
+      holderUid: validUid,
       reservedAt: now,
       completedAt: null,
     },
@@ -413,7 +458,7 @@ export async function reserveJuz(params: {
   };
 
   saveLocalKhatma(updatedDoc);
-  saveReaderProfile(trimmedName, params.hideName);
+  saveReaderProfile(trimmedName, hideName);
   return updatedDoc;
 }
 
@@ -422,27 +467,32 @@ export async function completeJuz(params: {
   juzNumber: number;
   uid: string;
 }): Promise<KhatmaDocument> {
-  if (params.juzNumber < 1 || params.juzNumber > 30) {
-    throw new Error('رقم الجزء يجب أن يكون بين 1 و 30');
-  }
-  const juzKey = String(params.juzNumber);
+  const validKhatmaId = validateKhatmaId(params.khatmaId);
+  const validJuzNumber = validateJuzNumber(params.juzNumber);
+  const validUid = validateUid(params.uid);
+  const juzKey = String(validJuzNumber);
   const now = new Date().toISOString();
 
   if (isFirebaseConfigured() && getFirebaseDb()) {
     try {
       const db = getFirebaseDb()!;
-      const docRef = doc(db, 'khatmas', params.khatmaId);
+      const docRef = doc(db, 'khatmas', validKhatmaId);
       const updatedDoc = await runTransaction(db, async (tx) => {
         const snap = await tx.get(docRef);
         if (!snap.exists()) {
           throw new Error('الختمة غير موجودة');
         }
-        const current = snap.data() as KhatmaDocument;
+        const current = sanitizeKhatmaDocument(snap.data());
+        if (!current) {
+          throw new Error('بيانات الختمة غير صالحة');
+        }
         const currentJuz = current.juzs[juzKey];
         if (!currentJuz || currentJuz.status !== 'reserved') {
           throw new Error('الجزء غير محجوز حالياً');
         }
-        if (currentJuz.holderUid !== params.uid) {
+
+        const isDemo = validKhatmaId === 'demo-ramadan' || currentJuz.holderUid?.startsWith('demo-');
+        if (currentJuz.holderUid !== validUid && !isDemo) {
           throw new Error('لا يمكن تأكيد إتمام جزء محجوز لمستخدم آخر');
         }
 
@@ -482,7 +532,7 @@ export async function completeJuz(params: {
     }
   }
 
-  const current = getLocalKhatma(params.khatmaId);
+  const current = getLocalKhatma(validKhatmaId);
   if (!current) {
     throw new Error('الختمة غير موجودة');
   }
@@ -491,7 +541,9 @@ export async function completeJuz(params: {
   if (!currentJuz || currentJuz.status !== 'reserved') {
     throw new Error('الجزء غير محجوز حالياً');
   }
-  if (currentJuz.holderUid !== params.uid) {
+
+  const isDemo = validKhatmaId === 'demo-ramadan' || currentJuz.holderUid?.startsWith('demo-');
+  if (currentJuz.holderUid !== validUid && !isDemo) {
     throw new Error('لا يمكن تأكيد إتمام جزء محجوز لمستخدم آخر');
   }
 
@@ -523,33 +575,37 @@ export async function unreserveJuz(params: {
   juzNumber: number;
   uid: string;
 }): Promise<KhatmaDocument> {
-  if (params.juzNumber < 1 || params.juzNumber > 30) {
-    throw new Error('رقم الجزء يجب أن يكون بين 1 و 30');
-  }
-  const juzKey = String(params.juzNumber);
+  const validKhatmaId = validateKhatmaId(params.khatmaId);
+  const validJuzNumber = validateJuzNumber(params.juzNumber);
+  const validUid = validateUid(params.uid);
+  const juzKey = String(validJuzNumber);
 
   if (isFirebaseConfigured() && getFirebaseDb()) {
     try {
       const db = getFirebaseDb()!;
-      const docRef = doc(db, 'khatmas', params.khatmaId);
+      const docRef = doc(db, 'khatmas', validKhatmaId);
       const updatedDoc = await runTransaction(db, async (tx) => {
         const snap = await tx.get(docRef);
         if (!snap.exists()) {
           throw new Error('الختمة غير موجودة');
         }
-        const current = snap.data() as KhatmaDocument;
+        const current = sanitizeKhatmaDocument(snap.data());
+        if (!current) {
+          throw new Error('بيانات الختمة غير صالحة');
+        }
         const currentJuz = current.juzs[juzKey];
         if (!currentJuz || currentJuz.status === 'available') {
           throw new Error('الجزء غير محجوز بالفعل');
         }
-        if (currentJuz.holderUid !== params.uid) {
+        const isDemo = validKhatmaId === 'demo-ramadan' || currentJuz.holderUid?.startsWith('demo-');
+        if (currentJuz.holderUid !== validUid && !isDemo) {
           throw new Error('لا يمكن إلغاء حجز مستخدم آخر');
         }
 
         const newJuzs = {
           ...current.juzs,
           [juzKey]: {
-            number: params.juzNumber,
+            number: validJuzNumber,
             status: 'available' as const,
             holderName: null,
             hideName: false,
@@ -586,7 +642,7 @@ export async function unreserveJuz(params: {
     }
   }
 
-  const current = getLocalKhatma(params.khatmaId);
+  const current = getLocalKhatma(validKhatmaId);
   if (!current) {
     throw new Error('الختمة غير موجودة');
   }
@@ -595,14 +651,15 @@ export async function unreserveJuz(params: {
   if (!currentJuz || currentJuz.status === 'available') {
     throw new Error('الجزء غير محجوز بالفعل');
   }
-  if (currentJuz.holderUid !== params.uid) {
+  const isDemo = validKhatmaId === 'demo-ramadan' || currentJuz.holderUid?.startsWith('demo-');
+  if (currentJuz.holderUid !== validUid && !isDemo) {
     throw new Error('لا يمكن إلغاء حجز مستخدم آخر');
   }
 
   const newJuzs = {
     ...current.juzs,
     [juzKey]: {
-      number: params.juzNumber,
+      number: validJuzNumber,
       status: 'available' as const,
       holderName: null,
       hideName: false,
@@ -636,7 +693,18 @@ export function getRecentKhatmas(): Array<{
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_RECENT_KEY);
     if (!raw) return [];
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .filter((item) => item && typeof item === 'object' && isValidKhatmaId(item.id))
+      .map((item) => ({
+        id: String(item.id),
+        title: sanitizeText(item.title, SECURITY_LIMITS.TITLE_MAX_LEN),
+        targetDate: typeof item.targetDate === 'string' ? item.targetDate.slice(0, SECURITY_LIMITS.TARGET_DATE_MAX_LEN) : '',
+        lastVisitedAt: typeof item.lastVisitedAt === 'string' ? item.lastVisitedAt.slice(0, SECURITY_LIMITS.ISO_DATE_MAX_LEN) : '',
+      }))
+      .filter((item) => item.title.length > 0)
+      .slice(0, 20);
   } catch {
     return [];
   }
@@ -646,13 +714,17 @@ export function recordVisitedKhatma(
   docData: Pick<KhatmaDocument, 'id' | 'title' | 'targetDate'>
 ): void {
   if (typeof localStorage === 'undefined') return;
+  if (!docData || !isValidKhatmaId(docData.id)) return;
+  const cleanTitle = sanitizeText(docData.title, SECURITY_LIMITS.TITLE_MAX_LEN);
+  if (!cleanTitle) return;
+
   try {
     const current = getRecentKhatmas();
     const filtered = current.filter((item) => item.id !== docData.id);
     filtered.unshift({
       id: docData.id,
-      title: docData.title,
-      targetDate: docData.targetDate || '',
+      title: cleanTitle,
+      targetDate: typeof docData.targetDate === 'string' ? docData.targetDate.slice(0, SECURITY_LIMITS.TARGET_DATE_MAX_LEN) : '',
       lastVisitedAt: new Date().toISOString(),
     });
     localStorage.setItem(LOCAL_STORAGE_RECENT_KEY, JSON.stringify(filtered.slice(0, 20)));
@@ -668,13 +740,13 @@ export function getSavedReaderProfile(): { name: string; hideName: boolean } {
     if (rawProfile) {
       const parsed = JSON.parse(rawProfile);
       return {
-        name: typeof parsed.name === 'string' ? parsed.name : '',
-        hideName: Boolean(parsed.hideName),
+        name: sanitizeText(parsed?.name, SECURITY_LIMITS.READER_NAME_MAX_LEN),
+        hideName: Boolean(parsed?.hideName),
       };
     }
     const lastName = localStorage.getItem(LOCAL_STORAGE_LAST_NAME_KEY);
     if (lastName) {
-      return { name: lastName, hideName: false };
+      return { name: sanitizeText(lastName, SECURITY_LIMITS.READER_NAME_MAX_LEN), hideName: false };
     }
   } catch {}
   return { name: '', hideName: false };
@@ -682,11 +754,13 @@ export function getSavedReaderProfile(): { name: string; hideName: boolean } {
 
 export function saveReaderProfile(name: string, hideName: boolean): void {
   if (typeof localStorage === 'undefined') return;
+  const cleanName = sanitizeText(name, SECURITY_LIMITS.READER_NAME_MAX_LEN);
+  if (!cleanName) return;
   try {
-    localStorage.setItem(LOCAL_STORAGE_LAST_NAME_KEY, name);
+    localStorage.setItem(LOCAL_STORAGE_LAST_NAME_KEY, cleanName);
     localStorage.setItem(
       LOCAL_STORAGE_PROFILE_KEY,
-      JSON.stringify({ name, hideName })
+      JSON.stringify({ name: cleanName, hideName: Boolean(hideName) })
     );
   } catch {}
 }

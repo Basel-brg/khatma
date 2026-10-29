@@ -24,6 +24,9 @@ describe('Khatma 30-Juz flow', () => {
 
     fireEvent.click(screen.getByTestId('juz-card-1'));
 
+    expect(await screen.findByText('السور المتضمنة في هذا الجزء:')).toBeTruthy();
+    expect(screen.getByTestId('juz-surah-tags')).toBeTruthy();
+
     const nameInput = await screen.findByLabelText(/الاسم/i);
     fireEvent.change(nameInput, { target: { value: 'عبدالله' } });
     fireEvent.click(screen.getByTestId('confirm-reserve-btn'));
@@ -52,7 +55,7 @@ describe('Khatma 30-Juz flow', () => {
     fireEvent.click(screen.getByTestId('confirm-reserve-btn'));
 
     expect(await screen.findByTestId('quran-reader-modal')).toBeTruthy();
-    expect(screen.getByTestId('unreserve-juz-btn')).toBeTruthy();
+    expect(await screen.findByTestId('unreserve-juz-btn')).toBeTruthy();
 
     fireEvent.click(screen.getByTestId('unreserve-juz-btn'));
 
@@ -192,5 +195,81 @@ describe('Khatma 30-Juz flow', () => {
     expect(await screen.findByText(/مُبَارَكٌ إِتْمَامُ الْخَتْمَةِ الشَّرِيفَةِ/i)).toBeTruthy();
     expect(screen.getByText(/دعاء ختم القرآن الكريم/i)).toBeTruthy();
     expect(screen.getByText(/اللَّهُمَّ ارْحَمْنَا بِالقُرْآنِ/i)).toBeTruthy();
+  });
+
+  it('prevents user-b from opening juzs reserved or completed by user-a', async () => {
+    const doc = await createKhatma(
+      { title: 'ختمة الحماية والخصوصية', intention: 'اختبار منع فتح الأجزاء', targetDate: '2026-12-31' },
+      'admin-uid'
+    );
+
+    const { reserveJuz, completeJuz } = await import('../../lib/khatma-service');
+    // user-a reserves Juz 4
+    await reserveJuz({
+      khatmaId: doc.id,
+      juzNumber: 4,
+      readerName: 'أحمد الحجازي',
+      hideName: false,
+      uid: 'user-a',
+    });
+
+    // user-a reserves and completes Juz 6
+    await reserveJuz({
+      khatmaId: doc.id,
+      juzNumber: 6,
+      readerName: 'فاطمة الزهراء',
+      hideName: false,
+      uid: 'user-a',
+    });
+    await completeJuz({
+      khatmaId: doc.id,
+      juzNumber: 6,
+      uid: 'user-a',
+    });
+
+    // Render as user-b
+    const { unmount: unmountUserB } = render(
+      <KhatmaPageClient khatmaId={doc.id} initialUid="user-b" />
+    );
+
+    await screen.findByText('ختمة الحماية والخصوصية');
+
+    // 1. user-b clicks Juz 4 (reserved by user-a)
+    const card4 = screen.getByTestId('juz-card-4');
+    expect(card4.className).toContain('cursor-not-allowed');
+    fireEvent.click(card4);
+
+    // Should NOT open reader modal
+    expect(screen.queryByTestId('quran-reader-modal')).toBeNull();
+    // Should show access alert toast
+    const alert1 = await screen.findByTestId('khatma-access-alert');
+    expect(alert1.textContent).toContain('أحمد الحجازي');
+    expect(alert1.textContent).toContain('ولا يمكن فتحه');
+
+    // 2. user-b clicks Juz 6 (completed by user-a)
+    const card6 = screen.getByTestId('juz-card-6');
+    expect(card6.className).toContain('cursor-not-allowed');
+    fireEvent.click(card6);
+
+    // Should NOT open reader modal
+    expect(screen.queryByTestId('quran-reader-modal')).toBeNull();
+    // Should show access alert toast
+    const alert2 = await screen.findByTestId('khatma-access-alert');
+    expect(alert2.textContent).toContain('فاطمة الزهراء');
+    expect(alert2.textContent).toContain('مكتمل');
+
+    unmountUserB();
+
+    // 3. Render as user-a (the owner)
+    render(<KhatmaPageClient khatmaId={doc.id} initialUid="user-a" />);
+    await screen.findByText('ختمة الحماية والخصوصية');
+
+    // user-a CAN click their reserved Juz 4 to read it
+    const myCard4 = screen.getByTestId('juz-card-4');
+    expect(myCard4.className).toContain('cursor-pointer');
+    fireEvent.click(myCard4);
+
+    expect(await screen.findByTestId('quran-reader-modal')).toBeTruthy();
+    expect(screen.queryByTestId('access-denied-view')).toBeNull();
   });
 });

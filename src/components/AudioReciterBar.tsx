@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { RECITERS, buildAyahAudioUrl } from '../lib/reciters';
+import { getIslamSobhiAyahTime } from '../lib/islam-sobhi-timings';
 import { Play, Pause, SkipBack, SkipForward, Volume2, ChevronDown, Loader2 } from 'lucide-react';
 import { toArabicDigits } from './IslamicOrnaments';
 
@@ -46,13 +47,14 @@ export default function AudioReciterBar({
   const [isSelectorOpen, setIsSelectorOpen] = useState<boolean>(false);
   const [fallbackAttempted, setFallbackAttempted] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const currentTimingRef = useRef<{ startMs: number; endMs: number } | null>(null);
 
   const currentReciter = RECITERS.find((r) => r.id === selectedReciterId) || RECITERS[0];
 
   const getPrimaryAudioUrl = (reciterId: string, folder: string, surah: number, ayah: number) => {
     if (reciterId === 'islam-sobhi') {
       const surahStr = String(surah).padStart(3, '0');
-      return `https://server14.mp3quran.net/islam/Rewayat-Hafs-A-n-Assem/${surahStr}.mp3`;
+      return `https://cdn.mp3quran.net/audio/islam-sobhi/r1/${surahStr}.mp3`;
     }
     return buildAyahAudioUrl(folder, surah, ayah);
   };
@@ -74,6 +76,29 @@ export default function AudioReciterBar({
       audio.load();
     }
 
+    // For Islam Sobhi: seek to the specific Ayah timestamp
+    let isCancelled = false;
+    if (selectedReciterId === 'islam-sobhi') {
+      getIslamSobhiAyahTime(currentSurahNumber, currentAyahNumber).then((timing) => {
+        if (isCancelled) return;
+        currentTimingRef.current = timing;
+        if (timing && audio) {
+          const seekSec = timing.startMs / 1000;
+          if (audio.readyState >= 1) {
+            audio.currentTime = seekSec;
+          } else {
+            const onMeta = () => {
+              audio.currentTime = seekSec;
+              audio.removeEventListener('loadedmetadata', onMeta);
+            };
+            audio.addEventListener('loadedmetadata', onMeta);
+          }
+        }
+      });
+    } else {
+      currentTimingRef.current = null;
+    }
+
     if (isPlaying) {
       setIsBuffering(true);
       const playPromise = audio.play();
@@ -87,7 +112,11 @@ export default function AudioReciterBar({
           });
       }
     }
-  }, [audioSrc, isPlaying]);
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [audioSrc, isPlaying, selectedReciterId, currentSurahNumber, currentAyahNumber]);
 
   const handleAudioError = () => {
     const audio = audioRef.current;
@@ -144,11 +173,22 @@ export default function AudioReciterBar({
     }
   };
 
-  const handleEnded = () => {
-    if (selectedReciterId === 'islam-sobhi') {
-      setIsPlaying(false);
-      return;
+  const handleTimeUpdate = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (selectedReciterId === 'islam-sobhi' && currentTimingRef.current && isPlaying) {
+      const endSec = currentTimingRef.current.endMs / 1000;
+      if (audio.currentTime >= endSec - 0.15) {
+        if (onAyahEnded) {
+          onAyahEnded();
+        } else {
+          onNextAyah();
+        }
+      }
     }
+  };
+
+  const handleEnded = () => {
     if (onAyahEnded) {
       onAyahEnded();
     } else {
@@ -165,6 +205,7 @@ export default function AudioReciterBar({
       <audio
         ref={audioRef}
         src={audioSrc}
+        onTimeUpdate={handleTimeUpdate}
         onEnded={handleEnded}
         onPlaying={() => setIsBuffering(false)}
         onWaiting={() => isPlaying && setIsBuffering(true)}
@@ -172,54 +213,97 @@ export default function AudioReciterBar({
         preload="none"
       />
 
-      {/* Floating Obsidian-Emerald & Gold Reciter Bar */}
-      <div className="pointer-events-auto mx-auto flex max-w-[500px] items-center justify-between gap-3 rounded-full border border-[#C5A059]/45 bg-[#091B15]/98 px-3.5 py-1.5 text-[#F4EFE6] shadow-[0_12px_36px_rgba(0,0,0,0.6)] backdrop-blur-md">
-        {/* Play/Pause Button on Left (Islamic Warm Gold) */}
-        <div className="flex items-center gap-2">
+      {/* Floating Audio Reciter Pill with Unified Playback Controls */}
+      <div
+        className={`pointer-events-auto mx-auto flex max-w-[440px] items-center justify-between gap-2.5 rounded-full px-3 py-1.5 backdrop-blur-md transition-colors ${
+          isDarkMode
+            ? 'border border-[#C5A059]/40 bg-[#07140E]/98 text-white shadow-[0_12px_36px_rgba(0,0,0,0.7)]'
+            : 'border border-[#C5A059]/60 bg-white/98 text-[#091B15] shadow-xl'
+        }`}
+      >
+        {/* Unified Playback Cluster: Right Arrow (Next) on the right, Play/Pause in center, Left Arrow (Prev) on the left */}
+        <div className="flex items-center gap-1 shrink-0" dir="rtl">
+          <button
+            type="button"
+            onClick={onNextAyah}
+            className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
+              isDarkMode
+                ? 'text-white/80 hover:text-white hover:bg-white/10'
+                : 'text-[#091B15]/80 hover:text-[#091B15] hover:bg-black/5'
+            }`}
+            aria-label="الآية التالية"
+            title="الآية التالية"
+          >
+            <SkipForward className="h-4 w-4" />
+          </button>
+
           <button
             type="button"
             onClick={togglePlay}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-[#C5A059] text-[#091B15] shadow-md hover:bg-[#D4B06A] transition-transform active:scale-95"
+            className={`flex h-9 w-9 items-center justify-center rounded-full shadow-md transition-transform active:scale-95 ${
+              isDarkMode
+                ? 'bg-[#C5A059] text-[#07140E] hover:bg-[#D4A13E]'
+                : 'bg-[#091B15] text-white hover:bg-[#143D30]'
+            }`}
             aria-label={isPlaying ? 'إيقاف مؤقت' : 'تشغيل التلاوة'}
           >
             {isBuffering ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
+              <Loader2 className="h-4 w-4 animate-spin text-current" />
             ) : isPlaying ? (
-              <Pause className="h-5 w-5 fill-current" />
+              <Pause className="h-4 w-4 fill-current text-current" />
             ) : (
-              <Play className="h-5 w-5 fill-current ml-0.5" />
+              <Play className="h-4 w-4 fill-current ml-0.5 text-current" />
             )}
           </button>
 
           <button
             type="button"
             onClick={onPrevAyah}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-[#E8D39E]/80 hover:text-[#C5A059] hover:bg-white/10 transition-colors"
+            className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
+              isDarkMode
+                ? 'text-white/80 hover:text-white hover:bg-white/10'
+                : 'text-[#091B15]/80 hover:text-[#091B15] hover:bg-black/5'
+            }`}
             aria-label="الآية السابقة"
+            title="الآية السابقة"
           >
             <SkipBack className="h-4 w-4" />
           </button>
         </div>
 
-        {/* Reciter Selector in Center (Warm Gold Calligraphy) */}
-        <div className="relative">
+        {/* Reciter Selector in Center */}
+        <div className="relative flex-1 flex justify-center">
           <button
             type="button"
             onClick={() => setIsSelectorOpen(!isSelectorOpen)}
-            className="flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold text-[#C8A45D] hover:text-[#E8D39E] hover:bg-white/5 transition-colors"
+            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-sm font-semibold transition-colors ${
+              isDarkMode
+                ? 'text-white hover:text-[#E8D39E]'
+                : 'text-[#091B15] hover:text-[#143D30]'
+            }`}
             aria-label="اختيار القارئ"
             aria-haspopup="listbox"
           >
-            <span className="truncate max-w-[150px] sm:max-w-none">{currentReciter.nameAr}</span>
-            <ChevronDown className="h-3.5 w-3.5 text-[#C5A059] shrink-0" />
+            <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-80" />
+            <span className="truncate max-w-[130px] sm:max-w-none">{currentReciter.nameAr}</span>
           </button>
 
           {isSelectorOpen && (
             <div
-              className="absolute bottom-full mb-2.5 right-1/2 translate-x-1/2 w-64 rounded-2xl border border-[#C5A059]/40 bg-[#0B1D17] p-2 shadow-2xl z-50 text-right text-[#F4EFE6]"
+              className={`absolute bottom-full mb-2.5 right-1/2 translate-x-1/2 w-64 rounded-2xl border p-2 shadow-2xl z-50 text-right ${
+                isDarkMode
+                  ? 'border-[#C5A059]/40 bg-[#091B15] text-white'
+                  : 'border-[#C5A059]/40 bg-white text-[#091B15]'
+              }`}
               role="listbox"
             >
-              <div className="px-3 py-1.5 text-xs font-bold text-[#C5A059] border-b border-[#C5A059]/20 mb-1">
+              <div
+                className={`px-3 py-1.5 text-xs font-bold border-b mb-1 ${
+                  isDarkMode
+                    ? 'text-[#C5A059] border-[#C5A059]/20'
+                    : 'text-[#091B15] border-[#C5A059]/30'
+                }`}
+              >
                 اختر القارئ المفضل
               </div>
               <div className="max-h-56 overflow-y-auto space-y-1">
@@ -237,14 +321,24 @@ export default function AudioReciterBar({
                       }}
                       className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs transition-colors ${
                         isSelected
-                          ? 'bg-[#C5A059] text-[#091B15] font-bold'
-                          : 'text-[#E6DEC8] hover:bg-white/10'
+                          ? isDarkMode
+                            ? 'bg-[#C5A059] text-[#07140E] font-bold'
+                            : 'bg-[#091B15] text-white font-bold'
+                          : isDarkMode
+                          ? 'text-white/80 hover:bg-white/10'
+                          : 'text-[#091B15]/80 hover:bg-black/5'
                       }`}
                     >
                       <span>{reciter.nameAr}</span>
                       <span
                         className={`text-[10px] ${
-                          isSelected ? 'text-[#091B15]/90' : 'text-[#A6B8B0]'
+                          isSelected
+                            ? isDarkMode
+                              ? 'text-[#07140E]/80'
+                              : 'text-white/80'
+                            : isDarkMode
+                            ? 'text-white/50'
+                            : 'text-[#091B15]/50'
                         }`}
                       >
                         {reciter.styleAr}
@@ -257,19 +351,17 @@ export default function AudioReciterBar({
           )}
         </div>
 
-        {/* Current Ayah indicator & Next Ayah button */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-[#C5A059] tabular-nums font-semibold">
-            {toArabicDigits(currentAyahNumber)}
-          </span>
-          <button
-            type="button"
-            onClick={onNextAyah}
-            className="flex h-8 w-8 items-center justify-center rounded-full text-[#E8D39E]/80 hover:text-[#C5A059] hover:bg-white/10 transition-colors"
-            aria-label="الآية التالية"
+        {/* Current Ayah Indicator */}
+        <div className="shrink-0 flex items-center pr-1">
+          <span
+            className={`text-xs px-2.5 py-0.5 rounded-full font-bold tabular-nums ${
+              isDarkMode
+                ? 'bg-white/10 text-[#C5A059]'
+                : 'bg-black/5 text-[#091B15]'
+            }`}
           >
-            <SkipForward className="h-4 w-4" />
-          </button>
+            آية {toArabicDigits(currentAyahNumber)}
+          </span>
         </div>
       </div>
     </div>

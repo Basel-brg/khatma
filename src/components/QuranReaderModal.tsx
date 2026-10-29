@@ -3,12 +3,14 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { JuzContent, JuzAyah, loadJuzFromDiskOrFetch } from '../lib/quran-loader';
 import { JUZ_METADATA } from '../lib/quran-meta';
+import { SECURITY_LIMITS, isValidKhatmaId, sanitizeText } from '../lib/validation';
 import { useKhatmaTheme } from '../lib/theme';
 import AudioReciterBar from './AudioReciterBar';
-import { AyahStarMedallion, SurahCartoucheBanner, toArabicDigits } from './IslamicOrnaments';
+import { AyahStarMedallion, SurahCartoucheBanner, toArabicDigits, CornerCrosshairs } from './IslamicOrnaments';
 import {
   Menu,
   X,
+  Check,
   CheckCircle,
   Undo2,
   Sun,
@@ -19,6 +21,11 @@ import {
   CornerUpLeft,
   SlidersHorizontal,
   BookOpen,
+  Settings,
+  Bookmark,
+  MessageSquare,
+  Sparkles,
+  Lock,
 } from 'lucide-react';
 
 export interface QuranReaderModalProps {
@@ -27,6 +34,9 @@ export interface QuranReaderModalProps {
   uid: string;
   isReservedByMe: boolean;
   isCompleted: boolean;
+  isCompletedByMe?: boolean;
+  isAccessDenied?: boolean;
+  holderName?: string | null;
   onClose: () => void;
   onComplete: () => Promise<void> | void;
   onUnreserve: () => Promise<void> | void;
@@ -56,10 +66,18 @@ export default function QuranReaderModal({
   uid,
   isReservedByMe,
   isCompleted,
+  isCompletedByMe,
+  isAccessDenied,
+  holderName,
   onClose,
   onComplete,
   onUnreserve,
 }: QuranReaderModalProps) {
+  const accessDenied =
+    isAccessDenied !== undefined
+      ? isAccessDenied
+      : !isReservedByMe && (isCompleted ? !isCompletedByMe : true);
+
   const meta = useMemo(() => {
     return JUZ_METADATA.find((m) => m.number === juzNumber) || JUZ_METADATA[0];
   }, [juzNumber]);
@@ -106,6 +124,7 @@ export default function QuranReaderModal({
   const [showControls, setShowControls] = useState<boolean>(true);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [bookmarkToast, setBookmarkToast] = useState<string | null>(null);
 
   const [activeSurahNumber, setActiveSurahNumber] = useState<number>(
     initialFallbackContent.sections[0].surahNumber
@@ -123,6 +142,11 @@ export default function QuranReaderModal({
 
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
+  const pointerStartX = useRef<number | null>(null);
+  const pointerStartY = useRef<number | null>(null);
+  const isPointerDown = useRef<boolean>(false);
+  const isSwipeActive = useRef<boolean>(false);
+  const lastSwipeTimestamp = useRef<number>(0);
 
   const mushafPages = useMemo<MushafPageData[]>(() => {
     if (!juzData || !juzData.sections.length) return [];
@@ -190,6 +214,7 @@ export default function QuranReaderModal({
   }, [juzData, juzNumber]);
 
   useEffect(() => {
+    if (accessDenied) return;
     let isMounted = true;
     setIsLoading(true);
 
@@ -200,13 +225,24 @@ export default function QuranReaderModal({
           setJuzData(data);
           let restoredBookmark = false;
           try {
-            const saved = localStorage.getItem(`khatma_bookmark_${khatmaId}_juz_${juzNumber}`);
-            if (saved) {
-              const parsed = JSON.parse(saved);
-              if (parsed?.surahNumber && parsed?.ayahNumber) {
-                setActiveSurahNumber(parsed.surahNumber);
-                setActiveAyahNumber(parsed.ayahNumber);
-                restoredBookmark = true;
+            if (isValidKhatmaId(khatmaId)) {
+              const saved = localStorage.getItem(`khatma_bookmark_${khatmaId}_juz_${juzNumber}`);
+              if (saved) {
+                const parsed = JSON.parse(saved);
+                const sNum = Number(parsed?.surahNumber);
+                const aNum = Number(parsed?.ayahNumber);
+                if (
+                  Number.isInteger(sNum) &&
+                  sNum >= 1 &&
+                  sNum <= 114 &&
+                  Number.isInteger(aNum) &&
+                  aNum >= 1 &&
+                  aNum <= 286
+                ) {
+                  setActiveSurahNumber(sNum);
+                  setActiveAyahNumber(aNum);
+                  restoredBookmark = true;
+                }
               }
             }
           } catch {}
@@ -246,13 +282,37 @@ export default function QuranReaderModal({
     }
   }, [activeSurahNumber, activeAyahNumber, mushafPages]);
 
+  const saveBookmark = () => {
+    try {
+      if (!isValidKhatmaId(khatmaId)) return;
+      const pageNum = activePage?.pageNumber || 1;
+      localStorage.setItem(
+        `khatma_bookmark_${khatmaId}_juz_${juzNumber}`,
+        JSON.stringify({
+          surahNumber: activeSurahNumber,
+          ayahNumber: activeAyahNumber,
+          pageNumber: pageNum,
+          savedAt: new Date().toISOString(),
+        })
+      );
+      setBookmarkToast(`تم حفظ موضع القراءة (صفحة ${toArabicDigits(pageNum)})`);
+      setTimeout(() => setBookmarkToast(null), 2500);
+    } catch {}
+  };
+
   const selectAyah = (surahNumber: number, ayahNumber: number) => {
     setActiveSurahNumber(surahNumber);
     setActiveAyahNumber(ayahNumber);
     try {
+      if (!isValidKhatmaId(khatmaId)) return;
       localStorage.setItem(
         `khatma_bookmark_${khatmaId}_juz_${juzNumber}`,
-        JSON.stringify({ surahNumber, ayahNumber, savedAt: new Date().toISOString() })
+        JSON.stringify({
+          surahNumber,
+          ayahNumber,
+          pageNumber: activePage?.pageNumber || 1,
+          savedAt: new Date().toISOString(),
+        })
       );
     } catch {}
   };
@@ -308,19 +368,87 @@ export default function QuranReaderModal({
     touchStartY.current = e.touches[0].clientY;
   };
 
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diffX = touchStartX.current - e.touches[0].clientX;
+    if (Math.abs(diffX) > 35) {
+      isSwipeActive.current = true;
+      if (longPressTimerRef.current) {
+        clearTimeout(longPressTimerRef.current);
+        longPressTimerRef.current = null;
+      }
+    }
+  };
+
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null || touchStartY.current === null) return;
-    const diffX = touchStartX.current - e.changedTouches[0].clientX;
-    const diffY = touchStartY.current - e.changedTouches[0].clientY;
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
-      if (diffX > 0) {
-        goToPage(currentPageIdx + 1);
-      } else {
-        goToPage(currentPageIdx - 1);
+    if (touchStartX.current === null) return;
+    const endX = e.changedTouches[0]?.clientX ?? touchStartX.current;
+    const diffX = touchStartX.current - endX;
+    if (Math.abs(diffX) > 35) {
+      isSwipeActive.current = true;
+      const now = Date.now();
+      if (now - lastSwipeTimestamp.current > 300) {
+        lastSwipeTimestamp.current = now;
+        if (diffX > 35) {
+          goToPage(currentPageIdx + 1);
+        } else if (diffX < -35) {
+          goToPage(currentPageIdx - 1);
+        }
       }
     }
     touchStartX.current = null;
     touchStartY.current = null;
+    setTimeout(() => {
+      isSwipeActive.current = false;
+    }, 100);
+  };
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (e.button !== 0) return;
+    pointerStartX.current = e.clientX;
+    pointerStartY.current = e.clientY;
+    isPointerDown.current = true;
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isPointerDown.current || pointerStartX.current === null) return;
+    const diffX = pointerStartX.current - e.clientX;
+    if (Math.abs(diffX) > 35) {
+      isSwipeActive.current = true;
+      if (longPressTimerRef.current) {
+        clearTimeout(longPressTimerRef.current);
+        longPressTimerRef.current = null;
+      }
+    }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (!isPointerDown.current || pointerStartX.current === null) return;
+    const diffX = pointerStartX.current - e.clientX;
+    if (Math.abs(diffX) > 35) {
+      isSwipeActive.current = true;
+      const now = Date.now();
+      if (now - lastSwipeTimestamp.current > 300) {
+        lastSwipeTimestamp.current = now;
+        if (diffX > 35) {
+          goToPage(currentPageIdx + 1);
+        } else if (diffX < -35) {
+          goToPage(currentPageIdx - 1);
+        }
+      }
+    }
+    pointerStartX.current = null;
+    pointerStartY.current = null;
+    isPointerDown.current = false;
+    setTimeout(() => {
+      isSwipeActive.current = false;
+    }, 100);
+  };
+
+  const handlePointerCancel = () => {
+    pointerStartX.current = null;
+    pointerStartY.current = null;
+    isPointerDown.current = false;
   };
 
   // Long press on Ayah handlers
@@ -346,21 +474,50 @@ export default function QuranReaderModal({
     }
   };
 
+  const [completeToast, setCompleteToast] = useState<{
+    message: string;
+    type: 'success' | 'error';
+  } | null>(null);
+
   const handleCompleteClick = async () => {
+    if (isSubmittingComplete) return;
     setIsSubmittingComplete(true);
+    setCompleteToast(null);
     try {
       await onComplete();
-      onClose();
+      setCompleteToast({
+        message: 'تقبل الله طاعتكم! تم تسجيل إتمام قراءة الجزء بنجاح 🤲',
+        type: 'success',
+      });
+      setTimeout(() => {
+        onClose();
+      }, 1400);
+    } catch (err: any) {
+      console.error('Failed to complete juz:', err);
+      setCompleteToast({
+        message: err?.message || 'تعذر تأكيد الإتمام، يرجى المحاولة مرة أخرى',
+        type: 'error',
+      });
+      setTimeout(() => setCompleteToast(null), 3500);
     } finally {
       setIsSubmittingComplete(false);
     }
   };
 
   const handleUnreserveClick = async () => {
+    if (isSubmittingUnreserve) return;
     setIsSubmittingUnreserve(true);
+    setCompleteToast(null);
     try {
       await onUnreserve();
       onClose();
+    } catch (err: any) {
+      console.error('Failed to unreserve juz:', err);
+      setCompleteToast({
+        message: err?.message || 'تعذر إلغاء الحجز',
+        type: 'error',
+      });
+      setTimeout(() => setCompleteToast(null), 3500);
     } finally {
       setIsSubmittingUnreserve(false);
     }
@@ -380,60 +537,114 @@ export default function QuranReaderModal({
   }, [juzData]);
 
   const filteredSurahs = useMemo(() => {
-    if (!searchQuery.trim()) return availableSurahs;
+    const cleanQuery = sanitizeText(searchQuery, SECURITY_LIMITS.SEARCH_QUERY_MAX_LEN);
+    if (!cleanQuery) return availableSurahs;
     return availableSurahs.filter(
       (s) =>
-        s.surahNameAr.includes(searchQuery.trim()) ||
-        String(s.surahNumber) === searchQuery.trim()
+        s.surahNameAr.includes(cleanQuery) ||
+        String(s.surahNumber) === cleanQuery
     );
   }, [availableSurahs, searchQuery]);
+
+  if (accessDenied) {
+    return (
+      <div
+        data-testid="quran-reader-modal"
+        className={`fixed inset-0 z-50 flex items-center justify-center p-4 select-none ${
+          isDarkMode ? 'bg-[#07140E] text-white' : 'bg-[#F5F1E8] text-[#091B15]'
+        }`}
+        dir="rtl"
+      >
+        <div
+          data-testid="access-denied-view"
+          className={`relative max-w-md w-full border p-6 sm:p-8 text-center shadow-2xl rounded-sm ${
+            isDarkMode
+              ? 'border-[#C5A059]/60 bg-[#0A1E16] text-[#F4EFE6]'
+              : 'border-[#C5A059] bg-[#FFFFFF] text-[#091B15]'
+          }`}
+        >
+          <CornerCrosshairs />
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-amber-500/40 bg-amber-500/10 text-amber-500 mb-4">
+            <Lock className="h-7 w-7" />
+          </div>
+
+          <h2 className="text-xl sm:text-2xl font-bold font-quran text-[#C5A059]">
+            الوصول غير متاح لهذا الجزء
+          </h2>
+
+          <p className="mt-3 text-xs sm:text-sm text-[#7D9087] dark:text-[#A6B8B0] leading-relaxed">
+            {isCompleted
+              ? `هذا الجزء مختوم ومكتمل بواسطة ${holderName || 'قارئ آخر'}، ولا يمكن فتحه من قبل شخص آخر.`
+              : `هذا الجزء محجوز حالياً بواسطة ${holderName || 'قارئ آخر'}، والقراءة مخصصة لحاجز الجزء فقط.`}
+          </p>
+
+          <button
+            type="button"
+            data-testid="close-access-denied-btn"
+            onClick={onClose}
+            className="mt-6 inline-flex items-center justify-center gap-2 border border-[#C5A059] bg-[#091B15] text-[#C5A059] hover:bg-[#123126] hover:text-[#E8D39E] px-6 py-2.5 text-xs sm:text-sm font-bold transition-colors w-full sm:w-auto"
+          >
+            <span>العودة لصفحة الختمة</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
       data-testid="quran-reader-modal"
       className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden select-none transition-colors duration-200 ${
-        isDarkMode ? 'bg-[#07120E] text-[#F4EFE6]' : 'bg-[#FBF8F3] text-[#0F2922]'
+        isDarkMode ? 'bg-[#07140E] text-white' : 'bg-[#FFFFFF] text-[#091B15]'
       }`}
       dir="rtl"
     >
-      {/* 1. Ultra-Clean Obsidian & Gold Top Bar */}
+      {/* 1. Sleek Top Bar with Crisp Light & Dark Support */}
       <header
         className={`fixed top-0 inset-x-0 z-40 flex items-center justify-between px-3 sm:px-6 py-2.5 backdrop-blur-md border-b transition-all duration-300 ${
           isDarkMode
-            ? 'border-[#C5A059]/25 bg-[#091B15]/95 text-[#F4EFE6]'
-            : 'border-[#C5A059]/40 bg-[#F8F5EC]/95 text-[#091B15]'
+            ? 'border-[#C5A059]/35 bg-[#07140E]/98 text-white shadow-md'
+            : 'border-[#E6DEC8] bg-[#FFFFFF]/98 text-[#091B15] shadow-xs'
         } ${
           showControls
             ? 'opacity-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
       >
-        {/* Right side: Close Button & Juz Name */}
+        {/* Right side (RTL): Burger Menu & Bookmark Button (Settings replaced by Burger Menu) */}
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             type="button"
-            onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-[#C5A059] hover:bg-[#C5A059]/15 transition-colors"
-            aria-label="إغلاق قارئ المصحف"
+            onClick={() => setIsDrawerOpen(true)}
+            className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+              isDarkMode
+                ? 'text-[#C5A059] hover:bg-white/10'
+                : 'text-[#091B15] hover:bg-black/5'
+            }`}
+            aria-label="فتح قائمة إعدادات المصحف"
           >
-            <X className="h-5 w-5" />
+            <Menu className="h-5 w-5" />
           </button>
-          <div className="flex items-center gap-1.5">
-            <span className="text-base sm:text-lg font-bold font-quran text-[#C8A45D]">
-              {meta.nameAr}
+
+          <button
+            type="button"
+            onClick={saveBookmark}
+            className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-bold transition-all active:scale-95 ${
+              isDarkMode
+                ? 'border-[#C5A059]/50 bg-[#0A1C15] text-[#C5A059] hover:bg-[#102B20]'
+                : 'border-[#C5A059]/60 bg-[#FDF8EE] text-[#091B15] hover:bg-[#F8EED6]'
+            }`}
+            title="حفظ موضع القراءة"
+          >
+            <Bookmark className="h-4 w-4 fill-current text-[#C5A059]" />
+            <span className="tabular-nums">
+              {bookmarkToast ? 'تم الحفظ ✓' : toArabicDigits(activePage?.pageNumber || 1)}
             </span>
-          </div>
+          </button>
         </div>
 
-        {/* Center: Minimal Gold Page Capsule */}
-        <div className="hidden sm:flex items-center justify-center">
-          <div className="rounded-full border border-[#C5A059]/50 bg-[#0D241C] px-3.5 py-0.5 text-xs font-bold text-[#E8D39E] tabular-nums shadow-xs">
-            <span>صفحة {toArabicDigits(activePage?.pageNumber || 1)}</span>
-          </div>
-        </div>
-
-        {/* Left side: Dynamic Action Button + Burger Menu */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        {/* Left side (RTL): Completion Button & Close Button */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {/* Dynamic Complete Button (Only on Last Page) */}
           {isLastPage && !isCompleted && (
             <button
@@ -441,38 +652,79 @@ export default function QuranReaderModal({
               data-testid="complete-juz-btn"
               onClick={handleCompleteClick}
               disabled={isSubmittingComplete}
-              className="flex items-center gap-1.5 rounded-full bg-[#C5A059] hover:bg-[#D4B06A] px-3.5 py-1.5 text-xs font-bold text-[#081A14] shadow-md transition-all active:scale-95"
+              className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-bold shadow-md transition-all active:scale-95 ${
+                isDarkMode
+                  ? 'bg-[#C5A059] text-[#07140E] hover:bg-[#D4A13E]'
+                  : 'bg-[#091B15] text-white hover:bg-[#143D30]'
+              }`}
             >
               <CheckCircle className="h-3.5 w-3.5" />
-              <span>{isSubmittingComplete ? 'جاري الحفظ...' : 'أتممت القراءة'}</span>
+              <span>{isSubmittingComplete ? 'جاري...' : 'أتممت القراءة'}</span>
             </button>
           )}
 
-          {/* Dynamic Unreserve Button (Visible on all pages until last page, or if single-page) */}
-          {(!isLastPage || totalPagesInJuz <= 1) && isReservedByMe && !isCompleted && (
-            <button
-              type="button"
-              data-testid="unreserve-juz-btn"
-              onClick={handleUnreserveClick}
-              disabled={isSubmittingUnreserve}
-              className="flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-500/15 px-3 py-1.5 text-xs font-semibold text-amber-300 hover:bg-amber-500/25 transition-colors"
+          {isCompleted && isLastPage && (
+            <span
+              className={`flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full ${
+                isDarkMode
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                  : 'bg-emerald-50 text-emerald-800 border border-emerald-300'
+              }`}
             >
-              <Undo2 className="h-3.5 w-3.5" />
-              <span>الاعتذار عن الجزء</span>
-            </button>
+              <Check className="h-3 w-3" />
+              <span>مكتمل</span>
+            </span>
           )}
 
-          {/* Burger Menu Button (Opens Sidebar Drawer with Font Size, Theme, and Search) */}
+          {/* Close Reader Button */}
           <button
             type="button"
-            onClick={() => setIsDrawerOpen(true)}
-            className="flex h-9 w-9 items-center justify-center rounded-full text-[#C5A059] hover:bg-[#C5A059]/15 transition-colors"
-            aria-label="فتح قائمة إعدادات المصحف"
+            onClick={onClose}
+            className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ml-1 ${
+              isDarkMode
+                ? 'text-[#A6B8B0] hover:text-white hover:bg-white/10'
+                : 'text-[#7D9087] hover:text-[#091B15] hover:bg-black/5'
+            }`}
+            aria-label="إغلاق قارئ المصحف"
           >
-            <Menu className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </button>
         </div>
       </header>
+
+      {/* Floating Bookmark Toast feedback banner */}
+      {bookmarkToast && (
+        <div
+          className={`fixed top-14 left-1/2 -translate-x-1/2 z-50 rounded-full border px-4 py-1.5 text-xs font-bold shadow-xl flex items-center gap-2 animate-fade-in ${
+            isDarkMode
+              ? 'border-[#C5A059] bg-[#07140E] text-white'
+              : 'border-[#C5A059] bg-[#FFFFFF] text-[#091B15]'
+          }`}
+          role="status"
+        >
+          <Bookmark className="h-3.5 w-3.5 text-[#C5A059] fill-current" />
+          <span>{bookmarkToast}</span>
+        </div>
+      )}
+
+      {/* Floating Completion Feedback Toast */}
+      {completeToast && (
+        <div
+          className={`fixed top-16 left-1/2 -translate-x-1/2 z-50 rounded-full border px-5 py-2 text-xs sm:text-sm font-bold shadow-2xl flex items-center gap-2 animate-fade-in ${
+            completeToast.type === 'success'
+              ? 'border-emerald-500 bg-[#082218] text-white shadow-emerald-950/40'
+              : 'border-red-500 bg-[#280D0D] text-white shadow-red-950/40'
+          }`}
+          role="status"
+        >
+          {completeToast.type === 'success' ? (
+            <CheckCircle className="h-4 w-4 text-emerald-400 shrink-0" />
+          ) : (
+            <X className="h-4 w-4 text-red-400 shrink-0" />
+          )}
+          <span>{completeToast.message}</span>
+        </div>
+      )}
 
       {/* 2. Burger Menu Sidebar Drawer */}
       <div
@@ -487,151 +739,273 @@ export default function QuranReaderModal({
           onClick={() => setIsDrawerOpen(false)}
         />
 
-        {/* Slide-out Panel */}
+        {/* Slide-out Panel with Dynamic Light/Dark Theme Support */}
         <div
           className={`relative z-10 w-full max-w-xs sm:max-w-sm flex flex-col justify-between p-5 shadow-2xl transition-transform duration-300 ${
             isDrawerOpen ? 'translate-x-0' : 'translate-x-full'
           } ${
             isDarkMode
-              ? 'bg-[#091B15] text-[#F4EFE6] border-l border-[#C5A059]/40'
-              : 'bg-[#F8F5EC] text-[#091B15] border-l border-[#C5A059]/50'
+              ? 'bg-[#07140E] text-white border-l border-[#C5A059]/40'
+              : 'bg-[#FFFFFF] text-[#091B15] border-l border-[#E6DEC8]'
           }`}
         >
-            <div className="space-y-6">
-              {/* Drawer Header */}
-              <div className="flex items-center justify-between pb-3 border-b border-[#C5A059]/25">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="h-5 w-5 text-[#C5A059]" />
-                  <h3 className="font-quran text-lg font-bold text-[#C8A45D]">
-                    إعدادات المصحف والقراءة
-                  </h3>
-                </div>
+          <div className="space-y-6">
+            {/* Drawer Header */}
+            <div
+              className={`flex items-center justify-between pb-3 border-b ${
+                isDarkMode ? 'border-[#C5A059]/25' : 'border-[#E6DEC8]'
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                <BookOpen
+                  className={`h-5 w-5 ${isDarkMode ? 'text-[#C5A059]' : 'text-[#091B15]'}`}
+                />
+                <h3
+                  className={`font-quran text-lg font-bold ${
+                    isDarkMode ? 'text-[#C5A059]' : 'text-[#091B15]'
+                  }`}
+                >
+                  إعدادات المصحف والقراءة
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsDrawerOpen(false)}
+                className={`p-1 rounded-full transition-colors ${
+                  isDarkMode
+                    ? 'text-[#C5A059] hover:bg-[#C5A059]/15'
+                    : 'text-[#091B15] hover:bg-black/5'
+                }`}
+                aria-label="رجوع من القائمة"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {/* Setting 1: Font Size Controls */}
+            <div className="space-y-2">
+              <div
+                className={`flex items-center justify-between text-xs font-semibold ${
+                  isDarkMode ? 'text-[#E8D39E]' : 'text-[#091B15]'
+                }`}
+              >
+                <span>حجم خط التلاوة</span>
+                <span className="font-bold tabular-nums text-[#C5A059]">{fontSize}px</span>
+              </div>
+              <div
+                className={`flex items-center justify-between rounded-xl border p-2 transition-colors ${
+                  isDarkMode
+                    ? 'border-[#C5A059]/30 bg-[#0D241C] text-white'
+                    : 'border-[#E6DEC8] bg-[#F9F7F2] text-[#091B15]'
+                }`}
+              >
                 <button
                   type="button"
-                  onClick={() => setIsDrawerOpen(false)}
-                  className="p-1 rounded-full text-[#C5A059] hover:bg-[#C5A059]/15 transition-colors"
-                  aria-label="رجوع من القائمة"
+                  onClick={() => setFontSize((f) => Math.max(18, f - 2))}
+                  className={`p-2 rounded-lg transition-colors ${
+                    isDarkMode
+                      ? 'text-[#C5A059] hover:bg-[#C5A059]/15'
+                      : 'text-[#091B15] hover:bg-black/5'
+                  }`}
+                  title="تصغير الخط"
+                  aria-label="تصغير الخط"
                 >
-                  <X className="h-5 w-5" />
+                  <ZoomOut className="h-5 w-5" />
                 </button>
-              </div>
-
-              {/* Setting 1: Font Size Controls */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-xs font-semibold text-[#E8D39E]">
-                  <span>حجم خط التلاوة</span>
-                  <span className="font-bold tabular-nums text-[#C5A059]">{fontSize}px</span>
-                </div>
-                <div className="flex items-center justify-between rounded-xl border border-[#C5A059]/30 bg-[#0D241C] p-2">
-                  <button
-                    type="button"
-                    onClick={() => setFontSize((f) => Math.max(18, f - 2))}
-                    className="p-2 rounded-lg text-[#C5A059] hover:bg-[#C5A059]/15 transition-colors"
-                    title="تصغير الخط"
-                    aria-label="تصغير الخط"
-                  >
-                    <ZoomOut className="h-5 w-5" />
-                  </button>
-                  <input
-                    type="range"
-                    min={18}
-                    max={38}
-                    value={fontSize}
-                    onChange={(e) => setFontSize(Number(e.target.value))}
-                    className="flex-1 mx-3 h-1.5 bg-[#14372e] rounded-lg appearance-none cursor-pointer accent-[#C5A059]"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setFontSize((f) => Math.min(38, f + 2))}
-                    className="p-2 rounded-lg text-[#C5A059] hover:bg-[#C5A059]/15 transition-colors"
-                    title="تكبير الخط"
-                    aria-label="تكبير الخط"
-                  >
-                    <ZoomIn className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Setting 2: Day / Night Theme Toggle */}
-              <div className="space-y-2">
-                <span className="text-xs font-semibold text-[#E8D39E]">مظهر القراءة</span>
+                <input
+                  type="range"
+                  min={18}
+                  max={38}
+                  value={fontSize}
+                  onChange={(e) => setFontSize(Number(e.target.value))}
+                  className={`flex-1 mx-3 h-1.5 rounded-lg appearance-none cursor-pointer ${
+                    isDarkMode
+                      ? 'bg-[#14372e] accent-[#C5A059]'
+                      : 'bg-[#E6DEC8] accent-[#091B15]'
+                  }`}
+                />
                 <button
                   type="button"
-                  onClick={toggleDarkMode}
-                  className="flex w-full items-center justify-between rounded-xl border border-[#C5A059]/30 bg-[#0D241C] px-4 py-2.5 text-xs font-bold text-[#E8D39E] hover:border-[#C5A059] transition-colors"
-                  aria-label={isDarkMode ? 'الوضع النهاري' : 'الوضع الليلي'}
+                  onClick={() => setFontSize((f) => Math.min(38, f + 2))}
+                  className={`p-2 rounded-lg transition-colors ${
+                    isDarkMode
+                      ? 'text-[#C5A059] hover:bg-[#C5A059]/15'
+                      : 'text-[#091B15] hover:bg-black/5'
+                  }`}
+                  title="تكبير الخط"
+                  aria-label="تكبير الخط"
                 >
-                  <div className="flex items-center gap-2">
-                    {isDarkMode ? (
-                      <Sun className="h-4 w-4 text-[#FDE68A]" />
-                    ) : (
-                      <Moon className="h-4 w-4 text-[#C5A059]" />
-                    )}
-                    <span>{isDarkMode ? 'التبديل إلى الوضع النهاري' : 'التبديل إلى الوضع الليلي'}</span>
-                  </div>
-                  <span className="text-[11px] text-[#A6B8B0]">
-                    {isDarkMode ? 'ليلي مذهّب' : 'نهاري ورقي'}
-                  </span>
+                  <ZoomIn className="h-5 w-5" />
                 </button>
-              </div>
-
-              {/* Setting 3: Surah & Ayah Quick Search */}
-              <div className="space-y-2">
-                <span className="text-xs font-semibold text-[#E8D39E]">البحث في سور الجزء</span>
-                <div className="relative">
-                  <Search className="absolute right-3 top-2.5 h-4 w-4 text-[#C5A059]" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="ابحث باسم السورة..."
-                    className="w-full rounded-xl border border-[#C5A059]/30 bg-[#0D241C] pr-9 pl-3 py-2 text-xs text-[#F4EFE6] placeholder-[#A6B8B0] focus:border-[#C5A059] focus:outline-none"
-                  />
-                </div>
-                <div className="max-h-40 overflow-y-auto space-y-1 pt-1">
-                  {filteredSurahs.map((s) => (
-                    <button
-                      key={s.surahNumber}
-                      type="button"
-                      onClick={() => {
-                        selectAyah(s.surahNumber, 1);
-                        setIsDrawerOpen(false);
-                      }}
-                      className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs text-[#E8D39E] hover:bg-[#14372e] transition-colors"
-                    >
-                      <span className="font-quran font-semibold">{s.surahNameAr}</span>
-                      <span className="text-[10px] text-[#A6B8B0]">
-                        سورة {toArabicDigits(s.surahNumber)}
-                      </span>
-                    </button>
-                  ))}
-                </div>
               </div>
             </div>
 
-            {/* Drawer Footer Actions */}
-            <div className="pt-4 border-t border-[#C5A059]/25 space-y-2">
-              {isReservedByMe && !isCompleted && (
-                <button
-                  type="button"
-                  onClick={handleUnreserveClick}
-                  disabled={isSubmittingUnreserve}
-                  className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-amber-500/40 bg-amber-500/15 py-2.5 text-xs font-bold text-amber-300 hover:bg-amber-500/25 transition-colors"
+            {/* Setting 2: Day / Night Theme Toggle */}
+            <div className="space-y-2">
+              <span
+                className={`text-xs font-semibold ${
+                  isDarkMode ? 'text-[#E8D39E]' : 'text-[#091B15]'
+                }`}
+              >
+                مظهر القراءة
+              </span>
+              <button
+                type="button"
+                onClick={toggleDarkMode}
+                className={`flex w-full items-center justify-between rounded-xl border px-4 py-2.5 text-xs font-bold transition-colors ${
+                  isDarkMode
+                    ? 'border-[#C5A059]/30 bg-[#0D241C] text-white hover:border-[#C5A059]'
+                    : 'border-[#E6DEC8] bg-[#F9F7F2] text-[#091B15] hover:border-[#091B15]'
+                }`}
+                aria-label={isDarkMode ? 'الوضع النهاري' : 'الوضع الليلي'}
+              >
+                <div className="flex items-center gap-2">
+                  {isDarkMode ? (
+                    <Sun className="h-4 w-4 text-[#FDE68A]" />
+                  ) : (
+                    <Moon className="h-4 w-4 text-[#091B15]" />
+                  )}
+                  <span>
+                    {isDarkMode ? 'التبديل إلى الوضع النهاري' : 'التبديل إلى الوضع الليلي'}
+                  </span>
+                </div>
+                <span
+                  className={`text-[11px] ${
+                    isDarkMode ? 'text-[#A6B8B0]' : 'text-[#7D9087]'
+                  }`}
                 >
-                  <Undo2 className="h-4 w-4" />
-                  <span>الاعتذار عن حجز الجزء</span>
-                </button>
-              )}
+                  {isDarkMode ? 'ليلي مذهّب' : 'نهاري ورقي'}
+                </span>
+              </button>
+            </div>
+
+            {/* Setting 3: Surah & Ayah Quick Search (Inside Drawer) */}
+            <div className="space-y-2">
+              <span
+                className={`text-xs font-semibold ${
+                  isDarkMode ? 'text-[#E8D39E]' : 'text-[#091B15]'
+                }`}
+              >
+                البحث في سور الجزء
+              </span>
+              <div className="relative">
+                <Search
+                  className={`absolute right-3 top-2.5 h-4 w-4 ${
+                    isDarkMode ? 'text-[#C5A059]' : 'text-[#091B15]'
+                  }`}
+                />
+                <input
+                  type="text"
+                  maxLength={SECURITY_LIMITS.SEARCH_QUERY_MAX_LEN}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value.slice(0, SECURITY_LIMITS.SEARCH_QUERY_MAX_LEN))}
+                  placeholder="ابحث باسم السورة..."
+                  className={`w-full rounded-xl border pr-9 pl-3 py-2 text-xs focus:outline-none transition-colors ${
+                    isDarkMode
+                      ? 'border-[#C5A059]/30 bg-[#0D241C] text-white placeholder-[#A6B8B0] focus:border-[#C5A059]'
+                      : 'border-[#E6DEC8] bg-[#F9F7F2] text-[#091B15] placeholder-[#7D9087] focus:border-[#091B15]'
+                  }`}
+                />
+              </div>
+              <div className="max-h-40 overflow-y-auto space-y-1 pt-1">
+                {filteredSurahs.map((s) => (
+                  <button
+                    key={s.surahNumber}
+                    type="button"
+                    onClick={() => {
+                      selectAyah(s.surahNumber, 1);
+                      setIsDrawerOpen(false);
+                    }}
+                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-xs transition-colors ${
+                      isDarkMode
+                        ? 'text-[#E8D39E] hover:bg-[#14372e]'
+                        : 'text-[#091B15] hover:bg-[#F0EBE0]'
+                    }`}
+                  >
+                    <span className="font-quran font-semibold">{s.surahNameAr}</span>
+                    <span
+                      className={`text-[10px] ${
+                        isDarkMode ? 'text-[#A6B8B0]' : 'text-[#7D9087]'
+                      }`}
+                    >
+                      سورة {toArabicDigits(s.surahNumber)}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
+
+          {/* Drawer Footer Actions */}
+          <div
+            className={`pt-4 border-t space-y-2 ${
+              isDarkMode ? 'border-[#C5A059]/25' : 'border-[#E6DEC8]'
+            }`}
+          >
+            {/* Early pages: Unreserve button */}
+            {(!isLastPage || totalPagesInJuz <= 1) && !isCompleted && isReservedByMe && (
+              <button
+                type="button"
+                data-testid="unreserve-juz-btn"
+                onClick={handleUnreserveClick}
+                disabled={isSubmittingUnreserve}
+                className={`flex w-full items-center justify-center gap-1.5 rounded-xl border py-2.5 text-xs font-bold transition-colors ${
+                  isDarkMode
+                    ? 'border-amber-500/40 bg-amber-500/15 text-amber-300 hover:bg-amber-500/25'
+                    : 'border-amber-400 bg-amber-50 text-amber-900 hover:bg-amber-100'
+                }`}
+              >
+                <Undo2 className="h-4 w-4" />
+                <span>{isSubmittingUnreserve ? 'جاري إلغاء الحجز...' : 'الاعتذار عن حجز الجزء'}</span>
+              </button>
+            )}
+
+            {/* Last page: Complete button replaces unreserve */}
+            {isLastPage && !isCompleted && (
+              <button
+                type="button"
+                data-testid="drawer-complete-juz-btn"
+                onClick={handleCompleteClick}
+                disabled={isSubmittingComplete}
+                className={`flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold shadow-lg transition-transform active:scale-98 ${
+                  isDarkMode
+                    ? 'bg-[#C5A059] text-[#07140E] hover:bg-[#D4A13E]'
+                    : 'bg-[#091B15] text-white hover:bg-[#143D30]'
+                }`}
+              >
+                <CheckCircle className="h-4 w-4" />
+                <span>{isSubmittingComplete ? 'جاري تسجيل الإتمام...' : 'أتممت قراءة هذا الجزء'}</span>
+              </button>
+            )}
+
+            {isCompleted && (
+              <div
+                className={`flex w-full items-center justify-center gap-1.5 rounded-xl border py-2.5 text-xs font-bold ${
+                  isDarkMode
+                    ? 'border-emerald-500/40 bg-emerald-500/15 text-emerald-300'
+                    : 'border-emerald-500/60 bg-emerald-50 text-emerald-800'
+                }`}
+              >
+                <Check className="h-4 w-4" />
+                <span>تم إتمام قراءة هذا الجزء بنجاح ✓</span>
+              </div>
+            )}
+          </div>
+        </div>
         </div>
 
       {/* 3. Full-Screen Quran Page Layout */}
       <main
         className="flex-1 w-full flex flex-col justify-between overflow-y-auto cursor-pointer px-4 sm:px-8 pt-4 pb-24 max-w-xl mx-auto"
         onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
         onClick={() => {
+          if (isSwipeActive.current) return;
           // Quick tap on open page toggles or dismisses controls into full screen
           setShowControls((prev) => !prev);
         }}
@@ -666,7 +1040,11 @@ export default function QuranReaderModal({
                   {/* Basmala Calligraphy */}
                   {section.showBasmala && (
                     <div className="py-2.5 text-center select-none">
-                      <p className="text-2xl sm:text-3xl font-quran font-bold tracking-wide text-[#C8A45D] dark:text-[#E8D39E]">
+                      <p
+                        className={`text-2xl sm:text-3xl font-quran font-bold tracking-wide ${
+                          isDarkMode ? 'text-white' : 'text-[#091B15]'
+                        }`}
+                      >
                         بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ
                       </p>
                     </div>
@@ -695,17 +1073,20 @@ export default function QuranReaderModal({
                           onPointerLeave={handleAyahPointerUp}
                           onClick={(e) => {
                             e.stopPropagation();
+                            if (isSwipeActive.current) return;
                             if (!isLongPressActive.current) {
                               // Short click toggles full-screen reading mode
                               setShowControls((prev) => !prev);
                             }
                           }}
-                          className={`inline rounded-sm px-1 py-0.5 cursor-pointer transition-colors ${
+                          className={`inline rounded-md px-1 py-0.5 cursor-pointer transition-colors ${
                             isCurrent
-                              ? 'bg-[#C5A059]/25 text-[#E8D39E] font-bold ring-1 ring-[#C5A059]'
+                              ? isDarkMode
+                                ? 'bg-[#C5A059]/25 text-white font-bold'
+                                : 'bg-[#FDF3D6] text-[#091B15] font-bold shadow-xs'
                               : isDarkMode
-                              ? 'hover:bg-white/5'
-                              : 'hover:bg-black/5'
+                              ? 'text-white hover:bg-white/5'
+                              : 'text-[#091B15] hover:bg-black/5'
                           }`}
                         >
                           <span>{ayah.textUthmani}</span>
@@ -722,13 +1103,49 @@ export default function QuranReaderModal({
               ))}
             </div>
 
+            {/* End of Juz Call-to-action on the Last Page */}
+            {isLastPage && !isCompleted && (
+              <div
+                className={`my-6 p-4 sm:p-5 rounded-2xl border text-center select-none shadow-md transition-all max-w-md mx-auto animate-fade-in ${
+                  isDarkMode
+                    ? 'border-[#C5A059]/40 bg-[#0A1E16] text-white'
+                    : 'border-[#C5A059]/60 bg-[#FDF9EE] text-[#091B15]'
+                }`}
+              >
+                <div className="flex items-center justify-center gap-2 mb-1.5 text-[#C5A059]">
+                  <Sparkles className="h-4 w-4" />
+                  <span className="font-quran text-base sm:text-lg font-bold">
+                    ختام الجزء الشريف • تقبل الله طاعتكم
+                  </span>
+                  <Sparkles className="h-4 w-4" />
+                </div>
+                <p className={`text-xs mb-3.5 ${isDarkMode ? 'text-[#A6B8B0]' : 'text-[#5C6E65]'}`}>
+                  لقد بلغت نهاية هذا الجزء المبارك بحمد الله وتوفيقه
+                </p>
+                <button
+                  type="button"
+                  data-testid="page-complete-juz-btn"
+                  onClick={handleCompleteClick}
+                  disabled={isSubmittingComplete}
+                  className={`inline-flex items-center justify-center gap-2 rounded-full px-6 py-2.5 text-sm font-bold shadow-lg transition-transform active:scale-95 ${
+                    isDarkMode
+                      ? 'bg-[#C5A059] text-[#07140E] hover:bg-[#D4A13E]'
+                      : 'bg-[#091B15] text-white hover:bg-[#143D30]'
+                  }`}
+                >
+                  <CheckCircle className="h-4 w-4" />
+                  <span>{isSubmittingComplete ? 'جاري تسجيل الإتمام...' : 'أتممت قراءة هذا الجزء'}</span>
+                </button>
+              </div>
+            )}
+
             {/* Bottom Minimal Page Capsule Medallion */}
             <div className="pt-3 pb-1 flex items-center justify-center select-none">
               <div
                 className={`inline-flex items-center justify-center rounded-full border px-4 py-0.5 text-xs font-bold font-sans tabular-nums shadow-xs ${
                   isDarkMode
-                    ? 'border-[#C5A059]/50 bg-[#091B15] text-[#E8D39E]'
-                    : 'border-[#C5A059] bg-[#EFE8D6] text-[#5A4214]'
+                    ? 'border-[#C5A059]/50 bg-[#07140E] text-[#C5A059]'
+                    : 'border-[#C5A059] bg-[#FFFFFF] text-[#091B15]'
                 }`}
               >
                 <span>{toArabicDigits(activePage?.pageNumber || 1)}</span>
@@ -738,7 +1155,7 @@ export default function QuranReaderModal({
         )}
       </main>
 
-      {/* 4. Floating Bottom Controls: Obsidian & Gold Audio Bar + Page Slider */}
+      {/* 4. Floating Bottom Controls: Audio Bar + Page Slider */}
       <footer
         className={`fixed bottom-0 inset-x-0 z-40 px-3 sm:px-6 pb-4 pt-2 flex flex-col items-center gap-2.5 transition-all duration-300 pointer-events-none ${
           showControls
@@ -760,22 +1177,28 @@ export default function QuranReaderModal({
           />
         </div>
 
-        {/* Bottom Page Navigation Slider Bar in Deep Obsidian & Gold */}
+        {/* Bottom Page Navigation Slider Bar (Message icon removed, dedicated solely to page navigation) */}
         <div className="w-full max-w-md pointer-events-auto">
           <div
-            className={`flex items-center justify-between gap-3 rounded-full border px-4 py-2 shadow-xl backdrop-blur-md ${
+            className={`flex items-center justify-between gap-3 rounded-2xl border px-3.5 py-2 shadow-2xl backdrop-blur-md ${
               isDarkMode
-                ? 'border-[#C5A059]/40 bg-[#091B15]/98 text-[#F4EFE6]'
-                : 'border-[#C5A059]/50 bg-[#FFFFFF]/98 text-[#091B15]'
+                ? 'border-[#C5A059]/35 bg-[#07140E]/98 text-white'
+                : 'border-[#E6DEC8] bg-[#FFFFFF]/98 text-[#091B15]'
             }`}
           >
-            {/* Left: Options indicator in Gold */}
-            <div className="flex items-center gap-1.5 shrink-0 text-[#C5A059]">
-              <SlidersHorizontal className="h-4 w-4" />
+            {/* Current Page Pill Badge */}
+            <div
+              className={`rounded-md px-3 py-0.5 text-xs font-bold tabular-nums shrink-0 shadow-xs ${
+                isDarkMode
+                  ? 'bg-[#C5A059] text-[#07140E]'
+                  : 'bg-[#091B15] text-white'
+              }`}
+            >
+              {toArabicDigits(activePage?.pageNumber || 1)}
             </div>
 
-            {/* Center: Range Slider with Gold Page Badge */}
-            <div className="flex-1 flex items-center gap-2.5">
+            {/* Center: Full Range Slider */}
+            <div className="flex-1 flex items-center px-1">
               <input
                 type="range"
                 min={0}
@@ -783,24 +1206,27 @@ export default function QuranReaderModal({
                 value={currentPageIdx}
                 onChange={(e) => goToPage(Number(e.target.value))}
                 aria-label="سلايدر التنقل بين صفحات المصحف"
-                className="w-full h-1.5 bg-[#14372e] rounded-lg appearance-none cursor-pointer accent-[#C5A059]"
+                className={`w-full h-1.5 rounded-lg appearance-none cursor-pointer ${
+                  isDarkMode
+                    ? 'bg-[#14372e] accent-[#C5A059]'
+                    : 'bg-[#E6DEC8] accent-[#091B15]'
+                }`}
               />
-
-              {/* Current Page Pill Badge in Islamic Gold */}
-              <div className="rounded-full bg-[#C5A059] px-2.5 py-0.5 text-xs font-bold text-[#091B15] tabular-nums shrink-0 shadow-xs">
-                {toArabicDigits(activePage?.pageNumber || 1)}
-              </div>
             </div>
 
-            {/* Right: Last Page Jump with Return Arrow and "604" in Gold */}
+            {/* Jump to Final Page */}
             <button
               type="button"
               onClick={() => goToPage(totalPagesInJuz - 1)}
-              className="flex items-center gap-1 text-xs font-bold text-[#C5A059] hover:text-[#E8D39E] shrink-0 tabular-nums transition-colors"
+              className={`flex items-center gap-1 text-xs font-bold shrink-0 tabular-nums transition-colors ${
+                isDarkMode
+                  ? 'text-[#C5A059] hover:text-[#E8D39E]'
+                  : 'text-[#091B15] hover:text-[#C5A059]'
+              }`}
               title="الانتقال لآخر صفحة"
             >
               <CornerUpLeft className="h-3.5 w-3.5" />
-              <span>{toArabicDigits(604)}</span>
+              <span>{toArabicDigits(mushafPages[mushafPages.length - 1]?.pageNumber || 604)}</span>
             </button>
           </div>
         </div>

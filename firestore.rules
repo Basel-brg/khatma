@@ -9,23 +9,23 @@ rules_version = '2';
 // Collection: khatmas
 // Document ID: {khatmaId} (unique string, e.g. "khatma_123456789_abcdef")
 // Fields:
-//   - id: string (required, 1..100 chars, matches {khatmaId}) - Document identifier
-//   - title: string (required, 1..120 chars) - Title/name of the Khatma
-//   - intention: string (required, 0..500 chars) - Spiritual intention/dedication
-//   - targetDate: string (required, 0..40 chars) - Target completion date string
-//   - createdAt: string (required, 1..40 chars, ISO timestamp) - Document creation timestamp
-//   - creatorUid: string (required, 1..128 chars, matches request.auth.uid on create) - UID of creator
+//   - id: string (required, 1..100 chars, immutable, matches {khatmaId}) - Document identifier
+//   - title: string (required, 1..120 chars, immutable) - Title/name of the Khatma
+//   - intention: string (required, 0..500 chars, immutable) - Spiritual intention/dedication
+//   - targetDate: string (required, 0..40 chars, immutable) - Target completion date string
+//   - createdAt: string (required, 1..40 chars, immutable, ISO timestamp) - Document creation timestamp
+//   - creatorUid: string (required, 1..128 chars, immutable, matches request.auth.uid on create) - UID of creator
 //   - completedCount: int (required, 0..30, must be 0 on create) - Number of finished Juzs
 //   - reservedCount: int (required, 0..30, must be 0 on create) - Number of currently reserved Juzs
 //   - juzs: map (required, exactly 30 keys: "1" to "30") - Map of 30 Quran Juz reservations
 //     Each Juz map entry contains:
-//       * number: int (1..30)
+//       * number: int (1..30, must match its map key number)
 //       * status: string ('available' | 'reserved' | 'completed')
-//       * holderName: string | null (<= 100 chars)
-//       * hideName: bool
-//       * holderUid: string | null (<= 128 chars)
-//       * reservedAt: string | null (<= 50 chars)
-//       * completedAt: string | null (<= 50 chars)
+//       * holderName: string | null (null when 'available'; 1..80 chars when 'reserved' or 'completed')
+//       * hideName: bool (false when 'available'; bool when 'reserved' or 'completed')
+//       * holderUid: string | null (null when 'available'; 1..128 chars when 'reserved' or 'completed')
+//       * reservedAt: string | null (null when 'available'; 1..40 chars when 'reserved' or 'completed')
+//       * completedAt: string | null (null when 'available' or 'reserved'; 1..40 chars when 'completed')
 //
 // ===============================================================
 
@@ -93,6 +93,200 @@ service cloud.firestore {
       ];
     }
 
+    // Allowed keys in an individual Juz reservation object
+    function juzEntryFields() {
+      return [
+        'number',
+        'status',
+        'holderName',
+        'hideName',
+        'holderUid',
+        'reservedAt',
+        'completedAt'
+      ];
+    }
+
+    // Validate a single Juz entry's schema, types, and state-specific invariants
+    function isValidJuzEntry(juz, num) {
+      return juz is map &&
+             juz.keys().hasOnly(juzEntryFields()) &&
+             juz.keys().hasAll(juzEntryFields()) &&
+             juz.number is int &&
+             juz.number == num &&
+             juz.status in ['available', 'reserved', 'completed'] &&
+             juz.hideName is bool &&
+             (
+               (juz.status == 'available' &&
+                juz.holderName == null &&
+                juz.hideName == false &&
+                juz.holderUid == null &&
+                juz.reservedAt == null &&
+                juz.completedAt == null) ||
+               (juz.status == 'reserved' &&
+                juz.holderName is string &&
+                juz.holderName.size() >= 1 &&
+                juz.holderName.size() <= 80 &&
+                juz.holderUid is string &&
+                juz.holderUid.size() >= 1 &&
+                juz.holderUid.size() <= 128 &&
+                juz.reservedAt is string &&
+                juz.reservedAt.size() >= 1 &&
+                juz.reservedAt.size() <= 40 &&
+                juz.completedAt == null) ||
+               (juz.status == 'completed' &&
+                juz.holderName is string &&
+                juz.holderName.size() >= 1 &&
+                juz.holderName.size() <= 80 &&
+                juz.holderUid is string &&
+                juz.holderUid.size() >= 1 &&
+                juz.holderUid.size() <= 128 &&
+                juz.reservedAt is string &&
+                juz.reservedAt.size() >= 1 &&
+                juz.reservedAt.size() <= 40 &&
+                juz.completedAt is string &&
+                juz.completedAt.size() >= 1 &&
+                juz.completedAt.size() <= 40)
+             );
+    }
+
+    // Validate all 30 Juz entries in the juzs map
+    function isValidAllJuzs(juzs) {
+      return isValidJuzEntry(juzs['1'], 1) &&
+             isValidJuzEntry(juzs['2'], 2) &&
+             isValidJuzEntry(juzs['3'], 3) &&
+             isValidJuzEntry(juzs['4'], 4) &&
+             isValidJuzEntry(juzs['5'], 5) &&
+             isValidJuzEntry(juzs['6'], 6) &&
+             isValidJuzEntry(juzs['7'], 7) &&
+             isValidJuzEntry(juzs['8'], 8) &&
+             isValidJuzEntry(juzs['9'], 9) &&
+             isValidJuzEntry(juzs['10'], 10) &&
+             isValidJuzEntry(juzs['11'], 11) &&
+             isValidJuzEntry(juzs['12'], 12) &&
+             isValidJuzEntry(juzs['13'], 13) &&
+             isValidJuzEntry(juzs['14'], 14) &&
+             isValidJuzEntry(juzs['15'], 15) &&
+             isValidJuzEntry(juzs['16'], 16) &&
+             isValidJuzEntry(juzs['17'], 17) &&
+             isValidJuzEntry(juzs['18'], 18) &&
+             isValidJuzEntry(juzs['19'], 19) &&
+             isValidJuzEntry(juzs['20'], 20) &&
+             isValidJuzEntry(juzs['21'], 21) &&
+             isValidJuzEntry(juzs['22'], 22) &&
+             isValidJuzEntry(juzs['23'], 23) &&
+             isValidJuzEntry(juzs['24'], 24) &&
+             isValidJuzEntry(juzs['25'], 25) &&
+             isValidJuzEntry(juzs['26'], 26) &&
+             isValidJuzEntry(juzs['27'], 27) &&
+             isValidJuzEntry(juzs['28'], 28) &&
+             isValidJuzEntry(juzs['29'], 29) &&
+             isValidJuzEntry(juzs['30'], 30);
+    }
+
+    // Ensure all 30 Juz entries start in the 'available' state upon Khatma creation
+    function areAllJuzsAvailable(juzs) {
+      return juzs['1'].status == 'available' &&
+             juzs['2'].status == 'available' &&
+             juzs['3'].status == 'available' &&
+             juzs['4'].status == 'available' &&
+             juzs['5'].status == 'available' &&
+             juzs['6'].status == 'available' &&
+             juzs['7'].status == 'available' &&
+             juzs['8'].status == 'available' &&
+             juzs['9'].status == 'available' &&
+             juzs['10'].status == 'available' &&
+             juzs['11'].status == 'available' &&
+             juzs['12'].status == 'available' &&
+             juzs['13'].status == 'available' &&
+             juzs['14'].status == 'available' &&
+             juzs['15'].status == 'available' &&
+             juzs['16'].status == 'available' &&
+             juzs['17'].status == 'available' &&
+             juzs['18'].status == 'available' &&
+             juzs['19'].status == 'available' &&
+             juzs['20'].status == 'available' &&
+             juzs['21'].status == 'available' &&
+             juzs['22'].status == 'available' &&
+             juzs['23'].status == 'available' &&
+             juzs['24'].status == 'available' &&
+             juzs['25'].status == 'available' &&
+             juzs['26'].status == 'available' &&
+             juzs['27'].status == 'available' &&
+             juzs['28'].status == 'available' &&
+             juzs['29'].status == 'available' &&
+             juzs['30'].status == 'available';
+    }
+
+    // Validate a state transition for a single Juz entry and its corresponding counter delta
+    function isValidJuzTransition(oldJuz, newJuz, num, oldData, newData, khatmaId) {
+      return isValidJuzEntry(newJuz, num) &&
+             (
+               // 1. Reserve: available -> reserved (caller must set holderUid to their own auth.uid)
+               (oldJuz.status == 'available' &&
+                newJuz.status == 'reserved' &&
+                newJuz.holderUid == request.auth.uid &&
+                newData.reservedCount == oldData.reservedCount + 1 &&
+                newData.completedCount == oldData.completedCount) ||
+               // 2. Unreserve: reserved -> available (only current holder or demo-ramadan)
+               (oldJuz.status == 'reserved' &&
+                newJuz.status == 'available' &&
+                (oldJuz.holderUid == request.auth.uid || khatmaId == 'demo-ramadan') &&
+                newData.reservedCount == oldData.reservedCount - 1 &&
+                newData.completedCount == oldData.completedCount) ||
+               // 3. Complete: reserved -> completed (only current holder or demo-ramadan, preserving reservation metadata)
+               (oldJuz.status == 'reserved' &&
+                newJuz.status == 'completed' &&
+                (oldJuz.holderUid == request.auth.uid || khatmaId == 'demo-ramadan') &&
+                newJuz.holderUid == oldJuz.holderUid &&
+                newJuz.holderName == oldJuz.holderName &&
+                newJuz.hideName == oldJuz.hideName &&
+                newJuz.reservedAt == oldJuz.reservedAt &&
+                newData.reservedCount == oldData.reservedCount - 1 &&
+                newData.completedCount == oldData.completedCount + 1)
+             );
+    }
+
+    // Verify that a specific Juz key is either unchanged or underwent a valid state transition
+    function isJuzUnchangedOrValidTransition(oldData, newData, key, num, khatmaId) {
+      return newData.juzs[key] == oldData.juzs[key] ||
+             isValidJuzTransition(oldData.juzs[key], newData.juzs[key], num, oldData, newData, khatmaId);
+    }
+
+    // Enforce that an update modifies at most 1 Juz entry and follows valid state transition rules
+    function isValidSingleJuzUpdate(oldData, newData, khatmaId) {
+      return newData.juzs.diff(oldData.juzs).affectedKeys().size() == 1 &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '1', 1, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '2', 2, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '3', 3, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '4', 4, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '5', 5, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '6', 6, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '7', 7, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '8', 8, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '9', 9, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '10', 10, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '11', 11, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '12', 12, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '13', 13, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '14', 14, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '15', 15, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '16', 16, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '17', 17, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '18', 18, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '19', 19, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '20', 20, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '21', 21, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '22', 22, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '23', 23, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '24', 24, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '25', 25, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '26', 26, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '27', 27, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '28', 28, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '29', 29, khatmaId) &&
+             isJuzUnchangedOrValidTransition(oldData, newData, '30', 30, khatmaId);
+    }
+
     // Validate the complete schema, types, and resource bounds of a Khatma document
     function isValidKhatma(data, khatmaId) {
       return hasOnlyAllowedFields(data, khatmaFields()) &&
@@ -128,11 +322,12 @@ service cloud.firestore {
              data.reservedCount >= 0 &&
              data.reservedCount <= 30 &&
              (data.completedCount + data.reservedCount) <= 30 &&
-             // 30 Juzs map structure and key integrity
+             // 30 Juzs map structure, key integrity, and per-entry schema validation
              data.juzs is map &&
              data.juzs.keys().size() == 30 &&
              data.juzs.keys().hasOnly(juzKeys()) &&
-             data.juzs.keys().hasAll(juzKeys());
+             data.juzs.keys().hasAll(juzKeys()) &&
+             isValidAllJuzs(data.juzs);
     }
 
     // ===============================================================
@@ -141,25 +336,29 @@ service cloud.firestore {
     // ===============================================================
     match /khatmas/{khatmaId} {
 
-      // Read: Anyone with a link (or signed in via Firebase Anonymous Auth) can read
-      // so shared WhatsApp links load immediately with zero friction
-      allow read: if true;
+      // Get: Anyone with the direct link/ID can fetch a single Khatma document
+      // so shared WhatsApp links load immediately with zero friction.
+      // List: Explicitly denied to prevent scraping/enumeration of all Khatmas.
+      allow get: if true;
+      allow list: if false;
 
       // Create: Requires authentication (Anonymous Auth), matching creatorUid,
-      // initial counts at 0, valid title, and strict schema compliance
+      // initial counts at 0, all 30 Juzs in initial 'available' state, and strict schema compliance
       allow create: if isAuthenticated() &&
                        request.resource.data.creatorUid == request.auth.uid &&
                        request.resource.data.completedCount == 0 &&
                        request.resource.data.reservedCount == 0 &&
-                       isValidKhatma(request.resource.data, khatmaId);
+                       isValidKhatma(request.resource.data, khatmaId) &&
+                       areAllJuzsAvailable(request.resource.data.juzs);
 
       // Update: Requires authentication, full schema validation via Validator Pattern,
       // strictly locks down immutable metadata (id, title, intention, targetDate, createdAt, creatorUid),
-      // and only permits updating juzs, completedCount, and reservedCount within [0, 30] bounds
+      // and enforces single-Juz atomic state transitions with holderUid ownership checks
       allow update: if isAuthenticated() &&
                        isValidKhatma(request.resource.data, khatmaId) &&
                        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['juzs', 'completedCount', 'reservedCount']) &&
-                       areImmutableFieldsUnchanged(['id', 'title', 'intention', 'targetDate', 'createdAt', 'creatorUid']);
+                       areImmutableFieldsUnchanged(['id', 'title', 'intention', 'targetDate', 'createdAt', 'creatorUid']) &&
+                       isValidSingleJuzUpdate(resource.data, request.resource.data, khatmaId);
 
       // Delete: Permanently disallowed to prevent accidental or malicious deletion of group Khatmas
       allow delete: if false;

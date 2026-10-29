@@ -8,6 +8,12 @@ export const RECITERS: readonly Reciter[] = [
     folder: 'Yasser_Ad-Dussary_128kbps',
   },
   {
+    id: 'ahmed-al-ajmi',
+    nameAr: 'أحمد بن علي العجمي',
+    styleAr: 'مرتل',
+    folder: 'Ahmed_ibn_Ali_al-Ajamy_128kbps_ketaballah.net',
+  },
+  {
     id: 'minshawy',
     nameAr: 'محمد صديق المنشاوي',
     styleAr: 'مرتل',
@@ -39,12 +45,25 @@ export const RECITERS: readonly Reciter[] = [
   },
 ];
 
+const ALLOWED_FOLDERS = new Set(RECITERS.map((r) => r.folder));
+
 export function buildAyahAudioUrl(
   reciterFolder: string,
   surahNumber: number,
   ayahNumber: number
 ): string {
-  const surahStr = String(surahNumber).padStart(3, '0');
-  const ayahStr = String(ayahNumber).padStart(3, '0');
-  return `https://everyayah.com/data/${reciterFolder}/${surahStr}${ayahStr}.mp3`;
+  const safeFolder = ALLOWED_FOLDERS.has(reciterFolder)
+    ? reciterFolder
+    : 'Alafasy_128kbps';
+  const safeSurah =
+    Number.isInteger(surahNumber) && surahNumber >= 1 && surahNumber <= 114
+      ? surahNumber
+      : 1;
+  const safeAyah =
+    Number.isInteger(ayahNumber) && ayahNumber >= 1 && ayahNumber <= 286
+      ? ayahNumber
+      : 1;
+  const surahStr = String(safeSurah).padStart(3, '0');
+  const ayahStr = String(safeAyah).padStart(3, '0');
+  return `https://everyayah.com/data/${safeFolder}/${surahStr}${ayahStr}.mp3`;
 }
