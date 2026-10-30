@@ -301,7 +301,7 @@ export default function HomePage() {
                     if (errorMessage) setErrorMessage(null);
                   }}
                   placeholder="مثال: ختمة شهر رمضان المبارك، ختمة في ثواب الوالدين..."
-                  className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] placeholder:text-[#7D9087] text-xs sm:text-sm focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059]"
+                  className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] placeholder:text-[#7D9087] text-base sm:text-sm focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059]"
                 />
               </div>
 
@@ -348,7 +348,7 @@ export default function HomePage() {
                   value={intention}
                   onChange={(e) => setIntention(e.target.value)}
                   placeholder="اكتب نية الختمة أو دعاءً يظهر في أعلى صفحة الختمة..."
-                  className="w-full px-3 sm:px-3.5 py-2 border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] placeholder:text-[#7D9087] text-xs sm:text-sm focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059] resize-none"
+                  className="w-full px-3 sm:px-3.5 py-2 border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] placeholder:text-[#7D9087] text-base sm:text-sm focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059] resize-none"
                 />
               </div>
 
@@ -375,7 +375,7 @@ export default function HomePage() {
                       dateInputRef.current?.showPicker?.();
                     } catch {}
                   }}
-                  className="relative w-full cursor-pointer"
+                  className="relative w-full max-w-full overflow-hidden cursor-pointer"
                 >
                   <input
                     ref={dateInputRef}
@@ -389,7 +389,7 @@ export default function HomePage() {
                         (e.currentTarget as any).showPicker?.();
                       } catch {}
                     }}
-                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 border border-[#C5A059]/80 hover:border-[#C5A059] bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] text-xs sm:text-sm tabular-nums focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059] cursor-pointer shadow-xs transition-colors"
+                    className="w-full max-w-full block box-border px-3 sm:px-3.5 py-2 sm:py-2.5 border border-[#C5A059]/80 hover:border-[#C5A059] bg-[#FBF9F2] dark:bg-[#08130F] text-[#091B15] dark:text-[#F4EFE6] text-base sm:text-sm tabular-nums focus:outline-none focus:border-[#091B15] dark:focus:border-[#C5A059] cursor-pointer shadow-xs transition-colors"
                   />
                 </div>
               </div>

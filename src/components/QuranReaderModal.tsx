@@ -139,6 +139,19 @@ export default function QuranReaderModal({
   // Long press timer refs
   const longPressTimerRef = useRef<NodeJS.Timeout | null>(null);
   const isLongPressActive = useRef<boolean>(false);
+  const ayahPressStartCoords = useRef<{ x: number; y: number } | null>(null);
+  const selectionToastTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const clickSuppressTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [pressingAyah, setPressingAyah] = useState<{ surahNumber: number; ayahNumber: number } | null>(null);
+  const [ayahSelectionToast, setAyahSelectionToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
+      if (selectionToastTimerRef.current) clearTimeout(selectionToastTimerRef.current);
+      if (clickSuppressTimerRef.current) clearTimeout(clickSuppressTimerRef.current);
+    };
+  }, []);
 
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
@@ -212,6 +225,28 @@ export default function QuranReaderModal({
       };
     });
   }, [juzData, juzNumber]);
+
+  useEffect(() => {
+    // Lock body scrolling when reader modal is mounted
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    // Blur any active element (e.g. previous input in Reserve sheet) to dismiss mobile keyboard
+    if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
+    // Reset window scroll position in case mobile keyboard offset the viewport
+    if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'test') {
+      try {
+        window.scrollTo(0, 0);
+      } catch {}
+    }
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
 
   useEffect(() => {
     if (accessDenied) return;
@@ -377,6 +412,8 @@ export default function QuranReaderModal({
         clearTimeout(longPressTimerRef.current);
         longPressTimerRef.current = null;
       }
+      setPressingAyah(null);
+      ayahPressStartCoords.current = null;
     }
   };
 
@@ -421,6 +458,8 @@ export default function QuranReaderModal({
         clearTimeout(longPressTimerRef.current);
         longPressTimerRef.current = null;
       }
+      setPressingAyah(null);
+      ayahPressStartCoords.current = null;
     }
   };
 
@@ -455,26 +494,93 @@ export default function QuranReaderModal({
     isPointerDown.current = false;
   };
 
-  // Long press on Ayah handlers
-  const handleAyahPointerDown = (surahNumber: number, ayahNumber: number) => {
+  // Long press on Ayah handlers (2.0s hold)
+  const handleAyahPointerDown = (
+    e: React.PointerEvent<HTMLElement>,
+    surahNumber: number,
+    ayahNumber: number
+  ) => {
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
     isLongPressActive.current = false;
+    const clientX = typeof e.clientX === 'number' ? e.clientX : 0;
+    const clientY = typeof e.clientY === 'number' ? e.clientY : 0;
+    ayahPressStartCoords.current = { x: clientX, y: clientY };
+    setPressingAyah({ surahNumber, ayahNumber });
+
     if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
     longPressTimerRef.current = setTimeout(() => {
       isLongPressActive.current = true;
+      setPressingAyah(null);
+      ayahPressStartCoords.current = null;
       selectAyah(surahNumber, ayahNumber);
       setShowControls(true);
-      if (typeof window !== 'undefined' && 'vibrate' in navigator) {
+      if (typeof window !== 'undefined' && typeof navigator !== 'undefined' && 'vibrate' in navigator) {
         try {
           navigator.vibrate(50);
         } catch {}
       }
-    }, 1200); // 1.2s long press
+      setAyahSelectionToast(`تم تحديد الآية ${toArabicDigits(ayahNumber)}`);
+      if (selectionToastTimerRef.current) clearTimeout(selectionToastTimerRef.current);
+      selectionToastTimerRef.current = setTimeout(() => {
+        setAyahSelectionToast(null);
+      }, 2000);
+    }, 2000); // exactly 2.0s long press
+  };
+
+  const handleAyahPointerMove = (e: React.PointerEvent<HTMLElement>) => {
+    if (!ayahPressStartCoords.current || !longPressTimerRef.current) return;
+    const clientX = typeof e.clientX === 'number' ? e.clientX : ayahPressStartCoords.current.x;
+    const clientY = typeof e.clientY === 'number' ? e.clientY : ayahPressStartCoords.current.y;
+    const diffX = Math.abs(clientX - ayahPressStartCoords.current.x);
+    const diffY = Math.abs(clientY - ayahPressStartCoords.current.y);
+    // Allow micro-jitter < 15px. Only cancel if movement exceeds 15px.
+    if (diffX > 15 || diffY > 15) {
+      if (longPressTimerRef.current) {
+        clearTimeout(longPressTimerRef.current);
+        longPressTimerRef.current = null;
+      }
+      setPressingAyah(null);
+      ayahPressStartCoords.current = null;
+    }
+  };
+
+  const handleAyahTouchMove = (e: React.TouchEvent<HTMLElement>) => {
+    if (!ayahPressStartCoords.current || !longPressTimerRef.current) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+    const diffX = Math.abs(touch.clientX - ayahPressStartCoords.current.x);
+    const diffY = Math.abs(touch.clientY - ayahPressStartCoords.current.y);
+    if (diffX > 15 || diffY > 15) {
+      if (longPressTimerRef.current) {
+        clearTimeout(longPressTimerRef.current);
+        longPressTimerRef.current = null;
+      }
+      setPressingAyah(null);
+      ayahPressStartCoords.current = null;
+    }
   };
 
   const handleAyahPointerUp = () => {
     if (longPressTimerRef.current) {
       clearTimeout(longPressTimerRef.current);
       longPressTimerRef.current = null;
+    }
+    setPressingAyah(null);
+    ayahPressStartCoords.current = null;
+  };
+
+  const handleAyahPointerCancel = () => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+    setPressingAyah(null);
+    ayahPressStartCoords.current = null;
+  };
+
+  const handleAyahPointerLeave = (e: React.PointerEvent<HTMLElement>) => {
+    if (e.pointerType === 'mouse') {
+      handleAyahPointerUp();
     }
   };
 
@@ -598,7 +704,7 @@ export default function QuranReaderModal({
   return (
     <div
       data-testid="quran-reader-modal"
-      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden select-none transition-colors duration-200 ${
+      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden select-none transition-colors duration-200 touch-manipulation ${
         isDarkMode ? 'bg-[#07140E] text-white' : 'bg-[#FFFFFF] text-[#091B15]'
       }`}
       dir="rtl"
@@ -708,6 +814,22 @@ export default function QuranReaderModal({
         >
           <Bookmark className="h-3.5 w-3.5 text-[#C5A059] fill-current" />
           <span>{bookmarkToast}</span>
+        </div>
+      )}
+
+      {/* Floating Ayah Selection Confirmation Toast */}
+      {ayahSelectionToast && (
+        <div
+          className={`fixed top-14 left-1/2 -translate-x-1/2 z-50 rounded-full border px-4 py-1.5 text-xs font-bold shadow-xl flex items-center gap-2 animate-fade-in ${
+            isDarkMode
+              ? 'border-[#C5A059] bg-[#07140E] text-white shadow-black/60'
+              : 'border-[#C5A059] bg-[#FFFFFF] text-[#091B15] shadow-black/10'
+          }`}
+          role="status"
+          data-testid="ayah-selection-toast"
+        >
+          <Check className="h-3.5 w-3.5 text-[#C5A059]" />
+          <span>{ayahSelectionToast}</span>
         </div>
       )}
 
@@ -904,7 +1026,7 @@ export default function QuranReaderModal({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value.slice(0, SECURITY_LIMITS.SEARCH_QUERY_MAX_LEN))}
                   placeholder="ابحث باسم السورة..."
-                  className={`w-full rounded-xl border pr-9 pl-3 py-2 text-xs focus:outline-none transition-colors ${
+                  className={`w-full rounded-xl border pr-9 pl-3 py-2 text-base sm:text-xs focus:outline-none transition-colors ${
                     isDarkMode
                       ? 'border-[#C5A059]/30 bg-[#0D241C] text-white placeholder-[#A6B8B0] focus:border-[#C5A059]'
                       : 'border-[#E6DEC8] bg-[#F9F7F2] text-[#091B15] placeholder-[#7D9087] focus:border-[#091B15]'
@@ -1000,7 +1122,7 @@ export default function QuranReaderModal({
 
       {/* 3. Full-Screen Quran Page Layout */}
       <main
-        className="flex-1 w-full flex flex-col justify-between overflow-y-auto cursor-pointer px-4 sm:px-8 pt-4 pb-24 max-w-xl mx-auto"
+        className="flex-1 w-full flex flex-col justify-between overflow-y-auto overflow-x-hidden touch-pan-y cursor-pointer px-4 sm:px-8 pt-4 pb-24 max-w-xl mx-auto"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -1067,24 +1189,47 @@ export default function QuranReaderModal({
                       const isCurrent =
                         activeSurahNumber === ayah.surahNumber &&
                         activeAyahNumber === ayah.ayahNumber;
+                      const isPressing =
+                        pressingAyah?.surahNumber === ayah.surahNumber &&
+                        pressingAyah?.ayahNumber === ayah.ayahNumber;
 
                       return (
                         <span
                           key={`${ayah.surahNumber}-${ayah.ayahNumber}`}
                           id={`ayah-${ayah.surahNumber}-${ayah.ayahNumber}`}
-                          onPointerDown={() => handleAyahPointerDown(ayah.surahNumber, ayah.ayahNumber)}
+                          data-testid={`ayah-${ayah.surahNumber}-${ayah.ayahNumber}`}
+                          onPointerDown={(e) => handleAyahPointerDown(e, ayah.surahNumber, ayah.ayahNumber)}
+                          onPointerMove={handleAyahPointerMove}
                           onPointerUp={handleAyahPointerUp}
-                          onPointerLeave={handleAyahPointerUp}
+                          onPointerCancel={handleAyahPointerCancel}
+                          onPointerLeave={handleAyahPointerLeave}
+                          onTouchMove={handleAyahTouchMove}
+                          onTouchCancel={handleAyahPointerCancel}
+                          onContextMenu={(e) => e.preventDefault()}
                           onClick={(e) => {
                             e.stopPropagation();
-                            if (isSwipeActive.current) return;
-                            if (!isLongPressActive.current) {
-                              // Short click toggles full-screen reading mode
-                              setShowControls((prev) => !prev);
+                            if (isLongPressActive.current) {
+                              if (clickSuppressTimerRef.current) clearTimeout(clickSuppressTimerRef.current);
+                              clickSuppressTimerRef.current = setTimeout(() => {
+                                isLongPressActive.current = false;
+                              }, 200);
+                              return;
                             }
+                            if (isSwipeActive.current) return;
+                            // Short click toggles full-screen reading mode
+                            setShowControls((prev) => !prev);
                           }}
-                          className={`inline rounded-md px-1 py-0.5 cursor-pointer transition-colors ${
-                            isCurrent
+                          style={{
+                            userSelect: 'none',
+                            WebkitUserSelect: 'none',
+                            WebkitTouchCallout: 'none',
+                          }}
+                          className={`inline rounded-md px-1 py-0.5 cursor-pointer select-none transition-all duration-200 relative ${
+                            isPressing
+                              ? isDarkMode
+                                ? 'bg-[#C5A059]/35 ring-2 ring-[#C5A059] shadow-[0_0_12px_rgba(197,160,89,0.5)] scale-[1.01]'
+                                : 'bg-[#F9E2AF] ring-2 ring-[#C5A059] shadow-[0_0_12px_rgba(197,160,89,0.4)] scale-[1.01]'
+                              : isCurrent
                               ? isDarkMode
                                 ? 'bg-[#C5A059]/25 text-white font-bold'
                                 : 'bg-[#FDF3D6] text-[#091B15] font-bold shadow-xs'
@@ -1096,7 +1241,7 @@ export default function QuranReaderModal({
                           <span>{ayah.textUthmani}</span>
                           <AyahStarMedallion
                             number={ayah.ayahNumber}
-                            isCurrent={isCurrent}
+                            isCurrent={isCurrent || isPressing}
                             isDarkMode={isDarkMode}
                           />{' '}
                         </span>

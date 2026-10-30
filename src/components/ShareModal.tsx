@@ -120,7 +120,7 @@ export default function ShareModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#081A14]/80 backdrop-blur-xs p-3.5 sm:p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#081A14]/80 backdrop-blur-xs p-3.5 sm:p-4 touch-manipulation"
       role="dialog"
       aria-modal="true"
       aria-labelledby="share-modal-title"
@@ -191,7 +191,7 @@ export default function ShareModal({
               readOnly
               value={shareUrl}
               onFocus={(e) => e.target.select()}
-              className="flex-1 px-3 py-2.5 rounded-lg border border-[#C5A059]/50 bg-white dark:bg-[#081A14] text-xs font-mono text-[#081A14] dark:text-[#E8D39E] focus:outline-hidden focus:ring-2 focus:ring-[#C5A059] dir-ltr text-left selection:bg-[#C5A059]/30"
+              className="flex-1 px-3 py-2.5 rounded-lg border border-[#C5A059]/50 bg-white dark:bg-[#081A14] text-base sm:text-xs font-mono text-[#081A14] dark:text-[#E8D39E] focus:outline-hidden focus:ring-2 focus:ring-[#C5A059] dir-ltr text-left selection:bg-[#C5A059]/30"
               dir="ltr"
             />
             <button

@@ -310,7 +310,7 @@ export default function CreateKhatmaSheet({
                     } catch {}
                   }
                 }}
-                className="w-full px-3.5 sm:px-4 py-2.5 rounded-xl border border-[#C5A059]/50 dark:border-[#C5A059]/40 bg-[#FDFBF7] dark:bg-[#081A14] text-[#081A14] dark:text-[#F8F5EC] text-base sm:text-sm tabular-nums focus:outline-none focus:ring-2 focus:ring-[#C5A059]/30 focus:border-[#C5A059] transition-[border-color,box-shadow] cursor-pointer"
+                className="w-full max-w-full block box-border px-3.5 sm:px-4 py-2.5 rounded-xl border border-[#C5A059]/50 dark:border-[#C5A059]/40 bg-[#FDFBF7] dark:bg-[#081A14] text-[#081A14] dark:text-[#F8F5EC] text-base sm:text-sm tabular-nums focus:outline-none focus:ring-2 focus:ring-[#C5A059]/30 focus:border-[#C5A059] transition-[border-color,box-shadow] cursor-pointer"
               />
               <div className="grid grid-cols-2 sm:flex sm:items-center gap-1.5">
                 <button

@@ -113,7 +113,7 @@ export default function ReserveJuzSheet({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-[#081A14]/70 backdrop-blur-sm transition-opacity"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-[#081A14]/70 backdrop-blur-sm transition-opacity touch-manipulation"
       dir="rtl"
     >
       <div
@@ -224,7 +224,7 @@ export default function ReserveJuzSheet({
                 if (errorMsg) setErrorMsg(null);
               }}
               placeholder="اكتب اسمك الكريم"
-              className="w-full border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] px-4 py-3 text-sm text-[#091B15] dark:text-[#F4EFE6] placeholder:text-[#7D9087] focus:border-[#091B15] dark:focus:border-[#C5A059] focus:outline-none"
+              className="w-full border border-[#C5A059]/80 bg-[#FBF9F2] dark:bg-[#08130F] px-4 py-3 text-base sm:text-sm text-[#091B15] dark:text-[#F4EFE6] placeholder:text-[#7D9087] focus:border-[#091B15] dark:focus:border-[#C5A059] focus:outline-none"
             />
           </div>
 

@@ -95,6 +95,16 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Prevent iOS Safari automatic zoom on focus */
+@media screen and (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
 }
 
 /* Quranic Script utility */
@@ -108,11 +118,16 @@ html, body {
 
 /* Golden Date Picker & Full Rectangle Interaction */
 input[type="date"] {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block !important;
   cursor: pointer;
   position: relative;
   font-family: inherit;
   color-scheme: light dark;
   -webkit-tap-highlight-color: transparent;
+  margin: 0;
 }
 
 /* Ensure cursor pointer on all inner parts across Chrome/Safari/Firefox */
@@ -128,12 +143,14 @@ input[type="date"]::-webkit-date-and-time-value {
   cursor: pointer;
 }
 
-/* Ensure datetime-edit fills the rectangle completely and aligns cleanly */
+/* Ensure datetime-edit fills the rectangle cleanly without forcing horizontal overflow */
 input[type="date"]::-webkit-datetime-edit {
   display: inline-flex;
   align-items: center;
   padding: 0;
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
   cursor: pointer;
 }
 
@@ -144,7 +161,7 @@ input[type="date"]::-webkit-datetime-edit-fields-wrapper {
 input[type="date"]::-webkit-date-and-time-value {
   min-height: 1.4em;
   text-align: right;
-  width: 100%;
+  max-width: 100%;
   cursor: pointer;
 }
 
